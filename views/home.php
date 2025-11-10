@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>ViVuViet</title>
-    <link rel="stylesheet" type="text/css" href="../commons/css/main_style.css">
-    <link rel="stylesheet" type="text/css" href="../commons/css/Animation.css">
+    <link rel="stylesheet" type="text/css" href="./commons/css/main_style.css">
+    <link rel="stylesheet" type="text/css" href="./commons/css/Animation.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.0/slick/slick.css" />
@@ -69,7 +69,7 @@
             </div>
 
             <div class="main_nav">
-                <div class="main_nav__logo"><a href="#"><img src="../commons/images/logo.png" alt="logo"> VIVUVIET</a></div>
+                <div class="main_nav__logo"><a href="#"><img src="./commons/images/logo.png" alt="logo"> VIVUVIET</a></div>
                 <div class="main_nav__menu">
                     <ul class="main_nav__list">
                         <li class="main_nav__item"><a href="index.html">TRANG CHỦ</a></li>
@@ -90,7 +90,7 @@
             <div class="main__slide">
                 <div class="home_slide__item">
                     <div class="home_slide__background"
-                        style="background-image: url(../commons/images/bana-slide.jpg)"></div>
+                        style="background-image: url(./commons/images/bana-slide.jpg)"></div>
                     <div class="home_slider__content">
                         <div class="home_slider_content_inner animated bounceInLeft">
                             <h1>tour</h1>
@@ -104,7 +104,7 @@
                 </div>
                 <div class="home_slide__item">
                     <div class="home_slide__background"
-                        style="background-image: url(../commons/images/hoian-slide.jpg)"></div>
+                        style="background-image: url(./commons/images/hoian-slide.jpg)"></div>
                     <div class="home_slider__content">
                         <div class="home_slider_content_inner animated bounceInRight">
                             <h1>tour</h1>
@@ -118,7 +118,7 @@
                 </div>
                 <div class="home_slide__item">
                     <div class="home_slide__background"
-                        style="background-image: url(../commons/images/phuquoc_slide.jpg)"></div>
+                        style="background-image: url(./commons/images/phuquoc_slide.jpg)"></div>
                     <div class="home_slider__content">
                         <div class="home_slider_content_inner animated bounceInDown">
                             <h1>tour</h1>
@@ -384,7 +384,7 @@
                 <p>Sẽ làm bạn hài lòng khi đăng ký những tour dưới đây.</p>
                 <div class="main_intro__items">
                     <div class="intro_item">
-                        <div class="intro_item__backgroud" style="background-image: url(../commons/images/intro_1.jpg)"></div>
+                        <div class="intro_item__backgroud" style="background-image: url(./commons/images/intro_1.jpg)"></div>
                         <div class="intro_item__content">
                             <div class="intro_date">Từ 15/04 - 15/05</div>
                             <div class="intro_text">
@@ -405,7 +405,7 @@
                         </div>
                     </div>
                     <div class="intro_item">
-                        <div class="intro_item__backgroud" style="background-image: url(../commons/images/intro_2.jpg)"></div>
+                        <div class="intro_item__backgroud" style="background-image: url(./commons/images/intro_2.jpg)"></div>
                         <div class="intro_item__content">
                             <div class="intro_date">Từ 15/04 - 15/05</div>
                             <div class="intro_text">
@@ -426,7 +426,7 @@
                         </div>
                     </div>
                     <div class="intro_item">
-                        <div class="intro_item__backgroud" style="background-image: url(../commons/images/intro_1.jpg)"></div>
+                        <div class="intro_item__backgroud" style="background-image: url(./commons/images/intro_1.jpg)"></div>
                         <div class="intro_item__content">
                             <div class="intro_date">Từ 15/04 - 15/05</div>
                             <div class="intro_text">
@@ -449,7 +449,7 @@
                 </div>
             </div>
             <!--        CTA-->
-            <div class="main_cta" style="background-image: url(../commons/images/cta.jpg)">
+            <div class="main_cta" style="background-image: url(./commons/images/cta.jpg)">
                 <div class="box main_cta__box">
                     <div class="slider" id="single_item">
                         <div>
@@ -498,7 +498,7 @@
                         <div class="offers_item">
                             <div class="offers_image">
                                 <div class="offers_image_background"
-                                    style="background-image: url(../commons/images/offers_1.jpg)"></div>
+                                    style="background-image: url(./commons/images/offers_1.jpg)"></div>
                                 <div class="offers_name"><a href="#">Tour Tây Bắc</a></div>
                             </div>
                             <div class="offers_content">
@@ -515,10 +515,10 @@
                                     nhà sàn nhỏ san sát nhau.</p>
                                 <div class="offers_icons">
                                     <ul class="offers_icons_list">
-                                        <li class="offers_icons_item"><img src="../commons/images/post.png" alt=""></li>
-                                        <li class="offers_icons_item"><img src="../commons/images/compass.png" alt=""></li>
-                                        <li class="offers_icons_item"><img src="../commons/images/bicycle.png" alt=""></li>
-                                        <li class="offers_icons_item"><img src="../commons/images/sailboat.png" alt=""></li>
+                                        <li class="offers_icons_item"><img src="./commons/images/post.png" alt=""></li>
+                                        <li class="offers_icons_item"><img src="./commons/images/compass.png" alt=""></li>
+                                        <li class="offers_icons_item"><img src="./commons/images/bicycle.png" alt=""></li>
+                                        <li class="offers_icons_item"><img src="./commons/images/sailboat.png" alt=""></li>
                                     </ul>
                                 </div>
                                 <div class="offers_link"><a href="offers.html">Đọc thêm</a></div>
@@ -527,7 +527,7 @@
                         <div class="offers_item">
                             <div class="offers_image">
                                 <div class="offers_image_background"
-                                    style="background-image: url(../commons/images/offers_2.jpg)"></div>
+                                    style="background-image: url(./commons/images/offers_2.jpg)"></div>
                                 <div class="offers_name"><a href="#">Tour Quy Nhơn</a></div>
                             </div>
                             <div class="offers_content">
@@ -544,10 +544,10 @@
                                     không đẹp lộng lẫy bằng Nha Trang.</p>
                                 <div class="offers_icons">
                                     <ul class="offers_icons_list">
-                                        <li class="offers_icons_item"><img src="../commons/images/post.png" alt=""></li>
-                                        <li class="offers_icons_item"><img src="../commons/images/compass.png" alt=""></li>
-                                        <li class="offers_icons_item"><img src="../commons/images/bicycle.png" alt=""></li>
-                                        <li class="offers_icons_item"><img src="../commons/images/sailboat.png" alt=""></li>
+                                        <li class="offers_icons_item"><img src="./commons/images/post.png" alt=""></li>
+                                        <li class="offers_icons_item"><img src="./commons/images/compass.png" alt=""></li>
+                                        <li class="offers_icons_item"><img src="./commons/images/bicycle.png" alt=""></li>
+                                        <li class="offers_icons_item"><img src="./commons/images/sailboat.png" alt=""></li>
                                     </ul>
                                 </div>
                                 <div class="offers_link"><a href="offers.html">Đọc thêm</a></div>
@@ -556,7 +556,7 @@
                         <div class="offers_item">
                             <div class="offers_image">
                                 <div class="offers_image_background"
-                                    style="background-image: url(../commons/images/offers_3.jpg)"></div>
+                                    style="background-image: url(./commons/images/offers_3.jpg)"></div>
                                 <div class="offers_name"><a href="#">Tour Miền Trung</a></div>
                             </div>
                             <div class="offers_content">
@@ -573,10 +573,10 @@
                                     "NHỮNG DÒNG SÔNG KỂ CHUYỆN"</p>
                                 <div class="offers_icons">
                                     <ul class="offers_icons_list">
-                                        <li class="offers_icons_item"><img src="../commons/images/post.png" alt=""></li>
-                                        <li class="offers_icons_item"><img src="../commons/images/compass.png" alt=""></li>
-                                        <li class="offers_icons_item"><img src="../commons/images/bicycle.png" alt=""></li>
-                                        <li class="offers_icons_item"><img src="../commons/images/sailboat.png" alt=""></li>
+                                        <li class="offers_icons_item"><img src="./commons/images/post.png" alt=""></li>
+                                        <li class="offers_icons_item"><img src="./commons/images/compass.png" alt=""></li>
+                                        <li class="offers_icons_item"><img src="./commons/images/bicycle.png" alt=""></li>
+                                        <li class="offers_icons_item"><img src="./commons/images/sailboat.png" alt=""></li>
                                     </ul>
                                 </div>
                                 <div class="offers_link"><a href="offers.html">Đọc thêm</a></div>
@@ -585,7 +585,7 @@
                         <div class="offers_item">
                             <div class="offers_image">
                                 <div class="offers_image_background"
-                                    style="background-image: url(../commons/images/offers_4.jpg)"></div>
+                                    style="background-image: url(./commons/images/offers_4.jpg)"></div>
                                 <div class="offers_name"><a href="#">Tour Côn Đảo</a></div>
                             </div>
                             <div class="offers_content">
@@ -602,10 +602,10 @@
                                     thiên đường nghỉ dưỡng.</p>
                                 <div class="offers_icons">
                                     <ul class="offers_icons_list">
-                                        <li class="offers_icons_item"><img src="../commons/images/post.png" alt=""></li>
-                                        <li class="offers_icons_item"><img src="../commons/images/compass.png" alt=""></li>
-                                        <li class="offers_icons_item"><img src="../commons/images/bicycle.png" alt=""></li>
-                                        <li class="offers_icons_item"><img src="../commons/images/sailboat.png" alt=""></li>
+                                        <li class="offers_icons_item"><img src="./commons/images/post.png" alt=""></li>
+                                        <li class="offers_icons_item"><img src="./commons/images/compass.png" alt=""></li>
+                                        <li class="offers_icons_item"><img src="./commons/images/bicycle.png" alt=""></li>
+                                        <li class="offers_icons_item"><img src="./commons/images/sailboat.png" alt=""></li>
                                     </ul>
                                 </div>
                                 <div class="offers_link"><a href="offers.html">Đọc thêm</a></div>
@@ -622,9 +622,9 @@
                         <div>
                             <div class="test_item">
                                 <div class="test_item_box">
-                                    <div class="test_image"><img src="../commons/images/test_1.jpg" alt="">
+                                    <div class="test_image"><img src="./commons/images/test_1.jpg" alt="">
                                     </div>
-                                    <div class="test_icon"><img src="../commons/images/island_t.png" alt=""></div>
+                                    <div class="test_icon"><img src="./commons/images/island_t.png" alt=""></div>
                                     <div class="test_content_container">
                                         <div class="test_content">
                                             <div class="test_item_info">
@@ -642,9 +642,9 @@
                         <div>
                             <div class="test_item">
                                 <div class="test_item_box">
-                                    <div class="test_image"><img src="../commons/images/test.jpg" alt="">
+                                    <div class="test_image"><img src="./commons/images/test.jpg" alt="">
                                     </div>
-                                    <div class="test_icon"><img src="../commons/images/island_t.png" alt=""></div>
+                                    <div class="test_icon"><img src="./commons/images/island_t.png" alt=""></div>
                                     <div class="test_content_container">
                                         <div class="test_content">
                                             <div class="test_item_info">
@@ -662,9 +662,9 @@
                         <div>
                             <div class="test_item">
                                 <div class="test_item_box">
-                                    <div class="test_image"><img src="../commons/images/test_3.jpg" alt="">
+                                    <div class="test_image"><img src="./commons/images/test_3.jpg" alt="">
                                     </div>
-                                    <div class="test_icon"><img src="../commons/images/island_t.png" alt=""></div>
+                                    <div class="test_icon"><img src="./commons/images/island_t.png" alt=""></div>
                                     <div class="test_content_container">
                                         <div class="test_content">
                                             <div class="test_item_info">
@@ -682,9 +682,9 @@
                         <div>
                             <div class="test_item">
                                 <div class="test_item_box">
-                                    <div class="test_image"><img src="../commons/images/test.jpg" alt="">
+                                    <div class="test_image"><img src="./commons/images/test.jpg" alt="">
                                     </div>
-                                    <div class="test_icon"><img src="../commons/images/island_t.png" alt=""></div>
+                                    <div class="test_icon"><img src="./commons/images/island_t.png" alt=""></div>
                                     <div class="test_content_container">
                                         <div class="test_content">
                                             <div class="test_item_info">
@@ -709,7 +709,7 @@
                     <div class="hotel_items">
                         <div class="hotel_item">
                             <div class="hotel_image">
-                                <img src="../commons/images/hotel_1.jpg" alt="">
+                                <img src="./commons/images/hotel_1.jpg" alt="">
                             </div>
                             <div class="hotel_content">
                                 <div class="hotel_title"><a href="#">Green Plaza Hotel</a></div>
@@ -719,7 +719,7 @@
                         </div>
                         <div class="hotel_item">
                             <div class="hotel_image">
-                                <img src="../commons/images/hotel_2.jpg" alt="">
+                                <img src="./commons/images/hotel_2.jpg" alt="">
                             </div>
                             <div class="hotel_content">
                                 <div class="hotel_title"><a href="#">Hilton Đà Nẵng</a></div>
@@ -729,7 +729,7 @@
                         </div>
                         <div class="hotel_item">
                             <div class="hotel_image">
-                                <img src="../commons/images/hotel_3.jpg" alt="">
+                                <img src="./commons/images/hotel_3.jpg" alt="">
                             </div>
                             <div class="hotel_content">
                                 <div class="hotel_title"><a href="#">Hanoi Hotel</a></div>
@@ -739,7 +739,7 @@
                         </div>
                         <div class="hotel_item">
                             <div class="hotel_image">
-                                <img src="../commons/images/hotel_4.jpg" alt="">
+                                <img src="./commons/images/hotel_4.jpg" alt="">
                             </div>
                             <div class="hotel_content">
                                 <div class="hotel_title"><a href="#">Sofitel Sài Gòn</a></div>
@@ -749,7 +749,7 @@
                         </div>
                         <div class="hotel_item">
                             <div class="hotel_image">
-                                <img src="../commons/images/hotel_1.jpg" alt="">
+                                <img src="./commons/images/hotel_1.jpg" alt="">
                             </div>
                             <div class="hotel_content">
                                 <div class="hotel_title"><a href="#">Green Plaza Hotel</a></div>
@@ -759,7 +759,7 @@
                         </div>
                         <div class="hotel_item">
                             <div class="hotel_image">
-                                <img src="../commons/images/hotel_2.jpg" alt="">
+                                <img src="./commons/images/hotel_2.jpg" alt="">
                             </div>
                             <div class="hotel_content">
                                 <div class="hotel_title"><a href="#">Hilton Đà Nẵng</a></div>
@@ -769,7 +769,7 @@
                         </div>
                         <div class="hotel_item">
                             <div class="hotel_image">
-                                <img src="../commons/images/hotel_3.jpg" alt="">
+                                <img src="./commons/images/hotel_3.jpg" alt="">
                             </div>
                             <div class="hotel_content">
                                 <div class="hotel_title"><a href="#">Hanoi Hotel</a></div>
@@ -779,7 +779,7 @@
                         </div>
                         <div class="hotel_item">
                             <div class="hotel_image">
-                                <img src="../commons/images/hotel_4.jpg" alt="">
+                                <img src="./commons/images/hotel_4.jpg" alt="">
                             </div>
                             <div class="hotel_content">
                                 <div class="hotel_title"><a href="#">Sofitel Sài Gòn</a></div>
@@ -797,7 +797,7 @@
                 <div class="footer__about">
                     <div class="footer__logo">
                         <div class="logo">
-                            <a href="#"><img src="../commons/images/logo.png" alt="">VIVUVIET</a>
+                            <a href="#"><img src="./commons/images/logo.png" alt="">VIVUVIET</a>
                         </div>
                     </div>
                     <p class="footer_about__text">
@@ -813,21 +813,21 @@
                 <div class="footer__blog">
                     <div class="footer_title">bản tin</div>
                     <div class="footer_blog__item">
-                        <div class="footer_blog__image"><img src="../commons/images/footer_blog_1.jpg" alt=""></div>
+                        <div class="footer_blog__image"><img src="./commons/images/footer_blog_1.jpg" alt=""></div>
                         <div class="footer_blog__content">
                             <div class="footer_blog__title"><a href="#">Địa điểm du lịch Hè 2019</a></div>
                             <div class="footer_blog__date">30/04/2019</div>
                         </div>
                     </div>
                     <div class="footer_blog__item">
-                        <div class="footer_blog__image"><img src="../commons/images/footer_blog_1.jpg" alt=""></div>
+                        <div class="footer_blog__image"><img src="./commons/images/footer_blog_1.jpg" alt=""></div>
                         <div class="footer_blog__content">
                             <div class="footer_blog__title"><a href="#">Địa điểm du lịch Hè 2019</a></div>
                             <div class="footer_blog__date">30/04/2019</div>
                         </div>
                     </div>
                     <div class="footer_blog__item">
-                        <div class="footer_blog__image"><img src="../commons/images/footer_blog_1.jpg" alt=""></div>
+                        <div class="footer_blog__image"><img src="./commons/images/footer_blog_1.jpg" alt=""></div>
                         <div class="footer_blog__content">
                             <div class="footer_blog__title"><a href="#">Địa điểm du lịch Hè 2019</a></div>
                             <div class="footer_blog__date">30/04/2019</div>
@@ -873,7 +873,7 @@
     </div>
 
 </body>
-<script src="../commons/js/main_js.js"></script>
+<script src="./commons/js/main_js.js"></script>
 <script>
     $("#single_item").slick({
         dots: true

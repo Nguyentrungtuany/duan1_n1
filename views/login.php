@@ -23,26 +23,26 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 	</script>
 
 	<!-- Bootstrap Core CSS -->
-	<link href="../commons/css/bootstrap.css" rel="stylesheet" type="text/css" />
+	<link href="./commons/css/bootstrap.css" rel="stylesheet" type="text/css" />
 
 	<!-- Custom CSS -->
-	<link href="../commons/css/style.css" rel="stylesheet" type="text/css" />
+	<link href="./commons/css/style.css" rel="stylesheet" type="text/css" />
 
 	<!-- font-awesome icons CSS -->
-	<link href="../commons/css/font-awesome.css" rel="stylesheet" />
+	<link href="./commons/css/font-awesome.css" rel="stylesheet" />
 	<!-- //font-awesome icons CSS -->
 
 	<!-- side nav css file -->
 	<link
-		href="../commons/css/SidebarNav.min.css"
+		href="./commons/css/SidebarNav.min.css"
 		media="all"
 		rel="stylesheet"
 		type="text/css" />
 	<!-- side nav css file -->
 
 	<!-- js-->
-	<script src="../commons/js/jquery-1.11.1.min.js"></script>
-	<script src="../commons/js/modernizr.custom.js"></script>
+	<script src="./commons/js/jquery-1.11.1.min.js"></script>
+	<script src="./commons/js/modernizr.custom.js"></script>
 
 	<!--webfonts-->
 	<link
@@ -51,9 +51,9 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 	<!--//webfonts-->
 
 	<!-- Metis Menu -->
-	<script src="../commons/js/metisMenu.min.js"></script>
-	<script src="../commons/js/custom.js"></script>
-	<link href="../commons/css/custom.css" rel="stylesheet" />
+	<script src="./commons/js/metisMenu.min.js"></script>
+	<script src="./commons/js/custom.js"></script>
+	<link href="./commons/css/custom.css" rel="stylesheet" />
 	<!--//Metis Menu -->
 </head>
 
@@ -96,24 +96,24 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 
 
 	<!-- side nav js -->
-	<script src="../commons/js/SidebarNav.min.js" type="text/javascript"></script>
+	<script src="./commons/js/SidebarNav.min.js" type="text/javascript"></script>
 	<script>
 		$('.sidebar-menu').SidebarNav();
 	</script>
 	<!-- //side nav js -->
 
-	<script src="../commons/js/jquery.nicescroll.js"></script>
-	<script src="../commons/js/scripts.js"></script>
+	<script src="./commons/js/jquery.nicescroll.js"></script>
+	<script src="./commons/js/scripts.js"></script>
 
 	<!-- Bootstrap Core JavaScript -->
-	<script src="../commons/js/bootstrap.js"></script>
+	<script src="./commons/js/bootstrap.js"></script>
 
 	<!-- Validator JS -->
-	<script src="../commons/js/validator.min.js"></script>
+	<script src="./commons/js/validator.min.js"></script>
 
 	<!-- Optional: charting (keep if needed) -->
-	<script src="../commons/js/Chart.bundle.js"></script>
-	<script src="../commons/js/utils.js"></script>
+	<script src="./commons/js/Chart.bundle.js"></script>
+	<script src="./commons/js/utils.js"></script>
 
 
 </body>
