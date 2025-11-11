@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/layout/header.php';
+require_once __DIR__ . '/../layout/header.php';
 ?>
 <!-- header-starts -->
 <div class="sticky-header header-section">
@@ -25,7 +25,7 @@ require_once __DIR__ . '/layout/header.php';
             <li>
               <a href="#">
                 <div class="user_img">
-                  <img src="images/1.jpg" alt="" />
+                  <img src="commons/images/1.jpg" alt="" />
                 </div>
                 <div class="notification_desc">
                   <p>Lorem ipsum dolor amet</p>
@@ -37,7 +37,7 @@ require_once __DIR__ . '/layout/header.php';
             <li class="odd">
               <a href="#">
                 <div class="user_img">
-                  <img src="images/4.jpg" alt="" />
+                  <img src="commons/images/4.jpg" alt="" />
                 </div>
                 <div class="notification_desc">
                   <p>Lorem ipsum dolor amet</p>
@@ -49,7 +49,7 @@ require_once __DIR__ . '/layout/header.php';
             <li>
               <a href="#">
                 <div class="user_img">
-                  <img src="images/3.jpg" alt="" />
+                  <img src="commons/images/3.jpg" alt="" />
                 </div>
                 <div class="notification_desc">
                   <p>Lorem ipsum dolor amet</p>
@@ -61,7 +61,7 @@ require_once __DIR__ . '/layout/header.php';
             <li>
               <a href="#">
                 <div class="user_img">
-                  <img src="images/2.jpg" alt="" />
+                  <img src="commons/images/2.jpg" alt="" />
                 </div>
                 <div class="notification_desc">
                   <p>Lorem ipsum dolor amet</p>
@@ -92,7 +92,7 @@ require_once __DIR__ . '/layout/header.php';
             <li>
               <a href="#">
                 <div class="user_img">
-                  <img src="images/4.jpg" alt="" />
+                  <img src="commons/images/4.jpg" alt="" />
                 </div>
                 <div class="notification_desc">
                   <p>Lorem ipsum dolor amet</p>
@@ -104,7 +104,7 @@ require_once __DIR__ . '/layout/header.php';
             <li class="odd">
               <a href="#">
                 <div class="user_img">
-                  <img src="images/1.jpg" alt="" />
+                  <img src="commons/images/1.jpg" alt="" />
                 </div>
                 <div class="notification_desc">
                   <p>Lorem ipsum dolor amet</p>
@@ -116,7 +116,7 @@ require_once __DIR__ . '/layout/header.php';
             <li>
               <a href="#">
                 <div class="user_img">
-                  <img src="images/3.jpg" alt="" />
+                  <img src="commons/images/3.jpg" alt="" />
                 </div>
                 <div class="notification_desc">
                   <p>Lorem ipsum dolor amet</p>
@@ -128,7 +128,7 @@ require_once __DIR__ . '/layout/header.php';
             <li>
               <a href="#">
                 <div class="user_img">
-                  <img src="images/2.jpg" alt="" />
+                  <img src="commons/images/2.jpg" alt="" />
                 </div>
                 <div class="notification_desc">
                   <p>Lorem ipsum dolor amet</p>
@@ -244,7 +244,7 @@ require_once __DIR__ . '/layout/header.php';
             data-toggle="dropdown"
             aria-expanded="false">
             <div class="profile_img">
-              <span class="prfil-img"><img src="images/2.jpg" alt="" />
+              <span class="prfil-img"><img src="commons/images/2.jpg" alt="" />
               </span>
               <div class="user-name">
                 <p>Admin Name</p>
@@ -459,17 +459,17 @@ require_once __DIR__ . '/layout/header.php';
       <div class="clearfix"></div>
     </div>
     <!-- for amcharts js -->
-    <script src="js/amcharts.js"></script>
-    <script src="js/serial.js"></script>
-    <script src="js/export.min.js"></script>
+    <script src="commons/js/amcharts.js"></script>
+    <script src="commons/js/serial.js"></script>
+    <script src="commons/js/export.min.js"></script>
     <link
       rel="stylesheet"
-      href="css/export.css"
+      href="commons/css/export.css"
       type="text/css"
       media="all" />
-    <script src="js/light.js"></script>
+    <script src="commons/js/light.js"></script>
     <!-- for amcharts js -->
-    <script src="js/index1.js"></script>
+    <script src="commons/js/index1.js"></script>
     <div class="charts">
       <div class="mid-content-top charts-grids">
         <div class="middle-content">
@@ -479,43 +479,43 @@ require_once __DIR__ . '/layout/header.php';
             <div class="item">
               <img
                 class="lazyOwl img-responsive"
-                data-src="images/slider1.jpg"
+                data-src="commons/images/slider1.jpg"
                 alt="name" />
             </div>
             <div class="item">
               <img
                 class="lazyOwl img-responsive"
-                data-src="images/slider2.jpg"
+                data-src="commons/images/slider2.jpg"
                 alt="name" />
             </div>
             <div class="item">
               <img
                 class="lazyOwl img-responsive"
-                data-src="images/slider3.jpg"
+                data-src="commons/images/slider3.jpg"
                 alt="name" />
             </div>
             <div class="item">
               <img
                 class="lazyOwl img-responsive"
-                data-src="images/slider4.jpg"
+                data-src="commons/images/slider4.jpg"
                 alt="name" />
             </div>
             <div class="item">
               <img
                 class="lazyOwl img-responsive"
-                data-src="images/slider5.jpg"
+                data-src="commons/images/slider5.jpg"
                 alt="name" />
             </div>
             <div class="item">
               <img
                 class="lazyOwl img-responsive"
-                data-src="images/slider6.jpg"
+                data-src="commons/images/slider6.jpg"
                 alt="name" />
             </div>
             <div class="item">
               <img
                 class="lazyOwl img-responsive"
-                data-src="images/slider7.jpg"
+                data-src="commons/images/slider7.jpg"
                 alt="name" />
             </div>
           </div>
@@ -530,7 +530,7 @@ require_once __DIR__ . '/layout/header.php';
           <div class="scrollbar" id="style-1">
             <div class="activity-row">
               <div class="col-xs-3 activity-img">
-                <img src="images/1.jpg" class="img-responsive" alt="" />
+                <img src="commons/images/1.jpg" class="img-responsive" alt="" />
               </div>
               <div class="col-xs-7 activity-desc">
                 <h5><a href="#">Michael Chris</a></h5>
@@ -543,7 +543,7 @@ require_once __DIR__ . '/layout/header.php';
             </div>
             <div class="activity-row">
               <div class="col-xs-3 activity-img">
-                <img src="images/4.jpg" class="img-responsive" alt="" />
+                <img src="commons/images/4.jpg" class="img-responsive" alt="" />
               </div>
               <div class="col-xs-7 activity-desc">
                 <h5><a href="#">Alexander</a></h5>
@@ -556,7 +556,7 @@ require_once __DIR__ . '/layout/header.php';
             </div>
             <div class="activity-row">
               <div class="col-xs-3 activity-img">
-                <img src="images/3.jpg" class="img-responsive" alt="" />
+                <img src="commons/images/3.jpg" class="img-responsive" alt="" />
               </div>
               <div class="col-xs-7 activity-desc">
                 <h5><a href="#">Daniel Lucas</a></h5>
@@ -569,7 +569,7 @@ require_once __DIR__ . '/layout/header.php';
             </div>
             <div class="activity-row">
               <div class="col-xs-3 activity-img">
-                <img src="images/2.jpg" class="img-responsive" alt="" />
+                <img src="commons/images/2.jpg" class="img-responsive" alt="" />
               </div>
               <div class="col-xs-7 activity-desc">
                 <h5><a href="#">Jackson Jacob</a></h5>
@@ -582,7 +582,7 @@ require_once __DIR__ . '/layout/header.php';
             </div>
             <div class="activity-row">
               <div class="col-xs-3 activity-img">
-                <img src="images/1.jpg" class="img-responsive" alt="" />
+                <img src="commons/images/1.jpg" class="img-responsive" alt="" />
               </div>
               <div class="col-xs-7 activity-desc">
                 <h5><a href="#">David Samuel</a></h5>
@@ -595,7 +595,7 @@ require_once __DIR__ . '/layout/header.php';
             </div>
             <div class="activity-row">
               <div class="col-xs-3 activity-img">
-                <img src="images/4.jpg" class="img-responsive" alt="" />
+                <img src="commons/images/4.jpg" class="img-responsive" alt="" />
               </div>
               <div class="col-xs-7 activity-desc">
                 <h5><a href="#">laura Smith</a></h5>
@@ -625,7 +625,7 @@ require_once __DIR__ . '/layout/header.php';
             <div class="activity-row activity-row1">
               <div class="col-xs-3 activity-img">
                 <img
-                  src="images/1.jpg"
+                  src="commons/images/1.jpg"
                   class="img-responsive"
                   alt="" /><span>06:01 AM</span>
               </div>
@@ -648,7 +648,7 @@ require_once __DIR__ . '/layout/header.php';
               </div>
               <div class="col-xs-3 activity-img">
                 <img
-                  src="images/3.jpg"
+                  src="commons/images/3.jpg"
                   class="img-responsive"
                   alt="" /><span>06:02 AM</span>
               </div>
@@ -657,7 +657,7 @@ require_once __DIR__ . '/layout/header.php';
             <div class="activity-row activity-row1">
               <div class="col-xs-3 activity-img">
                 <img
-                  src="images/1.jpg"
+                  src="commons/images/1.jpg"
                   class="img-responsive"
                   alt="" /><span>06:05 AM</span>
               </div>
@@ -680,7 +680,7 @@ require_once __DIR__ . '/layout/header.php';
               </div>
               <div class="col-xs-3 activity-img">
                 <img
-                  src="images/3.jpg"
+                  src="commons/images/3.jpg"
                   class="img-responsive"
                   alt="" /><span>06:20 PM</span>
               </div>
@@ -775,5 +775,5 @@ require_once __DIR__ . '/layout/header.php';
   </div>
 </div>
 <?php
-require_once __DIR__ . '/layout/footer.php';
+require_once __DIR__ . '/../layout/footer.php';
 ?>

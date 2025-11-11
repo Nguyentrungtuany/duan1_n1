@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/layout/header.php';
+require_once __DIR__ . '/../layout/header.php';
 ?>
 <!-- header-starts -->
 <div class="sticky-header header-section ">
@@ -262,6 +262,11 @@ require_once __DIR__ . '/layout/header.php';
 			</div>
 			<div class="bs-example widget-shadow" data-example-id="hoverable-table">
 				<h4>Hover Rows Table:</h4>
+				<div class="mt-3">
+					<button class="btn btn-success">
+						<i class="fa fa-plus"></i> Thêm mới
+					</button>
+				</div>
 				<table class="table table-hover">
 					<thead>
 						<tr>
@@ -277,19 +282,16 @@ require_once __DIR__ . '/layout/header.php';
 							<td>Mark</td>
 							<td>Otto</td>
 							<td>@mdo</td>
+							<td>
+								<button class="btn btn-primary btn-sm">
+									<i class="fa fa-edit"></i> Sửa
+								</button>
+								<button class="btn btn-danger btn-sm">
+									<i class="fa fa-trash"></i> Xóa
+								</button>
+							</td>
 						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>Jacob</td>
-							<td>Thornton</td>
-							<td>@fat</td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td>Larry</td>
-							<td>the Bird</td>
-							<td>@twitter</td>
-						</tr>
+
 					</tbody>
 				</table>
 			</div>
@@ -411,5 +413,5 @@ require_once __DIR__ . '/layout/header.php';
 	</div>
 </div>
 <?php
-require_once __DIR__ . '/layout/footer.php';
+require_once __DIR__ . '/../layout/footer.php';
 ?>

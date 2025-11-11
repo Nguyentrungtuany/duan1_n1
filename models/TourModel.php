@@ -1,4 +1,6 @@
 <?php
+require_once './commons/function.php';
+
 class TourModel
 {
     public $conn;
@@ -7,6 +9,13 @@ class TourModel
         $this->conn = connectDB();
     }
 
+    public function findEmail($email)
+    {
+        $stmt = $this->conn->prepare("SELECT * FROM `users` WHERE email = :email");
+        $stmt->execute([':email' => $email]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
     // Viết truy vấn lấy dữ liệu cho trang chủ
     public function getHomeData()
     {

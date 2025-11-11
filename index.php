@@ -7,9 +7,13 @@ require_once './commons/function.php'; // Hàm hỗ trợ
 
 // Require toàn bộ file Controllers
 require_once './controllers/TourController.php';
+require_once './controllers/admin/IndexController.php';
 
 // Require toàn bộ file Models
 require_once './models/TourModel.php';
+require_once './models/admin/IndexModel.php';
+// Require toàn bộ file Views
+// require_once './views/home.php';
 
 // Route
 $act = $_GET['act'] ?? '/';
@@ -19,6 +23,10 @@ $act = $_GET['act'] ?? '/';
 
 match ($act) {
     // Trang chủ
-    '/' => (new TourController())->Index(),
+    '/' => (new TourController())->home(),
     'login' => (new TourController())->Login(),
+    'handleLogin' => (new TourController())->handleLogin(),
+    'admin' => (new IndexController())->index(),
+    'tables' => (new IndexController())->tables(),
+    default => require_once './views/404.php'
 };

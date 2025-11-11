@@ -3,12 +3,11 @@
 
 <head>
 	<title>
-		Glance Design Dashboard an Admin Panel Category Flat Bootstrap Responsive
-		Website Template | Buttons :: w3layouts
+		Login
 	</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta
+	<metahcsac
 		name="keywords"
 		content="Glance Design Dashboard Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
 SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
@@ -64,7 +63,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 			<h2 class="title1">Login</h2>
 			<div class="widget-shadow">
 				<div class="login-body">
-					<form action="#" method="post">
+					<form action="?act=handleLogin" method="post">
 						<input type="email" class="user" name="email" placeholder="Enter Your Email" required="">
 						<input type="password" name="password" class="lock" placeholder="Password" required="">
 						<div class="forgot-grid">
