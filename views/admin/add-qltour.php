@@ -198,7 +198,7 @@ require_once __DIR__ . '/../layout/header.php';
                     <h4>Form cập nhật thông tin Tour:</h4>
                 </div>
                 <div class="form-body">
-                    <form method="POST" action="<?php echo BASE_URL; ?>index.php?act=updateTour" enctype="multipart/form-data">
+                    <form method="POST" action="<?php echo BASE_URL; ?>index.php?act=addTour" enctype="multipart/form-data">
                         <!-- Hidden ID -->
                         <input type="hidden" name="id" value="<?php echo isset($DataQltour['id']) ? $DataQltour['id'] : ''; ?>">
 
