@@ -194,7 +194,7 @@ require_once __DIR__ . '/../layout/header.php';
 	<div class="main-page">
 		<div class="tables">
 			<h2 class="title1">Tables</h2>
-			<div class="panel-body widget-shadow">
+			<!-- <div class="panel-body widget-shadow">
 				<h4>Basic Table:</h4>
 				<table class="table">
 					<thead>
@@ -259,43 +259,58 @@ require_once __DIR__ . '/../layout/header.php';
 						</tr>
 					</tbody>
 				</table>
-			</div>
+			</div> -->
 			<div class="bs-example widget-shadow" data-example-id="hoverable-table">
-				<h4>Hover Rows Table:</h4>
+				<h4>Quản lý Tour:</h4>
 				<div class="mt-3">
-					<button class="btn btn-success">
+					<a href="index.php?act=addqltour" class="btn btn-success btn-sm">
 						<i class="fa fa-plus"></i> Thêm mới
-					</button>
+					</a>
 				</div>
+
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th>#</th>
-							<th>First Name</th>
-							<th>Last Name</th>
-							<th>Username</th>
+							<th>id</th>
+							<th>Name</th>
+							<th>Category</th>
+							<th>Description</th>
+							<th>start_date</th>
+							<th>end_date</th>
+							<th>price</th>
+							<th>status</th>
+							<th>created_at</th>
+							<th>updated_at</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>Mark</td>
-							<td>Otto</td>
-							<td>@mdo</td>
-							<td>
-								<button class="btn btn-primary btn-sm">
-									<i class="fa fa-edit"></i> Sửa
-								</button>
-								<button class="btn btn-danger btn-sm">
-									<i class="fa fa-trash"></i> Xóa
-								</button>
-							</td>
-						</tr>
-
-					</tbody>
+					<?php foreach ($DataQltour as $data): ?>
+						<tbody>
+							<tr>
+								<th scope="row"><?php echo $data['id']; ?></th>
+								<td><?php echo $data['name']; ?></td>
+								<td><?php echo $data['category']; ?></td>
+								<td><?php echo $data['description']; ?></td>
+								<td><?php echo $data['start_date']; ?></td>
+								<td><?php echo $data['end_date']; ?></td>
+								<td><?php echo $data['price']; ?></td>
+								<td><?php echo $data['status']; ?></td>
+								<td><?php echo $data['created_at']; ?></td>
+								<td><?php echo $data['updated_at']; ?></td>
+								<td>
+									<a href="index.php?act=editqltour&id=<?php echo $data['id']; ?>" class="btn btn-primary btn-sm">
+										<i class="fa fa-edit"></i> Sửa
+									</a>
+									<a href="index.php?act=deleteqltour&id=<?php echo $data['id']; ?>" class="btn btn-danger btn-sm">
+										<i class="fa fa-edit"></i> xóa
+									</a>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+						</tbody>
 				</table>
+
 			</div>
-			<div class="bs-example widget-shadow" data-example-id="contextual-table">
+			<!-- <div class="bs-example widget-shadow" data-example-id="contextual-table">
 				<h4>Colored Rows Table:</h4>
 				<table class="table">
 					<thead>
@@ -408,7 +423,7 @@ require_once __DIR__ . '/../layout/header.php';
 						</tr>
 					</tbody>
 				</table>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </div>

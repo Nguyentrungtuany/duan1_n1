@@ -27,6 +27,10 @@ match ($act) {
     'login' => (new TourController())->Login(),
     'handleLogin' => (new TourController())->handleLogin(),
     'admin' => (new IndexController())->index(),
-    'tables' => (new IndexController())->tables(),
+    'QlTour' => (new IndexController())->QlTuor(),
+    'editqltour' => (new IndexController())->editQltour($id),
+    'updateqltour' => (new IndexController())->updateQltour(),
+    'deleteqltour' => (new IndexController())->deleteQltour($id),
+    'addqltour' => (new IndexController())->addQltour(),
     default => require_once './views/404.php'
 };
