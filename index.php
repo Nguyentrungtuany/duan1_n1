@@ -8,10 +8,12 @@ require_once './commons/function.php'; // Hàm hỗ trợ
 // Require toàn bộ file Controllers
 require_once './controllers/TourController.php';
 require_once './controllers/admin/IndexController.php';
+require_once './controllers/admin/UserController.php';
 
 // Require toàn bộ file Models
 require_once './models/TourModel.php';
 require_once './models/admin/IndexModel.php';
+require_once './models/admin/UserModel.php';
 // Require toàn bộ file Views
 // require_once './views/home.php';
 
@@ -20,6 +22,7 @@ $act = $_GET['act'] ?? '/';
 
 
 // Để bảo bảo tính chất chỉ gọi 1 hàm Controller để xử lý request thì mình sử dụng match
+$db = connectDB();
 
 match ($act) {
     // Trang chủ
@@ -28,5 +31,12 @@ match ($act) {
     'handleLogin' => (new TourController())->handleLogin(),
     'admin' => (new IndexController())->index(),
     'tables' => (new IndexController())->tables(),
+    'user-index' => (new UserController($db))->index(),
+    'user-create' => (new UserController($db))->create(),
+    'user-store' => (new UserController($db))->store(),
+    'user-edit' => (new UserController($db))->edit(),
+    'user-update' => (new UserController($db))->update(),
+    'user-delete' => (new UserController($db))->delete(),
+    'user-search' => (new UserController($db))->search(),
     default => require_once './views/404.php'
 };
