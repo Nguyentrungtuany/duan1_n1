@@ -4,7 +4,6 @@ require_once __DIR__ . '/../layout/header.php';
 <!-- header-starts -->
 <div class="sticky-header header-section ">
 	<div class="header-left">
-
 		<!--toggle button start-->
 		<button id="showLeftPush"><i class="fa fa-bars"></i></button>
 		<!--toggle button end-->
@@ -146,8 +145,6 @@ require_once __DIR__ . '/../layout/header.php';
 		<div class="clearfix"> </div>
 	</div>
 	<div class="header-right">
-
-
 		<!--search-box-->
 		<div class="search-box">
 			<form class="input">
@@ -189,229 +186,77 @@ require_once __DIR__ . '/../layout/header.php';
 	<div class="clearfix"> </div>
 </div>
 <!-- //header-ends -->
+
 <!-- main content start-->
 <div id="page-wrapper">
 	<div class="main-page">
 		<div class="tables">
-			<h2 class="title1">Tables</h2>
-			<div class="panel-body widget-shadow">
-				<h4>Basic Table:</h4>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>First Name</th>
-							<th>Last Name</th>
-							<th>Username</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>Mark</td>
-							<td>Otto</td>
-							<td>@mdo</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>Jacob</td>
-							<td>Thornton</td>
-							<td>@fat</td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td>Larry</td>
-							<td>the Bird</td>
-							<td>@twitter</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="bs-example widget-shadow" data-example-id="bordered-table">
-				<h4>Bordered Basic Table:</h4>
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>First Name</th>
-							<th>Last Name</th>
-							<th>Username</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>Mark</td>
-							<td>Otto</td>
-							<td>@mdo</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>Jacob</td>
-							<td>Thornton</td>
-							<td>@fat</td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td>Larry</td>
-							<td>the Bird</td>
-							<td>@twitter</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+			<h2 class="title1">Quản lý hướng dẫn viên</h2>
+		
 			<div class="bs-example widget-shadow" data-example-id="hoverable-table">
-				<h4>Hover Rows Table:</h4>
-				<div class="mt-3">
-					<button class="btn btn-success">
+				<div class="mt-3 mb-3">
+					<a href="?act=guide-create" class="btn btn-success">
 						<i class="fa fa-plus"></i> Thêm mới
-					</button>
+					</a>
 				</div>
-				<table class="table table-hover">
+				
+				<table class="table table-hover table-bordered">
 					<thead>
 						<tr>
-							<th>#</th>
-							<th>First Name</th>
-							<th>Last Name</th>
-							<th>Username</th>
+							<th>STT</th>
+							<th>Mã HDV</th>
+							<th>Họ tên</th>
+							<th>Email</th>
+							<th>Số điện thoại</th>
+							<th>Ngôn ngữ</th>
+							<th>Trạng thái</th>
+							<th>Hành động</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>Mark</td>
-							<td>Otto</td>
-							<td>@mdo</td>
-							<td>
-								<button class="btn btn-primary btn-sm">
-									<i class="fa fa-edit"></i> Sửa
-								</button>
-								<button class="btn btn-danger btn-sm">
-									<i class="fa fa-trash"></i> Xóa
-								</button>
-							</td>
-						</tr>
-
-					</tbody>
-				</table>
-			</div>
-			<div class="bs-example widget-shadow" data-example-id="contextual-table">
-				<h4>Colored Rows Table:</h4>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>Column heading</th>
-							<th>Column heading</th>
-							<th>Column heading</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr class="active">
-							<th scope="row">1</th>
-							<td>Column content</td>
-							<td>Column content</td>
-							<td>Column content</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>Column content</td>
-							<td>Column content</td>
-							<td>Column content</td>
-						</tr>
-						<tr class="success">
-							<th scope="row">3</th>
-							<td>Column content</td>
-							<td>Column content</td>
-							<td>Column content</td>
-						</tr>
-						<tr>
-							<th scope="row">4</th>
-							<td>Column content</td>
-							<td>Column content</td>
-							<td>Column content</td>
-						</tr>
-						<tr class="info">
-							<th scope="row">5</th>
-							<td>Column content</td>
-							<td>Column content</td>
-							<td>Column content</td>
-						</tr>
-						<tr>
-							<th scope="row">6</th>
-							<td>Column content</td>
-							<td>Column content</td>
-							<td>Column content</td>
-						</tr>
-						<tr class="warning">
-							<th scope="row">7</th>
-							<td>Column content</td>
-							<td>Column content</td>
-							<td>Column content</td>
-						</tr>
-						<tr>
-							<th scope="row">8</th>
-							<td>Column content</td>
-							<td>Column content</td>
-							<td>Column content</td>
-						</tr>
-						<tr class="danger">
-							<th scope="row">9</th>
-							<td>Column content</td>
-							<td>Column content</td>
-							<td>Column content</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="table-responsive bs-example widget-shadow">
-				<h4>Responsive Table:</h4>
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>Table heading</th>
-							<th>Table heading</th>
-							<th>Table heading</th>
-							<th>Table heading</th>
-							<th>Table heading</th>
-							<th>Table heading</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>Table cell</td>
-							<td>Table cell</td>
-							<td>Table cell</td>
-							<td>Table cell</td>
-							<td>Table cell</td>
-							<td>Table cell</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>Table cell</td>
-							<td>Table cell</td>
-							<td>Table cell</td>
-							<td>Table cell</td>
-							<td>Table cell</td>
-							<td>Table cell</td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td>Table cell</td>
-							<td>Table cell</td>
-							<td>Table cell</td>
-							<td>Table cell</td>
-							<td>Table cell</td>
-							<td>Table cell</td>
-						</tr>
+						<?php if (!empty($guides)): ?>
+							<?php $stt = 1; ?>
+							<?php foreach ($guides as $guide): ?>
+								<tr>
+									<td><?= $stt++ ?></td>
+									<td><?= htmlspecialchars($guide['id'] ?? '') ?></td>
+									<td><?= htmlspecialchars($guide['name'] ?? 'N/A') ?></td>
+									<td><?= htmlspecialchars($guide['email'] ?? 'N/A') ?></td>
+									<td><?= htmlspecialchars($guide['phone'] ?? 'N/A') ?></td>
+									<td><?= htmlspecialchars($guide['language'] ?? 'N/A') ?></td>
+									<td>
+										<?php if (isset($guide['status']) && $guide['status'] == 1): ?>
+											<span class="badge badge-success">Hoạt động</span>
+										<?php else: ?>
+											<span class="badge badge-danger">Không hoạt động</span>
+										<?php endif; ?>
+									</td>
+									<td>
+										<a href="?act=guide-edit&id=<?= $guide['id'] ?? '' ?>" class="btn btn-primary btn-sm">
+											<i class="fa fa-edit"></i> Sửa
+										</a>
+										<a href="?act=guide-delete&id=<?= $guide['id'] ?? '' ?>" 
+										   class="btn btn-danger btn-sm" 
+										   onclick="return confirm('Bạn có chắc chắn muốn xóa hướng dẫn viên này?')">
+											<i class="fa fa-trash"></i> Xóa
+										</a>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						<?php else: ?>
+							<tr>
+								<td colspan="8" class="text-center">
+									<p class="text-muted">Chưa có dữ liệu hướng dẫn viên</p>
+								</td>
+							</tr>
+						<?php endif; ?>
 					</tbody>
 				</table>
 			</div>
 		</div>
 	</div>
 </div>
+
 <?php
 require_once __DIR__ . '/../layout/footer.php';
 ?>
