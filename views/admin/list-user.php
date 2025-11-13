@@ -104,32 +104,6 @@ require_once __DIR__ . '/../layout/header.php';
 	<div class="main-page">
 		<div class="tables">
 			<h2 class="title1">Quản lý tài khoản</h2>
-
-			<!-- Thông báo -->
-			<?php
-			// echo "fwaf";
-			// // print_r($users);
-			// var_dump($users);
-			if (isset($_SESSION['success'])): ?>
-				<div class="alert alert-success alert-dismissible fade show" role="alert">
-					<strong>Thành công!</strong> <?php echo $_SESSION['success'];
-													unset($_SESSION['success']); ?>
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-			<?php endif; ?>
-
-			<?php if (isset($_SESSION['error'])): ?>
-				<div class="alert alert-danger alert-dismissible fade show" role="alert">
-					<strong>Lỗi!</strong> <?php echo $_SESSION['error'];
-											unset($_SESSION['error']); ?>
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-			<?php endif; ?>
-
 			<div class="bs-example widget-shadow" data-example-id="hoverable-table">
 				<h4>Danh sách tài khoản</h4>
 				<div class="mb-3">
