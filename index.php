@@ -32,12 +32,12 @@ match ($act) {
     'admin' => (new IndexController())->index(),
     // 'tables' => (new IndexController())->tables(),
     'tables' => (new UserController($db))->index(),
-    // 'user-index' => (new UserController($db))->index(),
-    'user-create' => (new UserController($db))->create(),
-    'user-store' => (new UserController($db))->store(),
-    'user-edit' => (new UserController($db))->edit(),
-    'user-update' => (new UserController($db))->update(),
-    'user-delete' => (new UserController($db))->delete(),
+    'admin-list-user' => (new UserController($db))->index(),        // Danh sách
+    'user-create' => (new UserController($db))->create(),           // Hiển thị form thêm
+    'user-store' => (new UserController($db))->store(),             // Xử lý thêm
+    'admin-edit-user' => (new UserController($db))->edit(),               // Hiển thị form sửa
+    'admin-update-user' => (new UserController($db))->update(),           // Xử lý cập nhật
+    'admin-delete-user' => (new UserController($db))->delete(),     // Xóa
     'user-search' => (new UserController($db))->search(),
     default => require_once './views/404.php'
 };

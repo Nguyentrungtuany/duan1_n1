@@ -33,11 +33,17 @@ class UserModel
     public function createUser($data)
     {
         $query = "INSERT INTO " . $this->table . " 
-                  (username, email, password, full_name, role, status) 
-                  VALUES (:username, :email, :password, :full_name, :role, :status)";
+                  (username, email, full_name, phone, role, password ) 
+                  VALUES (:username, :email, :full_name, :phone ,:role , :password)";
 
         $stmt = $this->conn->prepare($query);
-
+        $stmt->bindParam(':username', $data['username']);
+        $stmt->bindParam(':email', $data['email']);
+        $stmt->bindParam(':full_name', $data['full_name']);
+        $hashed_password = password_hash($data['password'], PASSWORD_DEFAULT);
+        $stmt->bindParam(':password', $hashed_password);
+        $stmt->bindParam(':phone', $data['phone']);
+        $stmt->bindParam(':role', $data['role']);
         return $stmt->execute();
     }
 
@@ -45,7 +51,8 @@ class UserModel
     public function updateUser($id, $data)
     {
         $query = "UPDATE " . $this->table . " 
-                  SET username = :username, 
+                  SET username = :username,
+                   phone = :phone, 
                       email = :email, 
                       full_name = :full_name, 
                       role = :role, 
@@ -64,8 +71,8 @@ class UserModel
         $stmt->bindParam(':username', $data['username']);
         $stmt->bindParam(':email', $data['email']);
         $stmt->bindParam(':full_name', $data['full_name']);
+        $stmt->bindParam(':phone', $data['phone']);
         $stmt->bindParam(':role', $data['role']);
-        $stmt->bindParam(':status', $data['status']);
 
         if (!empty($data['password'])) {
             $hashed_password = password_hash($data['password'], PASSWORD_DEFAULT);

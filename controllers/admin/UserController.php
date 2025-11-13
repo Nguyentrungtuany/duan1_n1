@@ -16,13 +16,13 @@ class UserController
         $users = $this->userModel->getAllUsers();
         // echo "<pre>";
         // print_r($users);
-        require_once 'views/admin/tables.php';
+        require_once './views/admin/list-user.php';
     }
 
     // Hiển thị form thêm tài khoản
     public function create()
     {
-        require_once 'views/admin/user-create.php';
+        require_once './views/admin/user-create.php';
     }
 
     // Xử lý thêm tài khoản mới
@@ -63,13 +63,13 @@ class UserController
                     'email' => trim($_POST['email']),
                     'password' => $_POST['password'],
                     'full_name' => trim($_POST['full_name']),
-                    'role' => $_POST['role'] ?? 'user',
-                    'status' => $_POST['status'] ?? 'active'
+                    'phone' => trim($_POST['phone'] ?? ''),
+                    'role' => $_POST['role'] ?? 'guide',
                 ];
 
                 if ($this->userModel->createUser($data)) {
                     $_SESSION['success'] = "Thêm tài khoản thành công!";
-                    header('Location: index.php?controller=user&action=index');
+                    header("Location:" . BASE_URL . "?act=admin-list-user");
                     exit();
                 } else {
                     $errors[] = "Có lỗi xảy ra khi thêm tài khoản";
@@ -79,7 +79,7 @@ class UserController
             // Nếu có lỗi, lưu vào session và quay lại form
             $_SESSION['errors'] = $errors;
             $_SESSION['old'] = $_POST;
-            header('Location: index.php?controller=user&action=create');
+            header("Location:" . BASE_URL . "?act=user-create");
             exit();
         }
     }
@@ -91,7 +91,7 @@ class UserController
 
         if (!$id) {
             $_SESSION['error'] = "Không tìm thấy tài khoản";
-            header('Location: index.php?controller=user&action=index');
+            header("Location:" . BASE_URL . "?act=admin-edit-user");
             exit();
         }
 
@@ -99,11 +99,11 @@ class UserController
 
         if (!$user) {
             $_SESSION['error'] = "Không tìm thấy tài khoản";
-            header('Location: index.php?controller=user&action=index');
+            header("Location:" . BASE_URL . "?act=admin-edit-user");
             exit();
         }
 
-        require_once 'views/admin/user-edit.php';
+        require_once './views/admin/update-user.php';
     }
 
     // Xử lý cập nhật tài khoản
@@ -147,9 +147,11 @@ class UserController
                 $data = [
                     'username' => trim($_POST['username']),
                     'email' => trim($_POST['email']),
-                    'password' => $_POST['password'] ?? '',
+                    'password' => !empty($_POST['password']) ? $_POST['password'] : '',
                     'full_name' => trim($_POST['full_name']),
-                    'role' => $_POST['role'] ?? 'user',
+                    'phone' => trim($_POST['phone'] ?? ''),
+                    'address' => trim($_POST['address'] ?? ''),
+                    'role' => $_POST['role'] ?? 'guide',
                     'status' => $_POST['status'] ?? 'active'
                 ];
 
@@ -177,7 +179,7 @@ class UserController
 
         if (!$id) {
             $_SESSION['error'] = "Không tìm thấy tài khoản";
-            header('Location: index.php?controller=user&action=index');
+            header("Location:" . BASE_URL . "?act=admin-list-user");
             exit();
         }
 
@@ -187,7 +189,7 @@ class UserController
             $_SESSION['error'] = "Có lỗi xảy ra khi xóa tài khoản";
         }
 
-        header('Location: index.php?controller=user&action=index');
+        header("Location:" . BASE_URL . "?act=admin-list-user");
         exit();
     }
 
