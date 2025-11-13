@@ -241,7 +241,13 @@ require_once __DIR__ . '/../layout/header.php';
 
                         <!-- Ngày tạo -->
 
-
+                        <div class="mb-4">
+                            <label for="">Trạng thái</label>
+                            <select name="status" class="form-control">
+                                <option value="active">Hoạt động</option>
+                                <option value="inactive">Không hoạt động</option>
+                            </select>
+                        </div>
                         <!-- Buttons -->
                         <div class="form-group mt-4">
                             <button type="submit" class="btn btn-primary" name="submit">

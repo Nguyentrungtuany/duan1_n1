@@ -149,6 +149,7 @@ require_once __DIR__ . '/../layout/header.php';
 								<th>Role</th>
 								<th>Phone</th>
 								<th>Ngày tạo</th>
+								<th>Trạng thái</th>
 								<th>Ngày cập nhật</th>
 								<th>Hành động</th>
 							</tr>
@@ -184,6 +185,14 @@ require_once __DIR__ . '/../layout/header.php';
 												echo 'N/A';
 											}
 											?>
+										</td>
+										<td>
+											<?php if ($user['status'] === 'active'): ?>
+												<span class="badge badge-success">Hoạt động</span>
+											<?php elseif ($user['status'] === 'inactive'): ?>
+												<span class="badge badge-secondary">Bị khóa</span>
+											<?php endif; ?>
+
 										</td>
 										<td>
 											<a href="<?= BASE_URL ?>?act=admin-edit-user&id=<?= $user['id'] ?>" class="btn btn-sm btn-primary">

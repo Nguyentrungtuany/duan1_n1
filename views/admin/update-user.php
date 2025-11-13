@@ -198,34 +198,56 @@ require_once __DIR__ . '/../layout/header.php';
                     <h4>Form sửa thông tin:</h4>
                 </div>
                 <div class="form-body">
-                    <form method="POST" action="<?php echo BASE_URL; ?>index.php?act=updateTour" enctype="multipart/form-data">
+                    <form method="POST" action="<?php echo BASE_URL; ?>index.php?act=admin-update-user">
                         <!-- Hidden ID -->
-                        <input type="hidden" name="id" value="<?php echo isset($DataQltour['id']) ? $DataQltour['id'] : ''; ?>">
+                        <input type="hidden" name="id" value="<?php echo isset($user['id']) ? $user['id'] : ''; ?>">
 
-                        <!-- Tên Tour -->
+                        <!-- UserName -->
+                        <div class="mb-4">
+                            <label for="username">Tên người dùng</label>
+                            <input type="text" class="form-control" name="username" value="<?= $user['username'] ?>">
+                        </div>
 
+                        <!-- Email -->
+                        <div class="mb-4">
+                            <label for="email">Email người dùng</label>
+                            <input type="text" class="form-control" name="email" value="<?= $user['email'] ?>">
+                        </div>
 
-                        <!-- Danh mục -->
+                        <!-- Full Name -->
+                        <div class="mb-4">
+                            <label for="full_name">Họ và tên</label>
+                            <input type="text" class="form-control" name="full_name" value="<?= $user['full_name'] ?>">
+                        </div>
 
+                        <!-- Role -->
+                        <div class="mb-4">
+                            <label for="">Vai trò</label>
+                            <select name="role" class="form-control">
+                                <option value="guide">guide</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
 
-                        <!-- Mô tả -->
+                        <!-- Phone-->
+                        <div class="mb-4">
+                            <label for="phone">Số Điện thoại người dùng</label>
+                            <input type="text" class="form-control" name="phone" value="<?= $user['phone'] ?>">
+                        </div>
+                        <!--Mật khẩu -->
+                        <div class="mb-4">
+                            <label for="password">Mật khẩu</label>
+                            <input type="password" class="form-control" name="password" value="<?= $user['password'] ?>">
+                        </div>
 
-
-                        <!-- Ngày bắt đầu và Ngày kết thúc -->
-
-
-                        <!-- Giá -->
-
-
-                        <!-- Trạng thái -->
-
+                        <!-- Ngày tạo -->
 
                         <!-- Buttons -->
                         <div class="form-group mt-4">
                             <button type="submit" class="btn btn-primary" name="submit">
                                 <i class="fa fa-save"></i> Cập nhật
                             </button>
-                            <a href="index.php?act=list-user" class="btn btn-default">
+                            <a href="<?= BASE_URL ?>?act=admin-list-user">
                                 <i class="fa fa-arrow-left"></i> Quay lại
                             </a>
                         </div>

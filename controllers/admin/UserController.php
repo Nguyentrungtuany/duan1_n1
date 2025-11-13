@@ -65,6 +65,7 @@ class UserController
                     'full_name' => trim($_POST['full_name']),
                     'phone' => trim($_POST['phone'] ?? ''),
                     'role' => $_POST['role'] ?? 'guide',
+                    'status' => $_POST['status'] ?? 'active'
                 ];
 
                 if ($this->userModel->createUser($data)) {
@@ -91,7 +92,7 @@ class UserController
 
         if (!$id) {
             $_SESSION['error'] = "Không tìm thấy tài khoản";
-            header("Location:" . BASE_URL . "?act=admin-edit-user");
+            header("Location:" . BASE_URL . "?act=admin-list-user");
             exit();
         }
 
@@ -99,7 +100,7 @@ class UserController
 
         if (!$user) {
             $_SESSION['error'] = "Không tìm thấy tài khoản";
-            header("Location:" . BASE_URL . "?act=admin-edit-user");
+            header("Location:" . BASE_URL . "?act=admin-list-user");
             exit();
         }
 
@@ -115,7 +116,7 @@ class UserController
 
             if (!$id) {
                 $_SESSION['error'] = "Không tìm thấy tài khoản";
-                header('Location: index.php?controller=user&action=index');
+                header("Location:" . BASE_URL . "?act=admin-edit-user");
                 exit();
             }
 
@@ -157,7 +158,7 @@ class UserController
 
                 if ($this->userModel->updateUser($id, $data)) {
                     $_SESSION['success'] = "Cập nhật tài khoản thành công!";
-                    header('Location: index.php?controller=user&action=index');
+                    header("Location:" . BASE_URL . "?act=admin-list-user");
                     exit();
                 } else {
                     $errors[] = "Có lỗi xảy ra khi cập nhật tài khoản";
@@ -199,7 +200,7 @@ class UserController
         $keyword = $_GET['keyword'] ?? '';
 
         if (empty($keyword)) {
-            header('Location: index.php?controller=user&action=index');
+            header("Location:" . BASE_URL . "?act=admin-list-user");
             exit();
         }
 

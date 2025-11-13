@@ -33,8 +33,8 @@ class UserModel
     public function createUser($data)
     {
         $query = "INSERT INTO " . $this->table . " 
-                  (username, email, full_name, phone, role, password ) 
-                  VALUES (:username, :email, :full_name, :phone ,:role , :password)";
+                  (username, email, full_name, phone, role, password, status ) 
+                  VALUES (:username, :email, :full_name, :phone ,:role , :password ,:status)";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':username', $data['username']);
@@ -44,6 +44,7 @@ class UserModel
         $stmt->bindParam(':password', $hashed_password);
         $stmt->bindParam(':phone', $data['phone']);
         $stmt->bindParam(':role', $data['role']);
+        $stmt->bindParam(':status', $data['status']);
         return $stmt->execute();
     }
 
@@ -72,6 +73,7 @@ class UserModel
         $stmt->bindParam(':email', $data['email']);
         $stmt->bindParam(':full_name', $data['full_name']);
         $stmt->bindParam(':phone', $data['phone']);
+        $stmt->bindParam(':status', $data['status']);
         $stmt->bindParam(':role', $data['role']);
 
         if (!empty($data['password'])) {
