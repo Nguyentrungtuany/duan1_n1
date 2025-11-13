@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../layout/header.php';
+
 ?>
 <!-- header-starts -->
 <div class="sticky-header header-section ">
@@ -105,7 +106,11 @@ require_once __DIR__ . '/../layout/header.php';
 			<h2 class="title1">Quản lý tài khoản</h2>
 
 			<!-- Thông báo -->
-			<?php if (isset($_SESSION['success'])): ?>
+			<?php
+			// echo "fwaf";
+			// // print_r($users);
+			// var_dump($users);
+			if (isset($_SESSION['success'])): ?>
 				<div class="alert alert-success alert-dismissible fade show" role="alert">
 					<strong>Thành công!</strong> <?php echo $_SESSION['success'];
 													unset($_SESSION['success']); ?>

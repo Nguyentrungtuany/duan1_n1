@@ -4,19 +4,19 @@ require_once 'models/admin/UserModel.php';
 class UserController
 {
     private $userModel;
-    private $db;
 
-    public function __construct($db)
+    public function __construct()
     {
-        $this->db = $db;
-        $this->userModel = new UserModel($db);
+        $this->userModel = new UserModel();
     }
 
     // Hiển thị danh sách tài khoản
     public function index()
     {
         $users = $this->userModel->getAllUsers();
-        require_once 'views/admin/users.php';
+        // echo "<pre>";
+        // print_r($users);
+        require_once 'views/admin/tables.php';
     }
 
     // Hiển thị form thêm tài khoản

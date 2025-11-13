@@ -1,21 +1,22 @@
 <?php
+require_once './commons/function.php';
 class UserModel
 {
     private $conn;
     private $table = 'users'; // Tên bảng trong database
 
-    public function __construct($db)
+    public function __construct()
     {
-        $this->conn = $db;
+        $this->conn = connectDB();
     }
 
     // Lấy tất cả tài khoản
     public function getAllUsers()
     {
-        $query = "SELECT * FROM " . $this->table . " ORDER BY id DESC";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $sql = "SELECT * FROM users";
+        $stmt = $this->conn->query($sql);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
     }
 
     // Lấy thông tin 1 tài khoản theo ID
