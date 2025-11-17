@@ -98,22 +98,80 @@ WHERE t.id = :id;";
         ]);
         return $stmt->execute();
     }
+    public function createtransports($id, $data)
+    {
+        $sql = "INSERT INTO `transports`( `tour_id`, `type`, `company`, `seats`) 
+        VALUES (:tuor_id,:typetran,:companytran,:seatstran)";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([
+            ':tuor_id' => $id,
+            ':typetran' => $data['type'],
+            ':companytran' => $data['company'],
+            ':seatstran' => $data['seats'],
+        ]);
+    }
+    public function deletetransports($id, $Idtransports)
+    {
+        if (empty($Idtransports)) {
+            $sql = "DELETE FROM `transports` WHERE tour_id = :id ";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id', $id);
+            return $stmt->execute();
+        } else {
+            $placeholders = implode(',', array_fill(0, count($Idtransports), '?'));
+            $sql = "DELETE FROM `transports` 
+                WHERE `tour_id` = ? 
+                AND `id` NOT IN ($placeholders)";
+
+            $params = array_merge([$id], $Idtransports);
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute($params);
+        }
+    }
 
     public function updateaccommodations($id, $data)
     {
         $sql = "UPDATE `accommodations` SET `name`= :nameacc ,
         `address`= :addressacc,`type`= :typeacc WHERE `id` = :id AND `tour_id` = :tour_id";
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute([
+        return $stmt->execute([
             ':nameacc' => $data['name'],
             ':addressacc' => $data['address'],
             ':typeacc' => $data['type'],
             ':id' => $id,
             ':tour_id' => $id
         ]);
-        return $stmt->execute();
     }
+    public function createaccommodations($id, $data)
+    {
+        $sql = "INSERT INTO `accommodations`( `tour_id`, `name`, `address`, `type`) 
+        VALUES (:tuor_id,:nameacc,:addressacc,:typeacc)";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([
+            ':tuor_id' => $id,
+            ':nameacc' => $data['name'],
+            ':addressacc' => $data['address'],
+            ':typeacc' => $data['type'],
+        ]);
+    }
+    public function deleteaccommodations($id, $Idaccommodations)
+    {
+        if (empty($Idaccommodations)) {
+            $sql = "DELETE FROM `accommodations` WHERE tour_id = :id ";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id', $id);
+            return $stmt->execute();
+        } else {
+            $placeholders = implode(',', array_fill(0, count($Idaccommodations), '?'));
+            $sql = "DELETE FROM `accommodations` 
+                WHERE `tour_id` = ? 
+                AND `id` NOT IN ($placeholders)";
 
+            $params = array_merge([$id], $Idaccommodations);
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute($params);
+        }
+    }
     public function updateschedules($Idschedules, $id, $data)
     {
         $sql = "UPDATE `schedules` SET `day_number`=:day_numbersche,
@@ -121,7 +179,7 @@ WHERE t.id = :id;";
         `notes`=:notessche
         WHERE id = :id AND `tour_id` = :tour_id";
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute([
+        return $stmt->execute([
             ':day_numbersche' => $data['day_number'],
             ':datesche' => $data['date'],
             ':locationsche' => $data['location'],
@@ -130,7 +188,6 @@ WHERE t.id = :id;";
             ':id' => $Idschedules,
             ':tour_id' => $id
         ]);
-        return $stmt->execute();
     }
 
     public function createshedules($id, $data)
@@ -180,23 +237,29 @@ WHERE t.id = :id;";
     }
     public function createQltour($data)
     {
-        $sql = "INSERT INTO `tours`(`id`, `name`, `category`, `description`, `start_date`, `end_date`, `price`, `status`) 
-        VALUES (:id,:name,:category,:description,:start_date,:end_date,:price,:status)";
+        $sql = "INSERT INTO `tours`( `name`, `category_id`, `destination_id`, `description`, `start_date`, `end_date`, `price`, `status`) 
+        VALUES (:name, :category_id, :destination_id, :description, :start_date, :end_date, :price, :status)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':name', $data['name']);
-        $stmt->bindParam(':category', $data['category']);
+        $stmt->bindParam(':category_id', $data['category_id']);
+        $stmt->bindParam(':destination_id', $data['destination_id']);
         $stmt->bindParam(':description', $data['description']);
         $stmt->bindParam(':start_date', $data['start_date']);
         $stmt->bindParam(':end_date', $data['end_date']);
         $stmt->bindParam(':price', $data['price']);
         $stmt->bindParam(':status', $data['status']);
-        $stmt->bindParam(':id', $data['id']);
         return $stmt->execute();
     }
 
     public function allCategory()
     {
         $sql = "SELECT * FROM `tour_categories`";
+        $stmt = $this->conn->query($sql);
+        return $stmt->fetchAll();
+    }
+    public function allDestination()
+    {
+        $sql = "SELECT * FROM `destinations`";
         $stmt = $this->conn->query($sql);
         return $stmt->fetchAll();
     }

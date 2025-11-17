@@ -100,7 +100,7 @@ if (isset($DataQltour['schedules']) && is_string($DataQltour['schedules'])) {
                             <label for="price">Giá (VNĐ) <span class="text-danger">*</span></label>
                             <input type="number" class="form-control" id="price" name="price"
                                 value="<?php echo isset($DataQltour['price']) ? $DataQltour['price'] : ''; ?>"
-                                placeholder="Nhập giá tour" min="0" step="1000" required>
+                                placeholder="Nhập giá tour" min="0" required>
                         </div>
 
                         <!-- Trạng thái -->
@@ -181,6 +181,9 @@ if (isset($DataQltour['schedules']) && is_string($DataQltour['schedules'])) {
                             foreach ($accommodations as $index => $accommodation):
                             ?>
                                 <div class="accommodation-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fffbf0;">
+                                    <?php if (isset($accommodation['id']) && !empty($accommodation['id'])): ?>
+                                        <input type="hidden" name="accommodations[<?= $index ?>][id]" value="<?= $accommodation['id'] ?>">
+                                    <?php endif; ?>
                                     <h5 style="margin-top: 0;">Khách sạn #<?= $index + 1 ?></h5>
                                     <div class="row">
                                         <div class="col-md-4">

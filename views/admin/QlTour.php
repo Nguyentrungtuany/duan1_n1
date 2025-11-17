@@ -1,13 +1,13 @@
 <?php
 require_once __DIR__ . '/../layout/header.php';
 
-// Decode JSON data
 foreach ($DataQltour as &$item) {
-	$item['destination'] = json_decode($item['destination'], true);
-	$item['transports'] = json_decode($item['transports'], true);
-	$item['accommodations'] = json_decode($item['accommodations'], true);
-	$item['schedules'] = json_decode($item['schedules'], true);
+	$item['destination']      = !empty($item['destination'])      ? json_decode($item['destination'], true)      : [];
+	$item['transports']       = !empty($item['transports'])       ? json_decode($item['transports'], true)       : [];
+	$item['accommodations']   = !empty($item['accommodations'])   ? json_decode($item['accommodations'], true)   : [];
+	$item['schedules']        = !empty($item['schedules'])        ? json_decode($item['schedules'], true)        : [];
 }
+
 ?>
 
 
@@ -53,7 +53,7 @@ foreach ($DataQltour as &$item) {
 								<?php foreach ($DataQltour as $data): ?>
 									<tr>
 										<td><?= htmlspecialchars($data['id']) ?></td>
-										<td><strong><?= htmlspecialchars($data['name']) ?></strong></td>
+										<td><?= htmlspecialchars($data['name']) ?></td>
 										<td><?= htmlspecialchars($data['category_name']) ?></td>
 										<td style="max-width: 200px;">
 											<?= htmlspecialchars(substr($data['description'], 0, 100)) ?>...
