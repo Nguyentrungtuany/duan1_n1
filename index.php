@@ -41,5 +41,10 @@ match ($act) {
     'admin-update-user' => (new UserController($db))->update(),           // Xử lý cập nhật
     'admin-delete-user' => (new UserController($db))->delete(),     // Xóa
     'user-search' => (new UserController($db))->search(),
+    'QlTour' => (new IndexController())->QlTuor(),
+    'editqltour' => (new IndexController())->editQltour($id),
+    'updateqltour' => (new IndexController())->updateQltour(),
+    'deleteqltour' => (new IndexController())->deleteQltour($id),
+    'addqltour' => (new IndexController())->addQltour(),
     default => require_once './views/404.php'
 };
