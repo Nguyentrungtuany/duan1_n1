@@ -1,192 +1,21 @@
 <?php
 require_once __DIR__ . '/../layout/header.php';
-// print_r($DataQltour);
-?>
-<!-- header-starts -->
-<div class="sticky-header header-section ">
-    <div class="header-left">
-        <!--toggle button start-->
-        <button id="showLeftPush"><i class="fa fa-bars"></i></button>
-        <!--toggle button end-->
-        <div class="profile_details_left"><!--notifications of menu start -->
-            <ul class="nofitications-dropdown">
-                <li class="dropdown head-dpdn">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope"></i><span class="badge">4</span></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <div class="notification_header">
-                                <h3>You have 3 new messages</h3>
-                            </div>
-                        </li>
-                        <li><a href="#">
-                                <div class="user_img"><img src="images/1.jpg" alt=""></div>
-                                <div class="notification_desc">
-                                    <p>Lorem ipsum dolor amet</p>
-                                    <p><span>1 hour ago</span></p>
-                                </div>
-                                <div class="clearfix"></div>
-                            </a></li>
-                        <li class="odd"><a href="#">
-                                <div class="user_img"><img src="images/4.jpg" alt=""></div>
-                                <div class="notification_desc">
-                                    <p>Lorem ipsum dolor amet </p>
-                                    <p><span>1 hour ago</span></p>
-                                </div>
-                                <div class="clearfix"></div>
-                            </a></li>
-                        <li><a href="#">
-                                <div class="user_img"><img src="images/3.jpg" alt=""></div>
-                                <div class="notification_desc">
-                                    <p>Lorem ipsum dolor amet </p>
-                                    <p><span>1 hour ago</span></p>
-                                </div>
-                                <div class="clearfix"></div>
-                            </a></li>
-                        <li>
-                            <div class="notification_bottom">
-                                <a href="#">See all messages</a>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown head-dpdn">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell"></i><span class="badge blue">4</span></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <div class="notification_header">
-                                <h3>You have 3 new notification</h3>
-                            </div>
-                        </li>
-                        <li><a href="#">
-                                <div class="user_img"><img src="images/4.jpg" alt=""></div>
-                                <div class="notification_desc">
-                                    <p>Lorem ipsum dolor amet</p>
-                                    <p><span>1 hour ago</span></p>
-                                </div>
-                                <div class="clearfix"></div>
-                            </a></li>
-                        <li class="odd"><a href="#">
-                                <div class="user_img"><img src="images/1.jpg" alt=""></div>
-                                <div class="notification_desc">
-                                    <p>Lorem ipsum dolor amet </p>
-                                    <p><span>1 hour ago</span></p>
-                                </div>
-                                <div class="clearfix"></div>
-                            </a></li>
-                        <li><a href="#">
-                                <div class="user_img"><img src="images/3.jpg" alt=""></div>
-                                <div class="notification_desc">
-                                    <p>Lorem ipsum dolor amet </p>
-                                    <p><span>1 hour ago</span></p>
-                                </div>
-                                <div class="clearfix"></div>
-                            </a></li>
-                        <li>
-                            <div class="notification_bottom">
-                                <a href="#">See all notifications</a>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown head-dpdn">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-tasks"></i><span class="badge blue1">8</span></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <div class="notification_header">
-                                <h3>You have 8 pending task</h3>
-                            </div>
-                        </li>
-                        <li><a href="#">
-                                <div class="task-info">
-                                    <span class="task-desc">Database update</span><span class="percentage">40%</span>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="progress progress-striped active">
-                                    <div class="bar yellow" style="width:40%;"></div>
-                                </div>
-                            </a></li>
-                        <li><a href="#">
-                                <div class="task-info">
-                                    <span class="task-desc">Dashboard done</span><span class="percentage">90%</span>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="progress progress-striped active">
-                                    <div class="bar green" style="width:90%;"></div>
-                                </div>
-                            </a></li>
-                        <li><a href="#">
-                                <div class="task-info">
-                                    <span class="task-desc">Mobile App</span><span class="percentage">33%</span>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="progress progress-striped active">
-                                    <div class="bar red" style="width: 33%;"></div>
-                                </div>
-                            </a></li>
-                        <li><a href="#">
-                                <div class="task-info">
-                                    <span class="task-desc">Issues fixed</span><span class="percentage">80%</span>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="progress progress-striped active">
-                                    <div class="bar  blue" style="width: 80%;"></div>
-                                </div>
-                            </a></li>
-                        <li>
-                            <div class="notification_bottom">
-                                <a href="#">See all pending tasks</a>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <div class="clearfix"> </div>
-        </div>
-        <!--notification menu end -->
-        <div class="clearfix"> </div>
-    </div>
-    <div class="header-right">
-        <!--search-box-->
-        <div class="search-box">
-            <form class="input">
-                <input class="sb-search-input input__field--madoka" placeholder="Search..." type="search" id="input-31" />
-                <label class="input__label" for="input-31">
-                    <svg class="graphic" width="100%" height="100%" viewBox="0 0 404 77" preserveAspectRatio="none">
-                        <path d="m0,0l404,0l0,77l-404,0l0,-77z" />
-                    </svg>
-                </label>
-            </form>
-        </div><!--//end-search-box-->
 
-        <div class="profile_details">
-            <ul>
-                <li class="dropdown profile_details_drop">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        <div class="profile_img">
-                            <span class="prfil-img"><img src="images/2.jpg" alt=""> </span>
-                            <div class="user-name">
-                                <p>Admin Name</p>
-                                <span>Administrator</span>
-                            </div>
-                            <i class="fa fa-angle-down lnr"></i>
-                            <i class="fa fa-angle-up lnr"></i>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                    <ul class="dropdown-menu drp-mnu">
-                        <li> <a href="#"><i class="fa fa-cog"></i> Settings</a> </li>
-                        <li> <a href="#"><i class="fa fa-user"></i> My Account</a> </li>
-                        <li> <a href="#"><i class="fa fa-suitcase"></i> Profile</a> </li>
-                        <li> <a href="#"><i class="fa fa-sign-out"></i> Logout</a> </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <div class="clearfix"> </div>
-    </div>
-    <div class="clearfix"> </div>
-</div>
-<!-- //header-ends -->
+// Decode JSON data nếu cần
+if (isset($DataQltour['destination']) && is_string($DataQltour['destination'])) {
+    $DataQltour['destination'] = json_decode($DataQltour['destination'], true);
+}
+if (isset($DataQltour['transports']) && is_string($DataQltour['transports'])) {
+    $DataQltour['transports'] = json_decode($DataQltour['transports'], true);
+}
+if (isset($DataQltour['accommodations']) && is_string($DataQltour['accommodations'])) {
+    $DataQltour['accommodations'] = json_decode($DataQltour['accommodations'], true);
+}
+if (isset($DataQltour['schedules']) && is_string($DataQltour['schedules'])) {
+    $DataQltour['schedules'] = json_decode($DataQltour['schedules'], true);
+}
+?>
+
 
 <!-- main content start-->
 <div id="page-wrapper">
@@ -198,9 +27,13 @@ require_once __DIR__ . '/../layout/header.php';
                     <h4>Form cập nhật thông tin Tour:</h4>
                 </div>
                 <div class="form-body">
-                    <form method="POST" action="<?php echo BASE_URL; ?>index.php?act=updateTour" enctype="multipart/form-data">
+                    <form method="POST" action="<?php echo BASE_URL; ?>index.php?act=updateqltour" enctype="multipart/form-data">
                         <!-- Hidden ID -->
                         <input type="hidden" name="id" value="<?php echo isset($DataQltour['id']) ? $DataQltour['id'] : ''; ?>">
+
+                        <h4 class="text-primary" style="margin-top: 20px; margin-bottom: 15px; border-bottom: 2px solid #337ab7; padding-bottom: 10px;">
+                            <i class="fa fa-info-circle"></i> Thông tin cơ bản
+                        </h4>
 
                         <!-- Tên Tour -->
                         <div class="form-group">
@@ -212,12 +45,28 @@ require_once __DIR__ . '/../layout/header.php';
 
                         <!-- Danh mục -->
                         <div class="form-group">
-                            <label for="category">Danh mục <span class="text-danger">*</span></label>
-                            <select class="form-control" id="category" name="category" required>
+                            <label for="category_id">Danh mục <span class="text-danger">*</span></label>
+                            <select class="form-control" id="category_id" name="category_id" required>
                                 <option value="">-- Chọn danh mục --</option>
-                                <option value="domestic" <?php echo (isset($DataQltour['category']) && $DataQltour['category'] == 'domestic') ? 'selected' : ''; ?>>Du lịch trong nước</option>
-                                <option value="international" <?php echo (isset($DataQltour['category']) && $DataQltour['category'] == 'international') ? 'selected' : ''; ?>>Du lịch nước ngoài</option>
-                                <option value="custom" <?php echo (isset($DataQltour['category']) && $DataQltour['category'] == 'custom') ? 'selected' : ''; ?>>Theo yêu cầu khách hàng</option>
+
+                                <?php foreach ($allCategory as $cat): ?>
+                                    <option value="<?php echo $cat['id']; ?>"
+                                        <?php echo (isset($DataQltour['category_id']) && $DataQltour['category_id'] == $cat['id']) ? 'selected' : ''; ?>>
+                                        <?php echo $cat['name']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+
+                            </select>
+                        </div>
+
+
+                        <!-- Điểm đến -->
+                        <div class="form-group">
+                            <label for="destination_id">Điểm đến <span class="text-danger">*</span></label>
+                            <select class="form-control" id="destination_id" name="destination_id" required>
+                                <option value="">-- Chọn điểm đến --</option>
+                                <option value="1" <?php echo (isset($DataQltour['destination_id']) && $DataQltour['destination_id'] == '1') ? 'selected' : ''; ?>>Hạ Long</option>
+                                <option value="2" <?php echo (isset($DataQltour['destination_id']) && $DataQltour['destination_id'] == '2') ? 'selected' : ''; ?>>Singapore</option>
                             </select>
                         </div>
 
@@ -258,17 +107,196 @@ require_once __DIR__ . '/../layout/header.php';
                         <div class="form-group">
                             <label for="status">Trạng thái</label>
                             <select class="form-control" id="status" name="status">
-                                <option value="active" <?php echo (isset($DataQltour['status']) && $DataQltour['status'] == 'active') ? 'selected' : ''; ?>>Hoạt động</option>
+                                <option value="open" <?php echo (isset($DataQltour['status']) && $DataQltour['status'] == 'open') ? 'selected' : ''; ?>>Mở đăng ký</option>
                                 <option value="inactive" <?php echo (isset($DataQltour['status']) && $DataQltour['status'] == 'inactive') ? 'selected' : ''; ?>>Không hoạt động</option>
+                                <option value="full" <?php echo (isset($DataQltour['status']) && $DataQltour['status'] == 'full') ? 'selected' : ''; ?>>Đã đầy</option>
                             </select>
                         </div>
 
+                        <!-- PHƯƠNG TIỆN -->
+                        <h4 class="text-success" style="margin-top: 30px; margin-bottom: 15px; border-bottom: 2px solid #5cb85c; padding-bottom: 10px;">
+                            <i class="fa fa-bus"></i> Phương tiện di chuyển
+                        </h4>
+
+                        <div id="transports-container">
+                            <?php
+                            $transports = isset($DataQltour['transports']) ? $DataQltour['transports'] : [];
+                            if (empty($transports)) {
+                                $transports = [['type' => '', 'seats' => '', 'company' => '']];
+                            }
+                            foreach ($transports as $index => $transport):
+                            ?>
+                                <div class="transport-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #f9f9f9;">
+                                    <h5 style="margin-top: 0;">Phương tiện #<?= $index + 1 ?></h5>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Loại phương tiện</label>
+                                                <input type="text" class="form-control" name="transports[<?= $index ?>][type]"
+                                                    value="<?= isset($transport['type']) ? htmlspecialchars($transport['type']) : '' ?>"
+                                                    placeholder="VD: Xe du lịch 45 chỗ">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Số chỗ</label>
+                                                <input type="number" class="form-control" name="transports[<?= $index ?>][seats]"
+                                                    value="<?= isset($transport['seats']) ? $transport['seats'] : '' ?>"
+                                                    placeholder="45">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Công ty</label>
+                                                <input type="text" class="form-control" name="transports[<?= $index ?>][company]"
+                                                    value="<?= isset($transport['company']) ? htmlspecialchars($transport['company']) : '' ?>"
+                                                    placeholder="VD: Hoàng Long Travel">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <label>&nbsp;</label>
+                                            <button type="button" class="btn btn-danger btn-sm form-control remove-transport" <?= $index == 0 ? 'style="display:none;"' : '' ?>>
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <button type="button" class="btn btn-success btn-sm" id="add-transport">
+                            <i class="fa fa-plus"></i> Thêm phương tiện
+                        </button>
+
+                        <!-- KHÁCH SẠN -->
+                        <h4 class="text-warning" style="margin-top: 30px; margin-bottom: 15px; border-bottom: 2px solid #f0ad4e; padding-bottom: 10px;">
+                            <i class="fa fa-hotel"></i> Khách sạn / Nơi lưu trú
+                        </h4>
+
+                        <div id="accommodations-container">
+                            <?php
+                            $accommodations = isset($DataQltour['accommodations']) ? $DataQltour['accommodations'] : [];
+                            if (empty($accommodations)) {
+                                $accommodations = [['name' => '', 'type' => '', 'address' => '']];
+                            }
+                            foreach ($accommodations as $index => $accommodation):
+                            ?>
+                                <div class="accommodation-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fffbf0;">
+                                    <?php if (isset($accommodation['id']) && !empty($accommodation['id'])): ?>
+                                        <input type="hidden" name="accommodations[<?= $index ?>][id]" value="<?= $accommodation['id'] ?>">
+                                    <?php endif; ?>
+                                    <h5 style="margin-top: 0;">Khách sạn #<?= $index + 1 ?></h5>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Tên khách sạn</label>
+                                                <input type="text" class="form-control" name="accommodations[<?= $index ?>][name]"
+                                                    value="<?= isset($accommodation['name']) ? htmlspecialchars($accommodation['name']) : '' ?>"
+                                                    placeholder="VD: Hạ Long Bay Resort">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Loại</label>
+                                                <select class="form-control" name="accommodations[<?= $index ?>][type]">
+                                                    <option value="">Chọn loại</option>
+                                                    <option value="Hotel" <?= (isset($accommodation['type']) && $accommodation['type'] == 'Hotel') ? 'selected' : '' ?>>Hotel</option>
+                                                    <option value="Resort" <?= (isset($accommodation['type']) && $accommodation['type'] == 'Resort') ? 'selected' : '' ?>>Resort</option>
+                                                    <option value="Homestay" <?= (isset($accommodation['type']) && $accommodation['type'] == 'Homestay') ? 'selected' : '' ?>>Homestay</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Địa chỉ</label>
+                                                <input type="text" class="form-control" name="accommodations[<?= $index ?>][address]"
+                                                    value="<?= isset($accommodation['address']) ? htmlspecialchars($accommodation['address']) : '' ?>"
+                                                    placeholder="VD: Bãi Cháy, Quảng Ninh">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <label>&nbsp;</label>
+                                            <button type="button" class="btn btn-danger btn-sm form-control remove-accommodation" <?= $index == 0 ? 'style="display:none;"' : '' ?>>
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <button type="button" class="btn btn-warning btn-sm" id="add-accommodation">
+                            <i class="fa fa-plus"></i> Thêm khách sạn
+                        </button>
+
+                        <!-- LỊCH TRÌNH -->
+                        <h4 class="text-info" style="margin-top: 30px; margin-bottom: 15px; border-bottom: 2px solid #5bc0de; padding-bottom: 10px;">
+                            <i class="fa fa-calendar"></i> Lịch trình chi tiết
+                        </h4>
+
+                        <div id="schedules-container">
+                            <?php
+                            $schedules = isset($DataQltour['schedules']) ? $DataQltour['schedules'] : [];
+                            if (empty($schedules)) {
+                                $schedules = [['day_number' => 1, 'date' => '', 'location' => '', 'activities' => '', 'notes' => '']];
+                            }
+                            foreach ($schedules as $index => $schedule):
+                            ?>
+                                <div class="schedule-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #f0f8ff;">
+                                    <!-- SỬA: Đổi tên field để không ghi đè array -->
+                                    <?php if (isset($schedule['id']) && !empty($schedule['id'])): ?>
+                                        <input type="hidden" name="schedules[<?= $index ?>][id]" value="<?= $schedule['id'] ?>">
+                                    <?php endif; ?>
+
+                                    <h5 style="margin-top: 0;">Ngày <?= isset($schedule['day_number']) ? $schedule['day_number'] : ($index + 1) ?></h5>
+                                    <input type="hidden" name="schedules[<?= $index ?>][day_number]" value="<?= $index + 1 ?>">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Ngày</label>
+                                                <input type="date" class="form-control" name="schedules[<?= $index ?>][date]"
+                                                    value="<?= isset($schedule['date']) ? $schedule['date'] : '' ?>">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Địa điểm</label>
+                                                <input type="text" class="form-control" name="schedules[<?= $index ?>][location]"
+                                                    value="<?= isset($schedule['location']) ? htmlspecialchars($schedule['location']) : '' ?>"
+                                                    placeholder="VD: Hà Nội - Hạ Long">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Hoạt động</label>
+                                                <textarea class="form-control" name="schedules[<?= $index ?>][activities]" rows="2"
+                                                    placeholder="Mô tả hoạt động trong ngày"><?= isset($schedule['activities']) ? htmlspecialchars($schedule['activities']) : '' ?></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <label>&nbsp;</label>
+                                            <button type="button" class="btn btn-danger btn-sm form-control remove-schedule" <?= $index == 0 ? 'style="display:none;"' : '' ?>>
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Ghi chú</label>
+                                        <input type="text" class="form-control" name="schedules[<?= $index ?>][notes]"
+                                            value="<?= isset($schedule['notes']) ? htmlspecialchars($schedule['notes']) : '' ?>"
+                                            placeholder="VD: Mang theo CMND/CCCD">
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <button type="button" class="btn btn-info btn-sm" id="add-schedule">
+                            <i class="fa fa-plus"></i> Thêm ngày
+                        </button>
+
                         <!-- Buttons -->
-                        <div class="form-group mt-4">
+                        <div class="form-group" style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd;">
                             <button type="submit" class="btn btn-primary" name="submit">
-                                <i class="fa fa-save"></i> Cập nhật
+                                <i class="fa fa-save"></i> Cập nhật Tour
                             </button>
-                            <a href="index.php?act=QlTuor" class="btn btn-default">
+                            <a href="index.php?act=QlTour" class="btn btn-default">
                                 <i class="fa fa-arrow-left"></i> Quay lại
                             </a>
                         </div>
@@ -279,6 +307,165 @@ require_once __DIR__ . '/../layout/header.php';
     </div>
 </div>
 
+<script>
+    // Đếm số lượng hiện tại
+    let transportCount = <?= count($transports) ?>;
+    let accommodationCount = <?= count($accommodations) ?>;
+    let scheduleCount = <?= count($schedules) ?>;
+
+    // Thêm phương tiện
+    document.getElementById('add-transport').addEventListener('click', function() {
+        const container = document.getElementById('transports-container');
+        const newItem = `
+        <div class="transport-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #f9f9f9;">
+            <h5 style="margin-top: 0;">Phương tiện #${transportCount + 1}</h5>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Loại phương tiện</label>
+                        <input type="text" class="form-control" name="transports[${transportCount}][type]" placeholder="VD: Xe du lịch 45 chỗ">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Số chỗ</label>
+                        <input type="number" class="form-control" name="transports[${transportCount}][seats]" placeholder="45">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Công ty</label>
+                        <input type="text" class="form-control" name="transports[${transportCount}][company]" placeholder="VD: Hoàng Long Travel">
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <label>&nbsp;</label>
+                    <button type="button" class="btn btn-danger btn-sm form-control remove-transport">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+        container.insertAdjacentHTML('beforeend', newItem);
+        transportCount++;
+    });
+
+    // Xóa phương tiện
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.remove-transport')) {
+            e.target.closest('.transport-item').remove();
+        }
+    });
+
+    // Thêm khách sạn
+    document.getElementById('add-accommodation').addEventListener('click', function() {
+        const container = document.getElementById('accommodations-container');
+        const newItem = `
+        <div class="accommodation-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fffbf0;">
+            <h5 style="margin-top: 0;">Khách sạn #${accommodationCount + 1}</h5>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Tên khách sạn</label>
+                        <input type="text" class="form-control" name="accommodations[${accommodationCount}][name]" placeholder="VD: Hạ Long Bay Resort">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Loại</label>
+                        <select class="form-control" name="accommodations[${accommodationCount}][type]">
+                            <option value="">Chọn loại</option>
+                            <option value="Hotel">Hotel</option>
+                            <option value="Resort">Resort</option>
+                            <option value="Homestay">Homestay</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Địa chỉ</label>
+                        <input type="text" class="form-control" name="accommodations[${accommodationCount}][address]" placeholder="VD: Bãi Cháy, Quảng Ninh">
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <label>&nbsp;</label>
+                    <button type="button" class="btn btn-danger btn-sm form-control remove-accommodation">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+        container.insertAdjacentHTML('beforeend', newItem);
+        accommodationCount++;
+    });
+
+    // Xóa khách sạn
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.remove-accommodation')) {
+            e.target.closest('.accommodation-item').remove();
+        }
+    });
+
+    // Thêm lịch trình
+    document.getElementById('add-schedule').addEventListener('click', function() {
+        const container = document.getElementById('schedules-container');
+        const newItem = `
+        <div class="schedule-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #f0f8ff;">
+            <h5 style="margin-top: 0;">Ngày ${scheduleCount + 1}</h5>
+            <input type="hidden" name="schedules[${scheduleCount}][day_number]" value="${scheduleCount + 1}">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Ngày</label>
+                        <input type="date" class="form-control" name="schedules[${scheduleCount}][date]">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Địa điểm</label>
+                        <input type="text" class="form-control" name="schedules[${scheduleCount}][location]" placeholder="VD: Hà Nội - Hạ Long">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Hoạt động</label>
+                        <textarea class="form-control" name="schedules[${scheduleCount}][activities]" rows="2" placeholder="Mô tả hoạt động trong ngày"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <label>&nbsp;</label>
+                    <button type="button" class="btn btn-danger btn-sm form-control remove-schedule">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Ghi chú</label>
+                <input type="text" class="form-control" name="schedules[${scheduleCount}][notes]" placeholder="VD: Mang theo CMND/CCCD">
+            </div>
+        </div>
+    `;
+        container.insertAdjacentHTML('beforeend', newItem);
+        scheduleCount++;
+    });
+
+    // Xóa lịch trình
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.remove-schedule')) {
+            e.target.closest('.schedule-item').remove();
+        }
+    });
+</script>
+<style>
+    html,
+    body {
+        overflow: auto !important;
+        height: auto !important;
+        max-height: none !important;
+    }
+</style>
 <?php
 require_once __DIR__ . '/../layout/footer.php';
 ?>

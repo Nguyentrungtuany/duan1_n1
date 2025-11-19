@@ -46,5 +46,7 @@ match ($act) {
     'updateqltour' => (new IndexController())->updateQltour(),
     'deleteqltour' => (new IndexController())->deleteQltour($id),
     'addqltour' => (new IndexController())->addQltour(),
+    'createTour' => (new IndexController())->createQltour(),
+    'test' => (new IndexController())->test(),
     default => require_once './views/404.php'
 };
