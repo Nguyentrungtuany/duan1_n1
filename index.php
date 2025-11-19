@@ -8,7 +8,7 @@ require_once './commons/function.php'; // Hàm hỗ trợ
 // Require toàn bộ file Controllers
 require_once './controllers/TourController.php';
 require_once './controllers/admin/IndexController.php';
-require_once './controllers/admin/AdminGuideController.php';
+require_once './controllers/admin/CategoryController.php';
 
 // Require toàn bộ file Models
 require_once './models/TourModel.php';
@@ -33,8 +33,13 @@ match ($act) {
     'updateqltour' => (new IndexController())->updateQltour(),
     'deleteqltour' => (new IndexController())->deleteQltour($id),
     'addqltour' => (new IndexController())->addQltour(),
-    'admin_guides' => (new AdminGuideController())->index(),
-    'admin_guides_create' => (new AdminGuideController())->create(),
+    // Quản lý danh mục
+    'category' => (new CategoryController())->index(),
+    'category-add' => (new CategoryController())->add(),
+    'category-edit' => (new CategoryController())->edit(),
+    'category-delete' => (new CategoryController())->delete(),
+
+    
 
     default => require_once './views/404.php'
 };

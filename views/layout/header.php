@@ -1,4 +1,4 @@
-<!--
+`<!--
 Author: W3layouts
 Author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
@@ -236,6 +236,17 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                 <ul class="treeview-menu">
                                     <li>
                                         <a href="?act=QlTour"><i class="fa fa-angle-right"></i> Quản Lý Đặt Tour</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="?act=category">
+                                    <i class="fa fa-table"></i> <span>Danh mục</span>
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li>
+                                        <a href="?act=category"><i class="fa fa-angle-right"></i> Quản lý danh mục</a>
                                     </li>
                                 </ul>
                             </li>
