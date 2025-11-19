@@ -123,8 +123,8 @@ require_once __DIR__ . '/../layout/header.php';
 								<th>Role</th>
 								<th>Phone</th>
 								<th>Ngày tạo</th>
-								<th>Trạng thái</th>
 								<th>Ngày cập nhật</th>
+								<th>Trạng thái </th>
 								<th>Hành động</th>
 							</tr>
 						</thead>
@@ -146,20 +146,13 @@ require_once __DIR__ . '/../layout/header.php';
 											<?php if ($user['role'] === 'admin'): ?>
 												<span class="badge badge-danger">Admin</span>
 											<?php else: ?>
-												<span class="badge badge-primary">User</span>
+												<span class="badge badge-primary">Guide</span>
 											<?php endif; ?>
 										</td>
 										<td><?php echo htmlspecialchars($user['phone']); ?></td>
+										<td><?php echo htmlspecialchars($user['created_at']); ?></td>
+										<td><?php echo htmlspecialchars($user['updated_at']); ?></td>
 
-										<td>
-											<?php
-											if (isset($user['created_at'])) {
-												echo date('d/m/Y H:i', strtotime($user['created_at']));
-											} else {
-												echo 'N/A';
-											}
-											?>
-										</td>
 										<td>
 											<?php if ($user['status'] === 'active'): ?>
 												<span class="badge badge-success">Hoạt động</span>

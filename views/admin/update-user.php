@@ -205,19 +205,19 @@ require_once __DIR__ . '/../layout/header.php';
                         <!-- UserName -->
                         <div class="mb-4">
                             <label for="username">Tên người dùng</label>
-                            <input type="text" class="form-control" name="username" value="<?= $user['username'] ?>">
+                            <input type="text" class="form-control" name="username" value="<?= $user['username'] ?>" required>
                         </div>
 
                         <!-- Email -->
                         <div class="mb-4">
                             <label for="email">Email người dùng</label>
-                            <input type="text" class="form-control" name="email" value="<?= $user['email'] ?>">
+                            <input type="text" class="form-control" name="email" value="<?= $user['email'] ?>" required>
                         </div>
 
                         <!-- Full Name -->
                         <div class="mb-4">
                             <label for="full_name">Họ và tên</label>
-                            <input type="text" class="form-control" name="full_name" value="<?= $user['full_name'] ?>">
+                            <input type="text" class="form-control" name="full_name" value="<?= $user['full_name'] ?>" required>
                         </div>
 
                         <!-- Role -->
@@ -232,12 +232,12 @@ require_once __DIR__ . '/../layout/header.php';
                         <!-- Phone-->
                         <div class="mb-4">
                             <label for="phone">Số Điện thoại người dùng</label>
-                            <input type="text" class="form-control" name="phone" value="<?= $user['phone'] ?>">
+                            <input type="text" class="form-control" name="phone" value="<?= $user['phone'] ?>" required>
                         </div>
                         <!--Mật khẩu -->
                         <div class="mb-4">
                             <label for="password">Mật khẩu</label>
-                            <input type="password" class="form-control" name="password" value="<?= $user['password'] ?>">
+                            <input type="password" class="form-control" name="password" value="<?= $user['password'] ?>" required>
                         </div>
 
                         <!-- Ngày tạo -->
