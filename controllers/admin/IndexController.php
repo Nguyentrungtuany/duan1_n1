@@ -16,7 +16,7 @@ class IndexController
     {
         $DataQltour = $this->indexModel->QlTour();
         // print_r($DataQltour);
-        require_once './views/admin/QlTour.php';
+        require_once './views/admin/qltour.php';
     }
     public function editQltour($id)
     {
