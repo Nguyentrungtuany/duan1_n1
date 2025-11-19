@@ -26,10 +26,9 @@ class TourController
         // var_dump($password_hash);
         // echo "<pre>";
 
-        // $hash = password_hash($password_hash, PASSWORD_DEFAULT);
-        // var_dump($hash);
-        // exit(1);
-        // if ($user  && password_verify($password_hash, $user['password'])) {
+        //$hash = password_hash($password_hash, PASSWORD_DEFAULT);
+        //var_dump($hash);
+        //exit(1);
         if ($user  && password_verify($password_hash, $user['password'])) {
             $_SESSION['guide'] = $user;
             $username = $_SESSION['guide']['username'];

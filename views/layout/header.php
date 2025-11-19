@@ -240,6 +240,22 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                 </ul>
                             </li>
                             <li class="treeview">
+                                <a href="?act=tables">
+                                    <i class="fa fa-table"></i> <span>Tài khoản</span>
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li>
+                                        <a href="?act=tables"><i class="fa fa-angle-right"></i> Quản lý tài khoản</a>
+                                    </li>
+                                </ul>
+                                <ul class="treeview-menu">
+                                    <li>
+                                        <a href="?act=QlTour"><i class="fa fa-angle-right"></i> Quản Lý Đặt Tour</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
                                 <a href="#">
                                     <i class="fa fa-envelope"></i> <span>Mailbox </span>
                                     <i class="fa fa-angle-left pull-right"></i><small class="label pull-right label-info1">08</small><span class="label label-primary1 pull-right">02</span></a>
