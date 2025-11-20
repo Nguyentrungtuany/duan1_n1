@@ -20,7 +20,7 @@ require_once __DIR__ . '/../../layout/header.php';
                         <div class="form-group">
                             <label for="name">Tên danh mục <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="name" name="name"
-                                   placeholder="Nhập tên danh mục" required>
+                                placeholder="Nhập tên danh mục" required>
                         </div>
 
                         <!-- Trạng thái -->

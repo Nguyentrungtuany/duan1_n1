@@ -39,7 +39,7 @@ match ($act) {
     'category-edit' => (new CategoryController())->edit(),
     'category-delete' => (new CategoryController())->delete(),
 
-    
+
 
     default => require_once './views/404.php'
 };
