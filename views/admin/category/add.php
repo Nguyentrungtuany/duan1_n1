@@ -14,7 +14,7 @@ require_once __DIR__ . '/../../layout/header.php';
                 </div>
 
                 <div class="form-body">
-                    <form method="POST" action="index.php?act=category-add">
+                    <form method="POST" action="index.php?act=category-insert">
 
                         <!-- Tên danh mục -->
                         <div class="form-group">
@@ -25,11 +25,9 @@ require_once __DIR__ . '/../../layout/header.php';
 
                         <!-- Trạng thái -->
                         <div class="form-group">
-                            <label for="status">Trạng thái</label>
-                            <select class="form-control" id="status" name="status">
-                                <option value="1">Hiển thị</option>
-                                <option value="0">Ẩn</option>
-                            </select>
+                            <label for="description">Mô tả</label>
+                            <input type="text" class="form-control" id="description" name="description"
+                                placeholder="Nhập mô tả danh mục" required>
                         </div>
 
                         <!-- Buttons -->
@@ -52,5 +50,5 @@ require_once __DIR__ . '/../../layout/header.php';
 </div>
 
 <?php
-require_once __DIR__ . '/../../layout/header.php';
+require_once __DIR__ . '/../../layout/footer.php';
 ?>

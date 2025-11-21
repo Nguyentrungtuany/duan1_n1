@@ -10,11 +10,8 @@ require_once './commons/function.php'; // Hàm hỗ trợ
 // Require toàn bộ file Controllers
 require_once './controllers/TourController.php';
 require_once './controllers/admin/IndexController.php';
-<<<<<<< HEAD
 require_once './controllers/admin/CategoryController.php';
-=======
 require_once './controllers/admin/UserController.php';
->>>>>>> 85844cd4f2a686fb216a0a902857a90a9bd65bbc
 
 // Require toàn bộ file Models
 require_once './models/TourModel.php';
@@ -50,18 +47,17 @@ match ($act) {
     'updateqltour' => (new IndexController())->updateQltour(),
     'deleteqltour' => (new IndexController())->deleteQltour($id),
     'addqltour' => (new IndexController())->addQltour(),
-<<<<<<< HEAD
     // Quản lý danh mục
     'category' => (new CategoryController())->index(),
     'category-add' => (new CategoryController())->add(),
+    'category-insert' => (new CategoryController())->handleAdd(),
     'category-edit' => (new CategoryController())->edit(),
+    'category-update' => (new CategoryController())->handleEdit(),
     'category-delete' => (new CategoryController())->delete(),
 
 
 
-=======
     'createTour' => (new IndexController())->createQltour(),
     'test' => (new IndexController())->test(),
->>>>>>> 85844cd4f2a686fb216a0a902857a90a9bd65bbc
     default => require_once './views/404.php'
 };

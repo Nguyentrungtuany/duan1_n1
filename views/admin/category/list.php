@@ -124,11 +124,7 @@ require_once __DIR__ . '/../../layout/header.php';
                                     <th scope="row"><?= $cate['id'] ?></th>
                                     <td><?= htmlspecialchars($cate['name']) ?></td>
                                     <td>
-                                        <?php if ($cate['status'] == 'active' || $cate['status'] == '1'): ?>
-                                            <span class="label label-success">Hiển thị</span>
-                                        <?php else: ?>
-                                            <span class="label label-default">Ẩn</span>
-                                        <?php endif; ?>
+                                        <?= htmlspecialchars($cate['description']) ?>
                                     </td>
                                     <td>
                                         <a href="?act=category-edit&id=<?= $cate['id'] ?>" class="btn btn-primary btn-sm">

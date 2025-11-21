@@ -115,7 +115,14 @@ require_once __DIR__ . '/../layout/header.php';
         </div>
     </div>
 </div>
-
+<style>
+    html,
+    body {
+        overflow: auto !important;
+        height: auto !important;
+        max-height: none !important;
+    }
+</style>
 <?php
 require_once __DIR__ . '/../layout/footer.php';
 ?>

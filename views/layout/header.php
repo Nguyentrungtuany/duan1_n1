@@ -240,80 +240,28 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                 </ul>
                             </li>
                             <li class="treeview">
-<<<<<<< HEAD
+                                <a href="?act=admin-list-user">
+                                    <i class="fa fa-table"></i> <span>Quản lý tài khoản </span>
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li>
+                                        <a href="?act=admin-list-user"><i class="fa fa-angle-right"></i> Quản Lý tài khoản</a>
+                                    </li>
+                                </ul>
+
+                            </li>
+                            <li class="treeview">
                                 <a href="?act=category">
-                                    <i class="fa fa-table"></i> <span>Danh mục</span>
-=======
-                                <a href="?act=tables">
-                                    <i class="fa fa-table"></i> <span>Tài khoản</span>
->>>>>>> 85844cd4f2a686fb216a0a902857a90a9bd65bbc
+                                    <i class="fa fa-table"></i> <span>Quản lý danh mục</span>
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </a>
                                 <ul class="treeview-menu">
                                     <li>
-<<<<<<< HEAD
-                                        <a href="?act=category"><i class="fa fa-angle-right"></i> Quản lý danh mục</a>
-=======
-                                        <a href="?act=tables"><i class="fa fa-angle-right"></i> Quản lý tài khoản</a>
+                                        <a href="?act=category"><i class="fa fa-angle-right"></i> Quản Lý địa điểm </a>
                                     </li>
                                 </ul>
-                                <ul class="treeview-menu">
-                                    <li>
-                                        <a href="?act=QlTour"><i class="fa fa-angle-right"></i> Quản Lý Đặt Tour</a>
->>>>>>> 85844cd4f2a686fb216a0a902857a90a9bd65bbc
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="treeview">
-                                <a href="#">
-                                    <i class="fa fa-envelope"></i> <span>Mailbox </span>
-                                    <i class="fa fa-angle-left pull-right"></i><small class="label pull-right label-info1">08</small><span class="label label-primary1 pull-right">02</span></a>
-                                <ul class="treeview-menu">
-                                    <li>
-                                        <a href="inbox.html"><i class="fa fa-angle-right"></i> Mail Inbox
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="compose.html"><i class="fa fa-angle-right"></i> Compose Mail
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="treeview">
-                                <a href="#">
-                                    <i class="fa fa-folder"></i> <span>Examples</span>
-                                    <i class="fa fa-angle-left pull-right"></i>
-                                </a>
-                                <ul class="treeview-menu">
-                                    <li>
-                                        <a href="login.html"><i class="fa fa-angle-right"></i> Login</a>
-                                    </li>
-                                    <li>
-                                        <a href="signup.html"><i class="fa fa-angle-right"></i> Register</a>
-                                    </li>
-                                    <li>
-                                        <a href="404.html"><i class="fa fa-angle-right"></i> 404 Error</a>
-                                    </li>
-                                    <li>
-                                        <a href="500.html"><i class="fa fa-angle-right"></i> 500 Error</a>
-                                    </li>
-                                    <li>
-                                        <a href="blank-page.html"><i class="fa fa-angle-right"></i> Blank Page</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="header">LABELS</li>
-                            <li>
-                                <a href="#"><i class="fa fa-angle-right text-red"></i>
-                                    <span>Important</span></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-angle-right text-yellow"></i>
-                                    <span>Warning</span></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-angle-right text-aqua"></i>
-                                    <span>Information</span></a>
+
                             </li>
                         </ul>
                     </div>
