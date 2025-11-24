@@ -96,10 +96,10 @@ require_once __DIR__ . '/../../layout/header.php';
     <div class="main-page">
         <div class="tables">
             <h2 class="title1">Quản lý Danh mục</h2>
-            
+
             <div class="bs-example widget-shadow" data-example-id="hoverable-table">
                 <h4>Danh sách danh mục:</h4>
-                
+
                 <!-- Nút thêm mới -->
                 <div class="mb-3" style="margin-bottom: 15px;">
                     <a href="?act=category-add" class="btn btn-success btn-sm">
@@ -124,19 +124,15 @@ require_once __DIR__ . '/../../layout/header.php';
                                     <th scope="row"><?= $cate['id'] ?></th>
                                     <td><?= htmlspecialchars($cate['name']) ?></td>
                                     <td>
-                                        <?php if ($cate['status'] == 'active' || $cate['status'] == '1'): ?>
-                                            <span class="label label-success">Hiển thị</span>
-                                        <?php else: ?>
-                                            <span class="label label-default">Ẩn</span>
-                                        <?php endif; ?>
+                                        <?= htmlspecialchars($cate['description']) ?>
                                     </td>
                                     <td>
                                         <a href="?act=category-edit&id=<?= $cate['id'] ?>" class="btn btn-primary btn-sm">
                                             <i class="fa fa-edit"></i> Sửa
                                         </a>
-                                        <a onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')" 
-                                           href="?act=category-delete&id=<?= $cate['id'] ?>" 
-                                           class="btn btn-danger btn-sm">
+                                        <a onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')"
+                                            href="?act=category-delete&id=<?= $cate['id'] ?>"
+                                            class="btn btn-danger btn-sm">
                                             <i class="fa fa-trash"></i> Xóa
                                         </a>
                                     </td>
@@ -157,21 +153,24 @@ require_once __DIR__ . '/../../layout/header.php';
 </div>
 <style>
     /* Mở khóa cuộn toàn trang */
-    html, body {
+    html,
+    body {
         overflow: auto !important;
         height: auto !important;
         max-height: none !important;
     }
 
     /* Một số template admin cũ khóa wrapper */
-    #wrapper, .wrapper {
+    #wrapper,
+    .wrapper {
         overflow: auto !important;
         height: auto !important;
         max-height: none !important;
     }
 
     /* Đây là vùng gây lỗi scroll nhiều nhất */
-    #page-wrapper, .content-wrapper {
+    #page-wrapper,
+    .content-wrapper {
         overflow: auto !important;
         height: auto !important;
         min-height: 100vh !important;
@@ -179,7 +178,11 @@ require_once __DIR__ . '/../../layout/header.php';
     }
 
     /* Các khối bên trong cũng phải mở khóa */
-    .main-page, .right_col, .container, .tables, .panel-body {
+    .main-page,
+    .right_col,
+    .container,
+    .tables,
+    .panel-body {
         overflow: visible !important;
         height: auto !important;
     }
@@ -191,7 +194,9 @@ require_once __DIR__ . '/../../layout/header.php';
     }
 
     /* Fix theme đặt chiều cao cố định */
-    body, #wrapper, #page-wrapper {
+    body,
+    #wrapper,
+    #page-wrapper {
         position: static !important;
     }
 </style>
