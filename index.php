@@ -36,12 +36,10 @@ match ($act) {
     // Quản lý danh mục
     'category' => (new CategoryController())->index(),
     'category-add' => (new CategoryController())->add(),
-    'category-insert' => (new CategoryController())->handleAdd(),
     'category-edit' => (new CategoryController())->edit(),
-    'category-update' => (new CategoryController())->handleEdit(),
     'category-delete' => (new CategoryController())->delete(),
 
-
+    
 
     default => require_once './views/404.php'
 };

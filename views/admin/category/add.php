@@ -14,20 +14,22 @@ require_once __DIR__ . '/../../layout/header.php';
                 </div>
 
                 <div class="form-body">
-                    <form method="POST" action="index.php?act=category-insert">
+                    <form method="POST" action="index.php?act=category-add">
 
                         <!-- Tên danh mục -->
                         <div class="form-group">
                             <label for="name">Tên danh mục <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="name" name="name"
-                                placeholder="Nhập tên danh mục" required>
+                                   placeholder="Nhập tên danh mục" required>
                         </div>
 
                         <!-- Trạng thái -->
                         <div class="form-group">
-                            <label for="description">Mô tả</label>
-                            <input type="text" class="form-control" id="description" name="description"
-                                placeholder="Nhập mô tả danh mục" required>
+                            <label for="status">Trạng thái</label>
+                            <select class="form-control" id="status" name="status">
+                                <option value="1">Hiển thị</option>
+                                <option value="0">Ẩn</option>
+                            </select>
                         </div>
 
                         <!-- Buttons -->

@@ -12,7 +12,7 @@ require_once __DIR__ . '/../../layout/header.php';
                     <h4>Form cập nhật thông tin danh mục:</h4>
                 </div>
                 <div class="form-body">
-                    <form method="POST" action="<?php echo BASE_URL; ?>index.php?act=category-update">
+                    <form method="POST" action="<?php echo BASE_URL; ?>index.php?act=category-edit">
                         <!-- Hidden ID -->
                         <input type="hidden" name="id" value="<?= isset($category['id']) ? $category['id'] : '' ?>">
 
@@ -26,10 +26,11 @@ require_once __DIR__ . '/../../layout/header.php';
 
                         <!-- Trạng thái -->
                         <div class="form-group">
-                            <label for="description">Mô tả</label>
-                            <input type="text" class="form-control" id="description" name="description"
-                                value="<?= isset($category['description']) ? htmlspecialchars($category['description']) : '' ?>"
-                                placeholder="Nhập mô tả danh mục" required>
+                            <label for="status">Trạng thái</label>
+                            <select class="form-control" id="status" name="status">
+                                <option value="1" <?= (isset($category['status']) && $category['status'] == 1) ? 'selected' : '' ?>>Hiển thị</option>
+                                <option value="0" <?= (isset($category['status']) && $category['status'] == 0) ? 'selected' : '' ?>>Ẩn</option>
+                            </select>
                         </div>
 
                         <!-- Buttons -->
