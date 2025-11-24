@@ -20,7 +20,7 @@ class IndexController
     }
     public function editQltour($id)
     {
-        $DataQltour = $this->indexModel->QlTour();
+        // $DataQltour = $this->indexModel->QlTour();
         $id = $_GET['id'];
         $DataQltour = $this->indexModel->findTour($id);
         $allCategory = $this->indexModel->allCategory();

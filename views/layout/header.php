@@ -263,6 +263,18 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                 </ul>
 
                             </li>
+                            <li class="treeview">
+                                <a href="?act=bookings">
+                                    <i class="fa fa-table"></i> <span>Quản lý booking</span>
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li>
+                                        <a href="?act=bookings"><i class="fa fa-angle-right"></i> Quản Lý booking </a>
+                                    </li>
+                                </ul>
+
+                            </li>
                         </ul>
                     </div>
                     <!-- /.navbar-collapse -->
@@ -534,7 +546,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     <a href="#"><i class="fa fa-suitcase"></i> Profile</a>
                                 </li>
                                 <li>
-                                    <a href="#"><i class="fa fa-sign-out"></i> Logout</a>
+                                    <a href="?act=logout"><i class="fa fa-sign-out"></i> Logout</a>
                                 </li>
                             </ul>
                         </li>

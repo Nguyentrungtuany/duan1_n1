@@ -37,16 +37,16 @@ foreach ($DataQltour as &$item) {
                                     <th>Tên Tour</th>
                                     <th>Danh mục</th>
                                     <th>Mô tả</th>
-                                    <th>Ngày bắt đầu</th>
-                                    <th>Ngày kết thúc</th>
+                                    <!-- <th>Ngày bắt đầu</th>
+                                    <th>Ngày kết thúc</th> -->
                                     <th>Giá</th>
                                     <th>Trạng thái</th>
                                     <th>Điểm đến</th>
-                                    <th>Phương tiện</th>
-                                    <th>Khách sạn</th>
-                                    <th>Lịch trình</th>
-                                    <th>Cập nhật</th>
-                                    <th>Hành động</th>
+                                    <!-- <th>Phương tiện</th> -->
+                                    <!-- <th>Khách sạn</th> -->
+                                    <!-- <th>Lịch trình</th> -->
+                                    <!-- <th>Cập nhật</th> -->
+                                    <!-- <th>Hành động</th> -->
                                 </tr>
                             </thead>
                             <tbody>
@@ -58,8 +58,6 @@ foreach ($DataQltour as &$item) {
                                         <td style="max-width: 200px;">
                                             <?= htmlspecialchars(substr($data['description'], 0, 100)) ?>...
                                         </td>
-                                        <td><?= date('d/m/Y', strtotime($data['start_date'])) ?></td>
-                                        <td><?= date('d/m/Y', strtotime($data['end_date'])) ?></td>
                                         <td><strong><?= number_format($data['price'], 0, ',', '.') ?> VNĐ</strong></td>
                                         <td>
                                             <span class="label <?= $data['status'] == 'open' ? 'label-success' : 'label-default' ?>">
@@ -77,68 +75,6 @@ foreach ($DataQltour as &$item) {
                                             <?php endif; ?>
                                         </td>
 
-                                        <!-- Phương tiện -->
-                                        <td style="min-width: 200px;">
-                                            <?php if (!empty($data['transports'])): ?>
-                                                <?php foreach ($data['transports'] as $transport): ?>
-                                                    <div class="transport-item" style="margin-bottom: 8px; padding: 5px; background: #f5f5f5; border-radius: 3px;">
-                                                        <strong><?= htmlspecialchars($transport['type']) ?></strong><br>
-                                                        <small>
-                                                            <i class="fa fa-users"></i> <?= $transport['seats'] ?> chỗ<br>
-                                                            <i class="fa fa-building"></i> <?= htmlspecialchars($transport['company']) ?>
-                                                        </small>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php else: ?>
-                                                <span class="text-muted">Chưa có</span>
-                                            <?php endif; ?>
-                                        </td>
-
-                                        <!-- Khách sạn -->
-                                        <td style="min-width: 200px;">
-                                            <?php if (!empty($data['accommodations'])): ?>
-                                                <?php foreach ($data['accommodations'] as $accommodation): ?>
-                                                    <div class="accommodation-item" style="margin-bottom: 8px; padding: 5px; background: #f5f5f5; border-radius: 3px;">
-                                                        <strong><?= htmlspecialchars($accommodation['name']) ?></strong><br>
-                                                        <small>
-                                                            <i class="fa fa-hotel"></i> <?= htmlspecialchars($accommodation['type']) ?><br>
-                                                            <i class="fa fa-map-marker"></i> <?= htmlspecialchars($accommodation['address']) ?>
-                                                        </small>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php else: ?>
-                                                <span class="text-muted">Chưa có</span>
-                                            <?php endif; ?>
-                                        </td>
-
-                                        <!-- Lịch trình -->
-                                        <td style="min-width: 300px;">
-                                            <?php if (!empty($data['schedules'])): ?>
-                                                <?php foreach ($data['schedules'] as $schedule): ?>
-                                                    <div class="schedule-item" style="margin-bottom: 10px; padding: 8px; background: #f9f9f9; border-left: 3px solid #5cb85c; border-radius: 3px;">
-                                                        <div style="margin-bottom: 5px;">
-                                                            <strong style="color: #5cb85c;">Ngày <?= $schedule['day_number'] ?>:</strong>
-                                                            <span style="color: #666;"><?= date('d/m/Y', strtotime($schedule['date'])) ?></span>
-                                                        </div>
-                                                        <div style="margin-bottom: 5px;">
-                                                            <strong><i class="fa fa-map-marker"></i> <?= htmlspecialchars($schedule['location']) ?></strong>
-                                                        </div>
-                                                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">
-                                                            <?= htmlspecialchars(substr($schedule['activities'], 0, 100)) ?>...
-                                                        </div>
-                                                        <?php if (!empty($schedule['notes'])): ?>
-                                                            <div style="font-size: 11px; color: #d9534f; font-style: italic;">
-                                                                <i class="fa fa-info-circle"></i> <?= htmlspecialchars($schedule['notes']) ?>
-                                                            </div>
-                                                        <?php endif; ?>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php else: ?>
-                                                <span class="text-muted">Chưa có lịch trình</span>
-                                            <?php endif; ?>
-                                        </td>
-
-                                        <td><?= date('d/m/Y H:i', strtotime($data['updated_at'])) ?></td>
 
                                         <td style="min-width: 120px;">
                                             <a href="index.php?act=editqltour&id=<?= $data['id'] ?>"
