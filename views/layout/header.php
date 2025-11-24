@@ -248,8 +248,12 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     <li>
                                         <a href="?act=category"><i class="fa fa-angle-right"></i> Quản lý danh mục</a>
                                     </li>
+                                    <li>
+                                        <a href="?act=destination-index"><i class="fa fa-angle-right"></i> Quản lý địa điểm</a>
+                                    </li>
                                 </ul>
                             </li>
+                            
                             <li class="treeview">
                                 <a href="#">
                                     <i class="fa fa-envelope"></i> <span>Mailbox </span>

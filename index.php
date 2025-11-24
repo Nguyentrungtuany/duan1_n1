@@ -9,6 +9,8 @@ require_once './commons/function.php'; // Hàm hỗ trợ
 require_once './controllers/TourController.php';
 require_once './controllers/admin/IndexController.php';
 require_once './controllers/admin/CategoryController.php';
+require_once './controllers/admin/DestinationController.php';
+
 
 // Require toàn bộ file Models
 require_once './models/TourModel.php';
@@ -40,6 +42,14 @@ match ($act) {
     'category-edit' => (new CategoryController())->edit(),
     'category-update' => (new CategoryController())->handleEdit(),
     'category-delete' => (new CategoryController())->delete(),
+    // Quản lý địa điểm
+
+    'destination-index' => (new DestinationController())->index(),
+    'destination-create' => (new DestinationController())->create(),
+    'destination-insert' => (new DestinationController())->store(),
+    'destination-edit' => (new DestinationController())->edit(),
+    'destination-update' => (new DestinationController())->update(),
+    'destination-delete' => (new DestinationController())->delete(),
 
 
 
