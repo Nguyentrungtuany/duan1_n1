@@ -240,27 +240,34 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                 </ul>
                             </li>
                             <li class="treeview">
-<<<<<<< HEAD
-                                <a href="?act=category">
-                                    <i class="fa fa-table"></i> <span>Danh mục</span>
-=======
                                 <a href="?act=tables">
                                     <i class="fa fa-table"></i> <span>Tài khoản</span>
->>>>>>> 85844cd4f2a686fb216a0a902857a90a9bd65bbc
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </a>
                                 <ul class="treeview-menu">
                                     <li>
-<<<<<<< HEAD
-                                        <a href="?act=category"><i class="fa fa-angle-right"></i> Quản lý danh mục</a>
-=======
                                         <a href="?act=tables"><i class="fa fa-angle-right"></i> Quản lý tài khoản</a>
                                     </li>
                                 </ul>
                                 <ul class="treeview-menu">
                                     <li>
                                         <a href="?act=QlTour"><i class="fa fa-angle-right"></i> Quản Lý Đặt Tour</a>
->>>>>>> 85844cd4f2a686fb216a0a902857a90a9bd65bbc
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="?act=category">
+                                    <i class="fa fa-table"></i> <span>Danh mục</span>
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li>
+                                        <a href="?act=category"><i class="fa fa-angle-right"></i> Quản lý tài khoản</a>
+                                    </li>
+                                </ul>
+                                <ul class="treeview-menu">
+                                    <li>
+                                        <a href="?act=QlTour"><i class="fa fa-angle-right"></i> Quản Lý Đặt Tour</a>
                                     </li>
                                 </ul>
                             </li>
