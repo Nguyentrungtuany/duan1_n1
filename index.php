@@ -1,6 +1,7 @@
 
 <?php
 
+session_start();
 // Require toàn bộ các file khai báo môi trường, thực thi,...(không require view)
 
 // Require file Common
@@ -12,18 +13,53 @@ require_once './controllers/TourController.php';
 require_once './controllers/admin/IndexController.php';
 require_once './controllers/admin/CategoryController.php';
 require_once './controllers/admin/UserController.php';
+require_once './controllers/admin/BookingController.php';
+require_once './controllers/admin/GuideController.php';
+require_once './controllers/admin/AdminGuideController.php';
 
 // Require toàn bộ file Models
 require_once './models/TourModel.php';
 require_once './models/admin/IndexModel.php';
 require_once './models/admin/UserModel.php';
+require_once './models/admin/BookingModel.php';
+require_once './commons/auth.php';
 // Require toàn bộ file Views
 // require_once './views/home.php';
-
 // Route
 $act = $_GET['act'] ?? '/';
+$routeadmin = [
+    'admin',
+    'tables',
+    'admin-list-user',
+    'user-create',
+    'user-store',
+    'admin-edit-user',
+    'admin-update-user',
+    'admin-delete-user',
+    'user-search',
+    'QlTour',
+    'editqltour',
+    'updateqltour',
+    'deleteqltour',
+    'addqltour',
+    'createTour',
+    'category',
+    'category-add',
+    'category-update',
+    'category-insert',
+    'category-edit',
+    'category-delete',
+    'bookings',
+    'bookings-add',
+    'bookings-update',
+    'bookings-insert',
+    'bookings-edit',
+    'bookings-delete',
+];
 
-
+if (in_array($act, $routeadmin)) {
+    Auth::checkAdmin(); // Chỉ admin
+}
 // Để bảo bảo tính chất chỉ gọi 1 hàm Controller để xử lý request thì mình sử dụng match
 $db = connectDB();
 
@@ -32,6 +68,7 @@ match ($act) {
     '/' => (new TourController())->home(),
     'login' => (new TourController())->Login(),
     'handleLogin' => (new TourController())->handleLogin(),
+    'logout' => (new TourController())->logout(),
     'admin' => (new IndexController())->index(),
     // 'tables' => (new IndexController())->tables(),
     'tables' => (new UserController($db))->index(),
@@ -47,6 +84,7 @@ match ($act) {
     'updateqltour' => (new IndexController())->updateQltour(),
     'deleteqltour' => (new IndexController())->deleteQltour($id),
     'addqltour' => (new IndexController())->addQltour(),
+    // 'createTour' => (new IndexController())->createQltour(),
     // Quản lý danh mục
     'category' => (new CategoryController())->index(),
     'category-add' => (new CategoryController())->add(),
@@ -54,7 +92,13 @@ match ($act) {
     'category-edit' => (new CategoryController())->edit(),
     'category-update' => (new CategoryController())->handleEdit(),
     'category-delete' => (new CategoryController())->delete(),
-
+    //Quản lý booking
+    'bookings' => (new BookingController())->index(),
+    'bookings-edit' => (new BookingController())->edit(),
+    'bookings-update' => (new BookingController())->update(),
+    'bookings-add' => (new BookingController())->add(),
+    'bookings-create' => (new BookingController())->create(),
+    'bookings-delete' => (new BookingController())->delete(),
 
 
     'createTour' => (new IndexController())->createQltour(),

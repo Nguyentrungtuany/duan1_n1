@@ -65,23 +65,6 @@ require_once __DIR__ . '/../layout/header.php';
                                 placeholder="Nhập mô tả tour"><?php echo isset($DataQltour['description']) ? htmlspecialchars($DataQltour['description']) : ''; ?></textarea>
                         </div>
 
-                        <!-- Ngày bắt đầu và Ngày kết thúc -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="start_date">Ngày bắt đầu <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="start_date" name="start_date"
-                                        value="<?php echo isset($DataQltour['start_date']) ? $DataQltour['start_date'] : ''; ?>" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="end_date">Ngày kết thúc <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="end_date" name="end_date"
-                                        value="<?php echo isset($DataQltour['end_date']) ? $DataQltour['end_date'] : ''; ?>" required>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- Giá -->
                         <div class="form-group">
