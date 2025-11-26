@@ -1,9 +1,6 @@
 <?php
-<<<<<<< HEAD
-=======
 
 session_start();
->>>>>>> 874d26d79d7d4cdaaeccffa9df705f333f16224b
 // Require toàn bộ các file khai báo môi trường, thực thi,...(không require view)
 
 // Require file Common
@@ -16,26 +13,20 @@ require_once './controllers/TourController.php';
 require_once './controllers/admin/IndexController.php';
 require_once './controllers/admin/CategoryController.php';
 require_once './controllers/admin/UserController.php';
-<<<<<<< HEAD
 require_once './controllers/admin/DestinationController.php';
 
-=======
 require_once './controllers/admin/BookingController.php';
 require_once './controllers/admin/AdminGuideController.php';
 require_once './controllers/admin/GuideController.php';
 
 require_once './controllers/guides/GuidesController.php';
->>>>>>> 874d26d79d7d4cdaaeccffa9df705f333f16224b
 
 // Require toàn bộ file Models
 require_once './models/TourModel.php';
 require_once './models/admin/IndexModel.php';
-<<<<<<< HEAD
-=======
 require_once './models/admin/UserModel.php';
 require_once './models/admin/BookingModel.php';
 require_once './models/guides/IndexGuideModel.php';
->>>>>>> 874d26d79d7d4cdaaeccffa9df705f333f16224b
 // Require toàn bộ file Views
 // require_once './views/home.php';
 // Route
@@ -95,10 +86,7 @@ match ($act) {
     'updateqltour' => (new IndexController())->updateQltour(),
     'deleteqltour' => (new IndexController())->deleteQltour($id),
     'addqltour' => (new IndexController())->addQltour(),
-<<<<<<< HEAD
-=======
     // 'createTour' => (new IndexController())->createQltour(),
->>>>>>> 874d26d79d7d4cdaaeccffa9df705f333f16224b
     // Quản lý danh mục
     'category' => (new CategoryController())->index(),
     'category-add' => (new CategoryController())->add(),
@@ -106,7 +94,6 @@ match ($act) {
     'category-edit' => (new CategoryController())->edit(),
     'category-update' => (new CategoryController())->handleEdit(),
     'category-delete' => (new CategoryController())->delete(),
-<<<<<<< HEAD
     // Quản lý địa điểm
 
     'destination-index' => (new DestinationController())->index(),
@@ -120,7 +107,6 @@ match ($act) {
 
     'createTour' => (new IndexController())->createQltour(),
     'test' => (new IndexController())->test(),
-=======
     //Quản lý booking
     'bookings' => (new BookingController())->index(),
     'bookings-edit' => (new BookingController())->edit(),
@@ -135,6 +121,5 @@ match ($act) {
     'test' => (new IndexController())->test(),
     //Hướng dẫn viên
     'guide' => (new GuidesController())->index(),
->>>>>>> 874d26d79d7d4cdaaeccffa9df705f333f16224b
     default => require_once './views/404.php'
 };
