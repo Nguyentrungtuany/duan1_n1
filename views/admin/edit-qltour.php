@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../layout/header.php';
+require_once __DIR__ . '/../layout/admin/header.php';
 
 // Decode JSON data nếu cần
 if (isset($DataQltour['destination']) && is_string($DataQltour['destination'])) {
@@ -274,5 +274,5 @@ if (isset($DataQltour['destination']) && is_string($DataQltour['destination'])) 
     }
 </style>
 <?php
-require_once __DIR__ . '/../layout/footer.php';
+require_once __DIR__ . '/../layout/admin/footer.php';
 ?>

@@ -9,9 +9,9 @@ class Auth
             exit();
         }
     }
-    public static function checkhdv()
+    public static function checkguide()
     {
-        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] != 'hdv') {
+        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] != 'guide') {
             header('Location: index.php?act=login');
             exit();
         }

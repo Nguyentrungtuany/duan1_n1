@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../layout/header.php';
+require_once __DIR__ . '/../layout/admin/header.php';
 // print_r($DataQltour);
 // print_r($allCategory);
 // exit(1);
@@ -107,5 +107,5 @@ require_once __DIR__ . '/../layout/header.php';
     }
 </style>
 <?php
-require_once __DIR__ . '/../layout/footer.php';
+require_once __DIR__ . '/../layout/admin/footer.php';
 ?>

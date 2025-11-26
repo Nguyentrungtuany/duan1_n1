@@ -7,6 +7,7 @@ session_start();
 // Require file Common
 require_once './commons/env.php'; // Khai báo biến môi trường
 require_once './commons/function.php'; // Hàm hỗ trợ
+require_once './commons/auth.php';
 
 // Require toàn bộ file Controllers
 require_once './controllers/TourController.php';
@@ -14,15 +15,17 @@ require_once './controllers/admin/IndexController.php';
 require_once './controllers/admin/CategoryController.php';
 require_once './controllers/admin/UserController.php';
 require_once './controllers/admin/BookingController.php';
-require_once './controllers/admin/GuideController.php';
 require_once './controllers/admin/AdminGuideController.php';
+require_once './controllers/admin/GuideController.php';
+
+require_once './controllers/guides/GuidesController.php';
 
 // Require toàn bộ file Models
 require_once './models/TourModel.php';
 require_once './models/admin/IndexModel.php';
 require_once './models/admin/UserModel.php';
 require_once './models/admin/BookingModel.php';
-require_once './commons/auth.php';
+require_once './models/guides/IndexGuideModel.php';
 // Require toàn bộ file Views
 // require_once './views/home.php';
 // Route
@@ -55,11 +58,19 @@ $routeadmin = [
     'bookings-insert',
     'bookings-edit',
     'bookings-delete',
+    'bookings-detail',
+];
+$routeguide = [
+    'guide',
 ];
 
 if (in_array($act, $routeadmin)) {
-    Auth::checkAdmin(); // Chỉ admin
+    Auth::checkAdmin();
 }
+if (in_array($act, $routeguide)) {
+    Auth::checkguide();
+}
+
 // Để bảo bảo tính chất chỉ gọi 1 hàm Controller để xử lý request thì mình sử dụng match
 $db = connectDB();
 
@@ -99,9 +110,12 @@ match ($act) {
     'bookings-add' => (new BookingController())->add(),
     'bookings-create' => (new BookingController())->create(),
     'bookings-delete' => (new BookingController())->delete(),
+    'bookings-detail' => (new BookingController())->detail(),
 
 
     'createTour' => (new IndexController())->createQltour(),
     'test' => (new IndexController())->test(),
+    //Hướng dẫn viên
+    'guide' => (new GuidesController())->index(),
     default => require_once './views/404.php'
 };

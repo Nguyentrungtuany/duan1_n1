@@ -20,7 +20,7 @@ class BookingController
         $allCategory = $this->BookingModel->allCategory();
         $allDestination = $this->BookingModel->allDestination();
         $allTour = $this->BookingModel->allTour();
-        $allCustomers = $this->BookingModel->allCustomers();
+        $allGuide = $this->BookingModel->allGuide();
         require_once './views/admin/booking/edit.php';
     }
     public function update()
@@ -37,7 +37,7 @@ class BookingController
             $bookingData = [
                 'tour_id' => $_POST['tour_id'],
                 'category_id' => $_POST['category_id'],
-                'customer_id' => $_POST['customer_id'],
+                'guide_id' => $_POST['guide_id'],
                 'payment_status' => $_POST['payment_status'],
                 'special_request' => $_POST['special_request'],
                 'price' => $_POST['price'],
@@ -207,5 +207,11 @@ class BookingController
         } else {
             echo "Xóa thất bại";
         }
+    }
+    public function detail()
+    {
+        $id = $_GET['id'];
+        $booking = $this->BookingModel->getBookingById($id);
+        require_once './views/admin/booking/detail.php';
     }
 }
