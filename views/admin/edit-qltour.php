@@ -1,8 +1,6 @@
 <?php
-<<<<<<< HEAD
 require_once __DIR__ . '/../layout/header.php';
 // print_r($DataQltour);
-=======
 require_once __DIR__ . '/../layout/admin/header.php';
 
 // Decode JSON data nếu cần
@@ -18,7 +16,6 @@ if (isset($DataQltour['destination']) && is_string($DataQltour['destination'])) 
 // if (isset($DataQltour['schedules']) && is_string($DataQltour['schedules'])) {
 //     $DataQltour['schedules'] = json_decode($DataQltour['schedules'], true);
 // }
->>>>>>> 874d26d79d7d4cdaaeccffa9df705f333f16224b
 ?>
 <!-- header-starts -->
 <div class="sticky-header header-section ">
@@ -265,10 +262,7 @@ if (isset($DataQltour['destination']) && is_string($DataQltour['destination'])) 
                             </select>
                         </div>
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 874d26d79d7d4cdaaeccffa9df705f333f16224b
                         <!-- Buttons -->
                         <div class="form-group mt-4">
                             <button type="submit" class="btn btn-primary" name="submit">
