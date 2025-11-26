@@ -1,6 +1,4 @@
-
 <?php
-
 // Require toàn bộ các file khai báo môi trường, thực thi,...(không require view)
 
 // Require file Common
@@ -11,12 +9,16 @@ require_once './commons/function.php'; // Hàm hỗ trợ
 require_once './controllers/TourController.php';
 require_once './controllers/admin/IndexController.php';
 require_once './controllers/admin/CategoryController.php';
+<<<<<<< HEAD
 require_once './controllers/admin/UserController.php';
+=======
+require_once './controllers/admin/DestinationController.php';
+
+>>>>>>> 068d068bcf09d8ec9f4047e7f67a994e46c4468a
 
 // Require toàn bộ file Models
 require_once './models/TourModel.php';
 require_once './models/admin/IndexModel.php';
-require_once './models/admin/UserModel.php';
 // Require toàn bộ file Views
 // require_once './views/home.php';
 
@@ -25,7 +27,6 @@ $act = $_GET['act'] ?? '/';
 
 
 // Để bảo bảo tính chất chỉ gọi 1 hàm Controller để xử lý request thì mình sử dụng match
-$db = connectDB();
 
 match ($act) {
     // Trang chủ
@@ -33,15 +34,6 @@ match ($act) {
     'login' => (new TourController())->Login(),
     'handleLogin' => (new TourController())->handleLogin(),
     'admin' => (new IndexController())->index(),
-    // 'tables' => (new IndexController())->tables(),
-    'tables' => (new UserController($db))->index(),
-    'admin-list-user' => (new UserController($db))->index(),        // Danh sách
-    'user-create' => (new UserController($db))->create(),           // Hiển thị form thêm
-    'user-store' => (new UserController($db))->store(),             // Xử lý thêm
-    'admin-edit-user' => (new UserController($db))->edit(),               // Hiển thị form sửa
-    'admin-update-user' => (new UserController($db))->update(),           // Xử lý cập nhật
-    'admin-delete-user' => (new UserController($db))->delete(),     // Xóa
-    'user-search' => (new UserController($db))->search(),
     'QlTour' => (new IndexController())->QlTuor(),
     'editqltour' => (new IndexController())->editQltour($id),
     'updateqltour' => (new IndexController())->updateQltour(),
@@ -50,12 +42,25 @@ match ($act) {
     // Quản lý danh mục
     'category' => (new CategoryController())->index(),
     'category-add' => (new CategoryController())->add(),
+    'category-insert' => (new CategoryController())->handleAdd(),
     'category-edit' => (new CategoryController())->edit(),
+    'category-update' => (new CategoryController())->handleEdit(),
     'category-delete' => (new CategoryController())->delete(),
+    // Quản lý địa điểm
+
+    'destination-index' => (new DestinationController())->index(),
+    'destination-create' => (new DestinationController())->create(),
+    'destination-insert' => (new DestinationController())->store(),
+    'destination-edit' => (new DestinationController())->edit(),
+    'destination-update' => (new DestinationController())->update(),
+    'destination-delete' => (new DestinationController())->delete(),
 
 
 
+<<<<<<< HEAD
     'createTour' => (new IndexController())->createQltour(),
     'test' => (new IndexController())->test(),
+=======
+>>>>>>> 068d068bcf09d8ec9f4047e7f67a994e46c4468a
     default => require_once './views/404.php'
 };

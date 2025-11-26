@@ -27,14 +27,14 @@ class CategoryController
     public function handleAdd()
     {
         $name = $_POST['name'];
-        $status = $_POST['status'];
+        $description = $_POST['description'];
 
         if (empty($name)) {
             echo "<script>alert('Tên danh mục không được để trống'); window.location.href='?act=category-add';</script>";
             exit;
         }
 
-        $this->categoryModel->insert($name, $status);
+        $this->categoryModel->insert($name, $description);
         header("Location: ?act=category");
         exit;
     }
@@ -56,16 +56,18 @@ class CategoryController
     // Xử lý sửa
     public function handleEdit()
     {
+        // var_dump($_POST);
+        // exit(1);
         $id = $_POST['id'];
         $name = $_POST['name'];
-        $status = $_POST['status'];
+        $description = $_POST['description'];
 
         if (empty($name)) {
             echo "<script>alert('Tên danh mục không được để trống'); window.location.href='?act=category-edit&id=$id';</script>";
             exit;
         }
 
-        $this->categoryModel->update($id, $name, $status);
+        $this->categoryModel->update($id, $name, $description);
         header("Location: ?act=category");
         exit;
     }

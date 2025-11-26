@@ -95,15 +95,15 @@ require_once __DIR__ . '/../../layout/header.php';
 <div id="page-wrapper">
     <div class="main-page">
         <div class="tables">
-            <h2 class="title1">Quản lý Danh mục</h2>
+            <h2 class="title1">Quản lý địa điểm</h2>
 
             <div class="bs-example widget-shadow" data-example-id="hoverable-table">
-                <h4>Danh sách danh mục:</h4>
+                <h4>Danh sách địa điểm:</h4>
 
                 <!-- Nút thêm mới -->
                 <div class="mb-3" style="margin-bottom: 15px;">
-                    <a href="?act=category-add" class="btn btn-success btn-sm">
-                        <i class="fa fa-plus"></i> Thêm danh mục
+                    <a href="?act=destination-create" class="btn btn-success btn-sm">
+                        <i class="fa fa-plus"></i> Thêm địa điểm
                     </a>
                 </div>
 
@@ -112,14 +112,15 @@ require_once __DIR__ . '/../../layout/header.php';
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Tên danh mục</th>
-                            <th>Trạng thái</th>
+                            <th>Tên địa điểm</th>
+                            <th>Mô tả</th>
+                            <th>Địa điểm</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (!empty($categories)): ?>
-                            <?php foreach ($categories as $cate): ?>
+                        <?php if (!empty($destinations)): ?>
+                            <?php foreach ($destinations as $cate): ?>
                                 <tr>
                                     <th scope="row"><?= $cate['id'] ?></th>
                                     <td><?= htmlspecialchars($cate['name']) ?></td>
@@ -127,7 +128,10 @@ require_once __DIR__ . '/../../layout/header.php';
                                         <?= htmlspecialchars($cate['description']) ?>
                                     </td>
                                     <td>
-                                        <a href="?act=category-edit&id=<?= $cate['id'] ?>" class="btn btn-primary btn-sm">
+                                        <?= htmlspecialchars($cate['location']) ?>
+                                    </td>
+                                    <td>
+                                        <a href="?act=destination-edit&id=<?= $cate['id'] ?>" class="btn btn-primary btn-sm">
                                             <i class="fa fa-edit"></i> Sửa
                                         </a>
                                         <a onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')"
@@ -141,7 +145,7 @@ require_once __DIR__ . '/../../layout/header.php';
                         <?php else: ?>
                             <tr>
                                 <td colspan="4" class="text-center">
-                                    <p style="padding: 20px; color: #999;">Chưa có danh mục nào. Vui lòng thêm mới!</p>
+                                    <p style="padding: 20px; color: #999;">Chưa có địa điểm nào. Vui lòng thêm mới!</p>
                                 </td>
                             </tr>
                         <?php endif; ?>
