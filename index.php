@@ -9,12 +9,9 @@ require_once './commons/function.php'; // Hàm hỗ trợ
 require_once './controllers/TourController.php';
 require_once './controllers/admin/IndexController.php';
 require_once './controllers/admin/CategoryController.php';
-<<<<<<< HEAD
 require_once './controllers/admin/UserController.php';
-=======
 require_once './controllers/admin/DestinationController.php';
 
->>>>>>> 068d068bcf09d8ec9f4047e7f67a994e46c4468a
 
 // Require toàn bộ file Models
 require_once './models/TourModel.php';
@@ -57,10 +54,7 @@ match ($act) {
 
 
 
-<<<<<<< HEAD
     'createTour' => (new IndexController())->createQltour(),
     'test' => (new IndexController())->test(),
-=======
->>>>>>> 068d068bcf09d8ec9f4047e7f67a994e46c4468a
     default => require_once './views/404.php'
 };
