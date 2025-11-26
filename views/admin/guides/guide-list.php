@@ -15,19 +15,19 @@
         </thead>
         <tbody>
             <?php foreach ($guides as $g): ?>
-            <tr>
-                <td><?= $g['id'] ?></td>
-                <td><?= htmlspecialchars($g['full_name']) ?></td>
-                <td><?= htmlspecialchars($g['specialization']) ?></td>
-                <td><?= $g['experience_years'] ?></td>
-                <td><?= htmlspecialchars($g['languages']) ?></td>
-                <td><?= htmlspecialchars($g['status']) ?></td>
-                <td class="text-center">
-                    <a href="?act=admin_guide_edit&id=<?= $g['id'] ?>" class="btn btn-warning btn-sm">Sửa</a>
-                    <a href="?act=admin_guide_delete&id=<?= $g['id'] ?>" class="btn btn-danger btn-sm"
-                        onclick="return confirm('Xóa hướng dẫn viên này?')">Xóa</a>
-                </td>
-            </tr>
+                <tr>
+                    <td><?= $g['id'] ?></td>
+                    <td><?= htmlspecialchars($g['full_name']) ?></td>
+                    <td><?= htmlspecialchars($g['specialization']) ?></td>
+                    <td><?= $g['experience_years'] ?></td>
+                    <td><?= htmlspecialchars($g['languages']) ?></td>
+                    <td><?= htmlspecialchars($g['status']) ?></td>
+                    <td class="text-center">
+                        <a href="?act=admin_guide_edit&id=<?= $g['id'] ?>" class="btn btn-warning btn-sm">Sửa</a>
+                        <a href="?act=admin_guide_delete&id=<?= $g['id'] ?>" class="btn btn-danger btn-sm"
+                            onclick="return confirm('Xóa hướng dẫn viên này?')">Xóa</a>
+                    </td>
+                </tr>
             <?php endforeach; ?>
         </tbody>
     </table>

@@ -10,6 +10,7 @@ class IndexController
     }
     public function index()
     {
+
         require_once './views/admin/IndexAdmin.php';
     }
     public function QlTuor()
@@ -19,7 +20,7 @@ class IndexController
     }
     public function editQltour($id)
     {
-        $DataQltour = $this->indexModel->QlTour();
+        // $DataQltour = $this->indexModel->QlTour();
         $id = $_GET['id'];
         $DataQltour = $this->indexModel->findTour($id);
         require_once './views/admin/edit-qltour.php';

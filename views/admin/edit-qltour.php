@@ -1,6 +1,24 @@
 <?php
+<<<<<<< HEAD
 require_once __DIR__ . '/../layout/header.php';
 // print_r($DataQltour);
+=======
+require_once __DIR__ . '/../layout/admin/header.php';
+
+// Decode JSON data nếu cần
+if (isset($DataQltour['destination']) && is_string($DataQltour['destination'])) {
+    $DataQltour['destination'] = json_decode($DataQltour['destination'], true);
+}
+// if (isset($DataQltour['transports']) && is_string($DataQltour['transports'])) {
+//     $DataQltour['transports'] = json_decode($DataQltour['transports'], true);
+// }
+// if (isset($DataQltour['accommodations']) && is_string($DataQltour['accommodations'])) {
+//     $DataQltour['accommodations'] = json_decode($DataQltour['accommodations'], true);
+// }
+// if (isset($DataQltour['schedules']) && is_string($DataQltour['schedules'])) {
+//     $DataQltour['schedules'] = json_decode($DataQltour['schedules'], true);
+// }
+>>>>>>> 874d26d79d7d4cdaaeccffa9df705f333f16224b
 ?>
 <!-- header-starts -->
 <div class="sticky-header header-section ">
@@ -228,23 +246,7 @@ require_once __DIR__ . '/../layout/header.php';
                                 placeholder="Nhập mô tả tour"><?php echo isset($DataQltour['description']) ? htmlspecialchars($DataQltour['description']) : ''; ?></textarea>
                         </div>
 
-                        <!-- Ngày bắt đầu và Ngày kết thúc -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="start_date">Ngày bắt đầu <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="start_date" name="start_date"
-                                        value="<?php echo isset($DataQltour['start_date']) ? $DataQltour['start_date'] : ''; ?>" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="end_date">Ngày kết thúc <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="end_date" name="end_date"
-                                        value="<?php echo isset($DataQltour['end_date']) ? $DataQltour['end_date'] : ''; ?>" required>
-                                </div>
-                            </div>
-                        </div>
+
 
                         <!-- Giá -->
                         <div class="form-group">
@@ -263,6 +265,10 @@ require_once __DIR__ . '/../layout/header.php';
                             </select>
                         </div>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 874d26d79d7d4cdaaeccffa9df705f333f16224b
                         <!-- Buttons -->
                         <div class="form-group mt-4">
                             <button type="submit" class="btn btn-primary" name="submit">
@@ -280,5 +286,5 @@ require_once __DIR__ . '/../layout/header.php';
 </div>
 
 <?php
-require_once __DIR__ . '/../layout/footer.php';
+require_once __DIR__ . '/../layout/admin/footer.php';
 ?>
