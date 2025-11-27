@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../layout/header.php';
+require_once __DIR__ . '/../../layout/admin/header.php';
 echo json_encode($booking, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 // Decode JSON data nếu cần
 if (isset($booking['tour']) && is_string($booking['tour'])) {
@@ -29,7 +29,12 @@ if (isset($booking['accommodations']) && is_string($booking['accommodations'])) 
 if (isset($booking['category']) && is_string($booking['category'])) {
     $booking['category'] = json_decode($booking['category'], true);
 }
-
+if (isset($booking['user']) && is_string($booking['user'])) {
+    $booking['user'] = json_decode($booking['user'], true);
+}
+if (isset($booking['guide']) && is_string($booking['guide'])) {
+    $booking['guide'] = json_decode($booking['guide'], true);
+}
 ?>
 
 
@@ -82,15 +87,16 @@ if (isset($booking['category']) && is_string($booking['category'])) {
                         </div>
                         <!-- HDV -->
                         <div class="form-group">
-                            <label for="customer_id">Khách hàng <span class="text-danger">*</span></label>
-                            <select class="form-control" id="customer_id" name="customer_id" required>
-                                <option value="">-- Chọn khách hàng --</option>
+                            <label for="guide_id">Hướng Dẫn Viên <span class="text-danger">*</span></label>
+                            <select class="form-control" id="guide_id" name="guide_id" required>
+                                <option value="">-- Chọn Hướng Dẫn Viên --</option>
 
-                                <?php foreach ($allCustomers as $cus): ?>
-                                    <option value="<?= $cus['id'] ?>"
-                                        <?= isset($booking['customer_id']) && $booking['customer_id'] == $cus['id'] ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($cus['full_name']) ?>
-                                        (<?= htmlspecialchars($cus['phone']) ?>)
+                                <?php foreach ($allGuide as $gui): ?>
+                                    <option value="<?= $gui['id'] ?>"
+                                        <?= isset($booking['guide_id']) && $booking['guide_id'] == $gui['id'] ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($gui['full_name']) ?>
+                                        (<?= htmlspecialchars($gui['phone']) ?>)
+                                        (<?= htmlspecialchars($gui['email']) ?>)
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -632,4 +638,4 @@ if (isset($booking['category']) && is_string($booking['category'])) {
     }
 </style>
 <?php
-require_once __DIR__ . '/../../layout/footer.php';
+require_once __DIR__ . '/../../layout/admin/footer.php';

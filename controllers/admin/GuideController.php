@@ -1,15 +1,18 @@
 <?php
 require_once './models/admin/GuideModel.php';
 
-class GuideController {
+class GuideController
+{
     private $model;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->model = new GuideModel();
     }
 
     // Trang danh sách hướng dẫn viên
-    public function index() {
+    public function index()
+    {
         $title = "Quản lý hướng dẫn viên";
         $guides = $this->model->getAll();
         $view = 'admin/guides/list';
@@ -17,7 +20,8 @@ class GuideController {
     }
 
     // Trang thêm mới
-    public function create() {
+    public function create()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
                 'full_name' => $_POST['full_name'],
@@ -39,4 +43,3 @@ class GuideController {
         require_once 'layout/admin-main.php';
     }
 }
-?>

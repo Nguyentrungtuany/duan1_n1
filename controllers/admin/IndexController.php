@@ -10,6 +10,7 @@ class IndexController
     }
     public function index()
     {
+
         require_once './views/admin/IndexAdmin.php';
     }
     public function QlTuor()

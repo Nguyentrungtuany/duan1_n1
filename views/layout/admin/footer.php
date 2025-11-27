@@ -1,4 +1,12 @@
    <!--footer-->
+   <style>
+       html,
+       body {
+           overflow: auto !important;
+           height: auto !important;
+           max-height: none !important;
+       }
+   </style>
    <div class="footer">
        <p>
            &copy; 2018 Glance Design Dashboard. All Rights Reserved | Design by
