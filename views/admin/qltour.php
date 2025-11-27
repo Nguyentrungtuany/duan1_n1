@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../layout/header.php';
+require_once __DIR__ . '/../layout/admin/header.php';
 
 foreach ($DataQltour as &$item) {
     $item['destination']      = !empty($item['destination'])      ? json_decode($item['destination'], true)      : [];
@@ -131,5 +131,5 @@ foreach ($DataQltour as &$item) {
 </style>
 
 <?php
-require_once __DIR__ . '/../layout/footer.php';
+require_once __DIR__ . '/../layout/admin/footer.php';
 ?>

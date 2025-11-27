@@ -29,9 +29,9 @@ class TourController
         // var_dump($password_hash);
         // echo "<pre>";
 
-        //$hash = password_hash($password_hash, PASSWORD_DEFAULT);
-        //var_dump($hash);
-        //exit(1);
+        // $hash = password_hash($password_hash, PASSWORD_DEFAULT);
+        // var_dump($hash);
+        // exit(1);
 
         if (!$user) {
             echo "<script>alert(' email không đúng'); window.location.href='?act=login';</script>";
@@ -45,7 +45,7 @@ class TourController
             'id' => $user['id'],
             'username' => $user['username'] ?? $user['name'] ?? $user['email'],
             'email' => $user['email'],
-            'role' => $user['role'], // ← QUAN TRỌNG
+            'role' => $user['role'],
         ];
 
         // Chuyển hướng theo role
@@ -53,7 +53,9 @@ class TourController
             header("Location: index.php?act=admin");
             exit();
         } elseif ($user['role'] === 'guide') {
-            header("Location: index.php?act=QlTour"); // Guide vào quản lý tour
+            // echo "guides";
+            // exit(1);
+            header("Location: index.php?act=guide"); // Guide vào quản lý tour
             exit();
         } else {
             echo "<script>alert('Vai trò không hợp lệ!'); window.location.href='index.php?act=login';</script>";

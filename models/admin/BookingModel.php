@@ -11,6 +11,9 @@ class BookingModel
         $sql = "SELECT 
     b.*,
 
+    /* =======================
+            TOUR
+    ======================== */
     JSON_OBJECT(
         'id', t.id,
         'name', t.name,
@@ -19,6 +22,28 @@ class BookingModel
         'description', t.description
     ) AS tour,
 
+    /* =======================
+            CATEGORY
+    ======================== */
+    JSON_OBJECT(
+        'id', c.id,
+        'name', c.name,
+        'description', c.description
+    ) AS category,
+
+    /* =======================
+            DESTINATION
+    ======================== */
+    JSON_OBJECT(
+        'id', d.id,
+        'name', d.name,
+        'location', d.location,
+        'description', d.description
+    ) AS destination,
+
+    /* =======================
+            CUSTOMER
+    ======================== */
     JSON_OBJECT(
         'id', cu.id,
         'full_name', cu.full_name,
@@ -29,19 +54,31 @@ class BookingModel
         'note', cu.note
     ) AS customer,
 
+    /* =======================
+            GUIDE (from guides)
+    ======================== */
     JSON_OBJECT(
-        'id', c.id,
-        'name', c.name,
-        'description', c.description
-    ) AS category,
+        'id', g.id,
+        'full_name', g.full_name,
+        'specialization', g.specialization,
+        'experience_years', g.experience_years,
+        'certificates', g.certificates,
+        'languages', g.languages
+    ) AS guide,
 
+    /* =======================
+            USER (from users)
+    ======================== */
     JSON_OBJECT(
-        'id', d.id,
-        'name', d.name,
-        'location', d.location,
-        'description', d.description
-    ) AS destination,
+        'id', u.id,
+        'username', u.username,
+        'email', u.email,
+        'phone', u.phone,
+        'role', u.role,
+        'status', u.status
+    ) AS user,
 
+    /* ========== SUB QUERY ========== */
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -127,7 +164,17 @@ FROM bookings b
 LEFT JOIN tours t ON t.id = b.tour_id
 LEFT JOIN tour_categories c ON c.id = t.category_id
 LEFT JOIN destinations d ON d.id = t.destination_id
-LEFT JOIN customers cu ON cu.id = b.customer_id;
+LEFT JOIN customers cu ON cu.id = b.customer_id
+
+/* =========================
+       NEW: JOIN GUIDE
+========================= */
+LEFT JOIN guides g ON g.id = b.guide_id
+
+/* =========================
+       NEW: JOIN USER GUIDE
+========================= */
+LEFT JOIN users u ON u.id = g.user_id;
 
 ";
         $stmt = $this->conn->prepare($sql);
@@ -139,7 +186,9 @@ LEFT JOIN customers cu ON cu.id = b.customer_id;
         $sql = "SELECT 
     b.*,
 
-    /* ================= TOUR ================= */
+    /* =======================
+            TOUR
+    ======================== */
     JSON_OBJECT(
         'id', t.id,
         'name', t.name,
@@ -148,7 +197,28 @@ LEFT JOIN customers cu ON cu.id = b.customer_id;
         'description', t.description
     ) AS tour,
 
-    /* ================= CUSTOMER ================= */
+    /* =======================
+            CATEGORY
+    ======================== */
+    JSON_OBJECT(
+        'id', c.id,
+        'name', c.name,
+        'description', c.description
+    ) AS category,
+
+    /* =======================
+            DESTINATION
+    ======================== */
+    JSON_OBJECT(
+        'id', d.id,
+        'name', d.name,
+        'location', d.location,
+        'description', d.description
+    ) AS destination,
+
+    /* =======================
+            CUSTOMER
+    ======================== */
     JSON_OBJECT(
         'id', cu.id,
         'full_name', cu.full_name,
@@ -159,22 +229,31 @@ LEFT JOIN customers cu ON cu.id = b.customer_id;
         'note', cu.note
     ) AS customer,
 
-    /* ================= CATEGORY ================= */
+    /* =======================
+            GUIDE (from guides)
+    ======================== */
     JSON_OBJECT(
-        'id', c.id,
-        'name', c.name,
-        'description', c.description
-    ) AS category,
+        'id', g.id,
+        'full_name', g.full_name,
+        'specialization', g.specialization,
+        'experience_years', g.experience_years,
+        'certificates', g.certificates,
+        'languages', g.languages
+    ) AS guide,
 
-    /* ================= DESTINATION ================= */
+    /* =======================
+            USER (from users)
+    ======================== */
     JSON_OBJECT(
-        'id', d.id,
-        'name', d.name,
-        'location', d.location,
-        'description', d.description
-    ) AS destination,
+        'id', u.id,
+        'username', u.username,
+        'email', u.email,
+        'phone', u.phone,
+        'role', u.role,
+        'status', u.status
+    ) AS user,
 
-    /* ================= TRANSPORTS ================= */
+    /* ========== SUB QUERY ========== */
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -188,7 +267,6 @@ LEFT JOIN customers cu ON cu.id = b.customer_id;
         WHERE tr.booking_id = b.id
     ) AS transports,
 
-    /* ================= PEOPLE ================= */
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -202,7 +280,6 @@ LEFT JOIN customers cu ON cu.id = b.customer_id;
         WHERE bp.booking_id = b.id
     ) AS people,
 
-    /* ================= SCHEDULES ================= */
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -220,7 +297,6 @@ LEFT JOIN customers cu ON cu.id = b.customer_id;
         WHERE s.booking_id = b.id
     ) AS schedules,
 
-    /* ================= CUSTOMER SUPPORT ================= */
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -236,7 +312,6 @@ LEFT JOIN customers cu ON cu.id = b.customer_id;
         WHERE cs.booking_id = b.id
     ) AS customer_support,
 
-    /* ================= ACCOMMODATIONS ================= */
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -254,7 +329,6 @@ LEFT JOIN customers cu ON cu.id = b.customer_id;
         WHERE a.booking_id = b.id
     ) AS accommodations,
 
-    /* ================= NUMBER OF PEOPLE ================= */
     (
         SELECT COUNT(*)
         FROM bookings_people bp
@@ -263,9 +337,20 @@ LEFT JOIN customers cu ON cu.id = b.customer_id;
 
 FROM bookings b
 LEFT JOIN tours t ON t.id = b.tour_id
-LEFT JOIN customers cu ON cu.id = b.customer_id
 LEFT JOIN tour_categories c ON c.id = t.category_id
 LEFT JOIN destinations d ON d.id = t.destination_id
+LEFT JOIN customers cu ON cu.id = b.customer_id
+
+/* =========================
+       NEW: JOIN GUIDE
+========================= */
+LEFT JOIN guides g ON g.id = b.guide_id
+
+/* =========================
+       NEW: JOIN USER GUIDE
+========================= */
+LEFT JOIN users u ON u.id = g.user_id
+
 WHERE b.id = :id;
 ";
 
@@ -280,7 +365,7 @@ WHERE b.id = :id;
     {
         $sql = "UPDATE `bookings` SET 
             `tour_id` = :tour_id,
-            `customer_id` = :customer_id,
+            `guide_id` = :guide_id,
             `payment_status` = :payment_status,
             `status` = :status,
             `special_request` = :special_request,
@@ -292,7 +377,7 @@ WHERE b.id = :id;
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute([
             ':tour_id' => $data['tour_id'],
-            ':customer_id' => $data['customer_id'],
+            ':guide_id' => $data['guide_id'],
             ':payment_status' => $data['payment_status'],
             ':status' => $data['status'],
             ':special_request' => $data['special_request'],
@@ -523,18 +608,29 @@ WHERE b.id = :id;
     t.*,
     c.name AS category_name,
     d.name AS destination_name
-FROM tours t
-LEFT JOIN tour_categories c ON t.category_id = c.id
-LEFT JOIN destinations d ON t.destination_id = d.id
-ORDER BY t.id DESC;
-";
+    FROM tours t
+    LEFT JOIN tour_categories c ON t.category_id = c.id
+    LEFT JOIN destinations d ON t.destination_id = d.id
+    ORDER BY t.id DESC;
+    ";
         $stmt = $this->conn->query($sql);
         return $stmt->fetchAll();
     }
 
-    public function allCustomers()
+    public function allGuide()
     {
-        $sql = "SELECT * FROM `customers`";
+        $sql = "SELECT 
+    g.*,
+    u.id AS user_id,
+    u.username,
+    u.full_name AS user_full_name,
+    u.email,
+    u.phone,
+    u.role,
+    u.status
+FROM guides g
+LEFT JOIN users u ON u.id = g.user_id;
+";
         $stmt = $this->conn->query($sql);
         return $stmt->fetchAll();
     }

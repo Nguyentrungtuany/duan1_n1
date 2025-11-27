@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../layout/header.php';
+require_once __DIR__ . '/../../layout/admin/header.php';
 echo json_encode($bookings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 /* ======== GIẢI MÃ JSON AN TOÀN ======== */
 foreach ($bookings as &$item) {
@@ -10,6 +10,8 @@ foreach ($bookings as &$item) {
     $item['tour']             = !empty($item['tour'])             ? json_decode($item['tour'], true)             : [];
     $item['customer']         = !empty($item['customer'])         ? json_decode($item['customer'], true)         : [];
     $item['people']           = !empty($item['people'])           ? json_decode($item['people'], true)           : [];
+    $item['user']           = !empty($item['user'])           ? json_decode($item['user'], true)           : [];
+    $item['guide']           = !empty($item['guide'])           ? json_decode($item['guide'], true)           : [];
     $item['category']           = !empty($item['category'])           ? json_decode($item['category'], true)           : [];
 }
 ?>
@@ -38,17 +40,17 @@ foreach ($bookings as &$item) {
                                     <th>Tên Tour</th>
                                     <th>Danh mục</th>
                                     <th>Số lượng người</th>
-                                    <th>Mô tả</th>
+                                    <!-- <th>Mô tả</th> -->
                                     <th>Ngày bắt đầu</th>
                                     <th>Ngày kết thúc</th>
                                     <th>Giá</th>
                                     <th>Trạng thái</th>
                                     <th>Điểm đến</th>
                                     <th>Hướng dẫn viên</th>
-                                    <th>Phương tiện</th>
-                                    <th>Khách sạn</th>
-                                    <th>Lịch trình</th>
-                                    <th>Khách hàng</th>
+                                    <!-- <th>Phương tiện</th> -->
+                                    <!-- <th>Khách sạn</th> -->
+                                    <!-- <th>Lịch trình</th> -->
+                                    <!-- <th>Khách hàng</th> -->
                                     <th>Cập nhật</th>
                                     <th>Hành động</th>
                                 </tr>
@@ -67,9 +69,9 @@ foreach ($bookings as &$item) {
                                         <td><?= htmlspecialchars($data['number_of_people'] ?? 0) ?></td>
 
                                         <!-- MÔ TẢ -->
-                                        <td style="min-width:200px">
+                                        <!-- <td style="min-width:200px">
                                             <?= htmlspecialchars(substr($data['destination']['description'] ?? 'Chưa có mô tả', 0, 200)) ?>
-                                        </td>
+                                        </td> -->
 
                                         <td><?= date('d/m/Y', strtotime($data['start_date'])) ?></td>
                                         <td><?= date('d/m/Y', strtotime($data['end_date'])) ?></td>
@@ -101,12 +103,12 @@ foreach ($bookings as &$item) {
 
                                         <!-- HDV -->
                                         <td style="min-width: 200px;">
-                                            <?php if (!empty($data['customer']) && is_array($data['customer'])): ?>
-                                                <div class="customer-item" style="margin-bottom: 8px; padding: 5px; background: #f5f5f5; border-radius: 3px;">
-                                                    <strong><?= htmlspecialchars($data['customer']['full_name'] ?? '') ?></strong><br>
+                                            <?php if (!empty($data['guide']) && is_array($data['guide'])): ?>
+                                                <div class="guide-item" style="margin-bottom: 8px; padding: 5px; background: #f5f5f5; border-radius: 3px;">
+                                                    <strong><?= htmlspecialchars($data['guide']['full_name'] ?? '') ?></strong><br>
                                                     <small>
-                                                        <i class="fa fa-phone"></i> <?= htmlspecialchars($data['customer']['phone'] ?? '') ?><br>
-                                                        <i class="fa fa-envelope"></i> <?= htmlspecialchars($data['customer']['email'] ?? '') ?>
+                                                        <i class="fa fa-phone"></i> <?= htmlspecialchars($data['user']['phone'] ?? '') ?><br>
+                                                        <i class="fa fa-envelope"></i> <?= htmlspecialchars($data['user']['email'] ?? '') ?>
                                                     </small>
                                                 </div>
                                             <?php else: ?>
@@ -114,7 +116,7 @@ foreach ($bookings as &$item) {
                                             <?php endif; ?>
                                         </td>
                                         <!-- Phương tiện -->
-                                        <td style="min-width: 200px;">
+                                        <!-- <td style="min-width: 200px;">
                                             <?php if (!empty($data['transports'])): ?>
                                                 <?php foreach ($data['transports'] as $transport): ?>
                                                     <div class="transport-item" style="margin-bottom: 8px; padding: 5px; background: #f5f5f5; border-radius: 3px;">
@@ -128,10 +130,10 @@ foreach ($bookings as &$item) {
                                             <?php else: ?>
                                                 <span class="text-muted">Chưa có</span>
                                             <?php endif; ?>
-                                        </td>
+                                        </td> -->
 
                                         <!-- Khách sạn -->
-                                        <td style="min-width: 200px;">
+                                        <!-- <td style="min-width: 200px;">
                                             <?php if (!empty($data['accommodations'])): ?>
                                                 <?php foreach ($data['accommodations'] as $accommodation): ?>
                                                     <div class="accommodation-item" style="margin-bottom: 8px; padding: 5px; background: #f5f5f5; border-radius: 3px;">
@@ -145,10 +147,10 @@ foreach ($bookings as &$item) {
                                             <?php else: ?>
                                                 <span class="text-muted">Chưa có</span>
                                             <?php endif; ?>
-                                        </td>
+                                        </td> -->
 
                                         <!-- Lịch trình -->
-                                        <td style="min-width: 300px;">
+                                        <!-- <td style="min-width: 300px;">
                                             <?php if (!empty($data['schedules'])): ?>
                                                 <?php foreach ($data['schedules'] as $schedule): ?>
                                                     <div class="schedule-item" style="margin-bottom: 10px; padding: 8px; background: #f9f9f9; border-left: 3px solid #5cb85c; border-radius: 3px;">
@@ -172,9 +174,9 @@ foreach ($bookings as &$item) {
                                             <?php else: ?>
                                                 <span class="text-muted">Chưa có lịch trình</span>
                                             <?php endif; ?>
-                                        </td>
+                                        </td> -->
                                         <!-- Khách hàng -->
-                                        <td style="min-width: 200px;">
+                                        <!-- <td style="min-width: 200px;">
                                             <?php if (!empty($data['people'])): ?>
                                                 <?php foreach ($data['people'] as $person): ?>
                                                     <div class="people-item" style="margin-bottom: 8px; padding: 5px; background: #f5f5f5; border-radius: 3px;">
@@ -188,7 +190,7 @@ foreach ($bookings as &$item) {
                                             <?php else: ?>
                                                 <span class="text-muted">Chưa có</span>
                                             <?php endif; ?>
-                                        </td>
+                                        </td> -->
 
                                         <td><?= date('d/m/Y H:i', strtotime($data['updated_at'])) ?></td>
 
@@ -196,9 +198,12 @@ foreach ($bookings as &$item) {
                                             <a href="index.php?act=bookings-edit&id=<?= $data['id'] ?>" class="btn btn-primary btn-sm">
                                                 <i class="fa fa-edit"></i> Sửa
                                             </a>
-                                            <a href="index.php?act=bookings-delete&id=<?= $data['id'] ?>" class="btn btn-danger btn-sm"
+                                            <!-- <a href="index.php?act=bookings-delete&id=<?= $data['id'] ?>" class="btn btn-danger btn-sm"
                                                 onclick="return confirm('Bạn có chắc muốn xóa tour này?')">
                                                 <i class="fa fa-trash"></i> Xóa
+                                            </a> -->
+                                            <a href="index.php?act=bookings-detail&id=<?= $data['id'] ?>" class="btn btn-danger btn-sm">
+                                                <i class="fa fa-trash"></i> Xem chi tiết
                                             </a>
                                         </td>
 
@@ -241,7 +246,7 @@ foreach ($bookings as &$item) {
         margin-bottom: 8px;
     }
 
-    .customer-item {
+    .guide-item {
         border-left: 3px solid #916ef1ff;
         padding: 5px;
         background: #f5f5f5;
@@ -263,4 +268,4 @@ foreach ($bookings as &$item) {
     }
 </style>
 
-<?php require_once __DIR__ . '/../../layout/footer.php'; ?>
+<?php require_once __DIR__ . '/../../layout/admin/footer.php'; ?>

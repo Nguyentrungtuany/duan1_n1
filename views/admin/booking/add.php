@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/../../layout/admin/header.php';
+// print_r($allTour);
+// exit(1);
 ?>
 
 <!-- main content start-->

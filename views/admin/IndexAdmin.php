@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../layout/header.php';
+require_once __DIR__ . '/../layout/admin/header.php';
 ?>
 
 <!-- main content start-->
@@ -499,6 +499,14 @@ require_once __DIR__ . '/../layout/header.php';
     </div>
   </div>
 </div>
+<!-- <style>
+  html,
+  body {
+    overflow: auto !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+</style> -->
 <?php
-require_once __DIR__ . '/../layout/footer.php';
+require_once __DIR__ . '/../layout/admin/footer.php';
 ?>
