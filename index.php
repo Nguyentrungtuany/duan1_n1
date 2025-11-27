@@ -17,6 +17,7 @@ require_once './controllers/admin/UserController.php';
 require_once './controllers/admin/BookingController.php';
 require_once './controllers/admin/AdminGuideController.php';
 require_once './controllers/admin/GuideController.php';
+require_once './controllers/admin/DestinationController.php';
 
 require_once './controllers/guides/GuidesController.php';
 
@@ -117,5 +118,14 @@ match ($act) {
     'test' => (new IndexController())->test(),
     //Hướng dẫn viên
     'guide' => (new GuidesController())->index(),
-    default => require_once './views/404.php'
+    default => require_once './views/404.php',
+
+    // quản lý điểm đến
+    'destination-index' => (new DestinationController())->index(),
+    'destination-create' => (new DestinationController())->create(),
+    'destination-insert' => (new DestinationController())->store(),
+    'destination-edit' => (new DestinationController())->edit(),
+    'destination-update' => (new DestinationController())->update(),
+    'destination-delete' => (new DestinationController())->delete(),
+
 };
