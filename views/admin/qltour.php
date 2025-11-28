@@ -37,8 +37,8 @@ foreach ($DataQltour as &$item) {
                                     <th>Tên Tour</th>
                                     <th>Danh mục</th>
                                     <th>Mô tả</th>
-                                    <!-- <th>Ngày bắt đầu</th>
-                                    <th>Ngày kết thúc</th> -->
+                                    <th>Ngày bắt đầu</th>
+                                    <th>Ngày kết thúc</th>
                                     <th>Giá</th>
                                     <th>Trạng thái</th>
                                     <th>Điểm đến</th>
@@ -58,6 +58,8 @@ foreach ($DataQltour as &$item) {
                                         <td style="max-width: 200px;">
                                             <?= htmlspecialchars(substr($data['description'], 0, 100)) ?>...
                                         </td>
+                                        <td><?= htmlspecialchars($data['start_date']) ?></td>
+                                        <td><?= htmlspecialchars($data['end_date']) ?></td>
                                         <td><strong><?= number_format($data['price'], 0, ',', '.') ?> VNĐ</strong></td>
                                         <td>
                                             <span class="label <?= $data['status'] == 'open' ? 'label-success' : 'label-default' ?>">

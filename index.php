@@ -60,6 +60,13 @@ $routeadmin = [
     'bookings-edit',
     'bookings-delete',
     'bookings-detail',
+    'destination',
+    'destination-add',
+    'destination-update',
+    'destination-insert',
+    'destination-edit',
+    'destination-delete',
+    'destination-detail',
 ];
 $routeguide = [
     'guide',
@@ -112,14 +119,6 @@ match ($act) {
     'bookings-create' => (new BookingController())->create(),
     'bookings-delete' => (new BookingController())->delete(),
     'bookings-detail' => (new BookingController())->detail(),
-
-
-    'createTour' => (new IndexController())->createQltour(),
-    'test' => (new IndexController())->test(),
-    //Hướng dẫn viên
-    'guide' => (new GuidesController())->index(),
-    default => require_once './views/404.php',
-
     // quản lý điểm đến
     'destination-index' => (new DestinationController())->index(),
     'destination-create' => (new DestinationController())->create(),
@@ -128,4 +127,9 @@ match ($act) {
     'destination-update' => (new DestinationController())->update(),
     'destination-delete' => (new DestinationController())->delete(),
 
+    'createTour' => (new IndexController())->createQltour(),
+    'test' => (new IndexController())->test(),
+    //Hướng dẫn viên
+    'guide' => (new GuidesController())->index(),
+    default => require_once './views/404.php',
 };

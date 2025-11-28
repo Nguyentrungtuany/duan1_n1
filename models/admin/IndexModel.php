@@ -76,6 +76,8 @@ WHERE t.id = :id;";
             ':end_date' => $data['end_date'],
             ':price' => $data['price'],
             ':status' => $data['status'],
+            'start_date' => $_POST['start_date'],
+            'end_date' => $_POST['end_date'],
             ':id' => $id
         ]);
         return $stmt->execute();
