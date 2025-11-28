@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../layout/guides/header.php';
+print_r($user['id']);
 ?>
+
+
 
 <!-- main content start-->
 <div id="page-wrapper">

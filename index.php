@@ -70,6 +70,7 @@ $routeadmin = [
 ];
 $routeguide = [
     'guide',
+    'job-guide',
 ];
 
 if (in_array($act, $routeadmin)) {
@@ -131,5 +132,6 @@ match ($act) {
     'test' => (new IndexController())->test(),
     //Hướng dẫn viên
     'guide' => (new GuidesController())->index(),
+    'job-guide' => (new GuidesController())->detail(),
     default => require_once './views/404.php',
 };

@@ -22,6 +22,7 @@ class TourController
 
     public function handleLogin()
     {
+        session_start();
         $email = $_POST['email'];
         $password_hash = $_POST['password'];
         $user = $this->tourModel->findEmail($email);
