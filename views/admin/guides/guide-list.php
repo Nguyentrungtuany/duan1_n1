@@ -1,6 +1,15 @@
-<div class="container mt-4">
-    <h2 class="mb-3 text-center">Danh sách hướng dẫn viên</h2>
-    <a href="?act=admin_guide_create" class="btn btn-primary mb-3">+ Thêm hướng dẫn viên</a>
+<?php
+require_once __DIR__ . '/../../layout/admin/header.php';
+?>
+
+<!-- header-starts -->
+
+
+<!-- main content start-->
+<div id="page-wrapper">
+    <div class="main-page">
+        <h2 class="mb-3 text-center">Danh sách hướng dẫn viên</h2>
+    <a href="?act=admin_guide_create" class="btn btn-primary mb-3 ">+ Thêm hướng dẫn viên</a>
     <table class="table table-bordered table-hover">
         <thead class="table-dark text-center">
             <tr>
@@ -31,4 +40,10 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
 </div>
+
+<?php
+require_once __DIR__ . '/../../layout/admin/footer.php';
+?>
+
