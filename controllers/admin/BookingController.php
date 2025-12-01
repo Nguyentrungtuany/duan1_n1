@@ -173,35 +173,93 @@ class BookingController
     }
     public function create()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: index.php?act=bookings");
+            exit;
+        }
 
-            $tour_id = $_POST['tour_id'];
-            $start_date = $_POST['start_date'];
-            $end_date = $_POST['end_date'];
-            $special_request = $_POST['special_request'];
-
-
-
-            // 1. Lưu booking vào bảng bookings
-            $booking_id = $this->BookingModel->createBooking([
-                'tour_id' => $tour_id,
-                'start_date' => $start_date,
-                'end_date' => $end_date,
-                'special_request' => $special_request
-            ]);
-            $people = [
-                'booking_id' => $booking_id,
-                'fullname' => $_POST['fullname'],
-                'date' => $_POST['date'],
-                'phone' => $_POST['phone'],
+        try {
+            // 1. Tạo booking chính với đầy đủ thông tin
+            $bookingData = [
+                'tour_id' => $_POST['tour_id'],
+                'guide_id' => $_POST['guide_id'],
+                'start_date' => $_POST['start_date'],
+                'end_date' => $_POST['end_date'],
+                'special_request' => $_POST['special_request'] ?? '',
+                'status' => $_POST['status'] ?? 'pending',
             ];
 
+            $booking_id = $this->BookingModel->createBooking($bookingData);
 
-            // 2. Lưu danh sách người đi vào bảng bookings_people
-            $this->BookingModel->addPerson($people);
+            // ===== XỬ LÝ TRANSPORTS =====
+            if (isset($_POST['transports']) && is_array($_POST['transports'])) {
+                foreach ($_POST['transports'] as $transport) {
+                    // Chỉ thêm nếu có dữ liệu
+                    if (!empty($transport['type']) || !empty($transport['company'])) {
+                        $data = [
+                            'booking_id' => $booking_id,
+                            'type' => $transport['type'] ?? '',
+                            'company' => $transport['company'] ?? '',
+                            'seats' => $transport['seats'] ?? 0,
+                        ];
+                        $this->BookingModel->createTransports($booking_id, $data);
+                    }
+                }
+            }
+
+            // ===== XỬ LÝ ACCOMMODATIONS =====
+            if (isset($_POST['accommodations']) && is_array($_POST['accommodations'])) {
+                foreach ($_POST['accommodations'] as $accommodation) {
+                    if (!empty($accommodation['name'])) {
+                        $data = [
+                            'booking_id' => $booking_id,
+                            'name' => $accommodation['name'] ?? '',
+                            'address' => $accommodation['address'] ?? '',
+                            'type' => $accommodation['type'] ?? '',
+                        ];
+                        $this->BookingModel->createAccommodations($booking_id, $data);
+                    }
+                }
+            }
+
+            // ===== XỬ LÝ SCHEDULES =====
+            if (isset($_POST['schedules']) && is_array($_POST['schedules'])) {
+                foreach ($_POST['schedules'] as $schedule) {
+                    if (!empty($schedule['location']) || !empty($schedule['activities'])) {
+                        $data = [
+                            'booking_id' => $booking_id,
+                            'day_number' => $schedule['day_number'] ?? 1,
+                            'date' => $schedule['date'] ?? null,
+                            'location' => $schedule['location'] ?? '',
+                            'activities' => $schedule['activities'] ?? '',
+                            'notes' => $schedule['notes'] ?? '',
+                        ];
+                        $this->BookingModel->createSchedules($booking_id, $data);
+                    }
+                }
+            }
+
+            // ===== XỬ LÝ PEOPLE =====
+            if (isset($_POST['peoples']) && is_array($_POST['peoples'])) {
+                foreach ($_POST['peoples'] as $person) {
+                    // Kiểm tra có tên và số điện thoại
+                    if (!empty($person['fullname']) && !empty($person['phone'])) {
+                        $data = [
+                            'booking_id' => $booking_id,
+                            'fullname' => $person['fullname'],
+                            'date' => $person['date'] ?? null,
+                            'phone' => $person['phone'],
+                        ];
+                        $this->BookingModel->addPerson($data);
+                    }
+                }
+            }
 
             header("Location: index.php?act=bookings");
             exit();
+        } catch (Exception $e) {
+            echo "Lỗi tạo booking: " . $e->getMessage();
+            error_log("Booking Create Error: " . $e->getMessage());
         }
     }
     public function delete()

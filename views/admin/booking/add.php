@@ -65,9 +65,7 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                                         data-name="<?= htmlspecialchars($tour['name']) ?>"
                                         data-price="<?= $tour['price'] ?>"
                                         data-description="<?= htmlspecialchars($tour['description'] ?? '') ?>"
-                                        data-category="<?= $tour['category_id'] ?>"
-                                        data-start="<?= $tour['start_date'] ?? '' ?>"
-                                        data-end="<?= $tour['end_date'] ?? '' ?>">
+                                        data-category="<?= $tour['category_id'] ?>">
                                         <?= htmlspecialchars($tour['name']) ?> - <?= number_format($tour['price']) ?> VNĐ
                                     </option>
                                 <?php endforeach; ?>
@@ -89,20 +87,22 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                         </div>
 
                         <!-- Ngày bắt đầu và Ngày kết thúc -->
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="start_date">Ngày bắt đầu <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="start_date" name="start_date" disabled>
+                                    <input type="date" class="form-control" id="start_date" name="start_date" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="end_date">Ngày kết thúc <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="end_date" name="end_date" disabled>
+                                    <input type="date" class="form-control" id="end_date" name="end_date" required>
                                 </div>
                             </div>
                         </div>
+
 
                         <!-- Giá -->
                         <div class="form-group">
@@ -357,13 +357,7 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                 document.getElementById('category_id').value = categoryId;
             }
 
-            if (startDate) {
-                document.getElementById('start_date').value = startDate;
-            }
 
-            if (endDate) {
-                document.getElementById('end_date').value = endDate;
-            }
 
             // Hiển thị thông báo
             console.log('Đã tự động điền thông tin tour');
@@ -372,6 +366,34 @@ require_once __DIR__ . '/../../layout/admin/header.php';
             document.getElementById('name').value = '';
             document.getElementById('price').value = '';
             document.getElementById('description').value = '';
+        }
+    });
+
+    // Bước 1: Lấy ngày hôm nay
+    var ngayHomNay = new Date().toISOString().split('T')[0];
+    // Giải thích: new Date() = ngày giờ hiện tại
+    //            .toISOString() = chuyển thành dạng "2024-12-01T10:30:00.000Z"
+    //            .split('T')[0] = cắt lấy phần trước dấu T = "2024-12-01"
+
+    // Bước 2: Lấy 2 ô input ngày bắt đầu và ngày kết thúc
+    var ngayBatDau = document.getElementById('start_date');
+    var ngayKetThuc = document.getElementById('end_date');
+
+    // Bước 3: Set ngày tối thiểu = hôm nay (không cho chọn quá khứ)
+    ngayBatDau.min = ngayHomNay;
+    ngayKetThuc.min = ngayHomNay;
+
+    // Bước 4: Khi người dùng chọn ngày bắt đầu
+    ngayBatDau.addEventListener('change', function() {
+        // Lấy ngày mà người dùng vừa chọn
+        var ngayDaChon = this.value;
+
+        // Set ngày kết thúc phải >= ngày bắt đầu
+        ngayKetThuc.min = ngayDaChon;
+
+        // Nếu ngày kết thúc đã chọn mà nhỏ hơn ngày bắt đầu thì xóa đi
+        if (ngayKetThuc.value < ngayDaChon) {
+            ngayKetThuc.value = '';
         }
     });
 

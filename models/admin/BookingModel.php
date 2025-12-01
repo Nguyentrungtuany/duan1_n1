@@ -561,11 +561,33 @@ WHERE b.id = :id;
 
     public function createBooking($data)
     {
-        $sql = "INSERT INTO bookings (tour_id, start_date, end_date, special_request)
-            VALUES (:tour_id, :start_date, :end_date, :special_request)";
+        $sql = "INSERT INTO bookings (
+        tour_id, 
+        guide_id, 
+        start_date, 
+        end_date, 
+        special_request, 
+        status,
+        created_at
+    ) VALUES (
+        :tour_id, 
+        :guide_id, 
+        :start_date, 
+        :end_date, 
+        :special_request, 
+        :status,
+        NOW()
+    )";
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute($data);
+        $stmt->execute([
+            ':tour_id' => $data['tour_id'],
+            ':guide_id' => $data['guide_id'],
+            ':start_date' => $data['start_date'],
+            ':end_date' => $data['end_date'],
+            ':special_request' => $data['special_request'] ?? '',
+            ':status' => $data['status'] ?? 'pending'
+        ]);
 
         return $this->conn->lastInsertId();
     }
@@ -584,7 +606,14 @@ WHERE b.id = :id;
             VALUES (:booking_id, :fullname, :date, :phone)";
 
         $stmt = $this->conn->prepare($sql);
-        return $stmt->execute($data);
+
+
+        return $stmt->execute([
+            ':booking_id' => $data['booking_id'],
+            ':fullname'   => $data['fullname'],
+            ':date'       => $data['date'],
+            ':phone'      => $data['phone']
+        ]);
     }
 
 
