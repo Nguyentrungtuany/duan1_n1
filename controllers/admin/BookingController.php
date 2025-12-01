@@ -162,7 +162,11 @@ class BookingController
 
     public function add()
     {
+
+        $allCategory = $this->BookingModel->allCategory();
+        $allDestination = $this->BookingModel->allDestination();
         $allTour = $this->BookingModel->allTour();
+        $allGuide = $this->BookingModel->allGuide();
         require_once './views/admin/booking/add.php';
     }
     public function create()

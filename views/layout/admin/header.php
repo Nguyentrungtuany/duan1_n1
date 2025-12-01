@@ -246,6 +246,9 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     <li>
                                         <a href="?act=category"><i class="fa fa-angle-right"></i> Quản Lý địa điểm </a>
                                     </li>
+                                    <li>
+                                        <a href="?act=destination-index"><i class="fa fa-angle-right"></i> Quản Lý điểm đến </a>
+                                    </li>
                                 </ul>
 
                             </li>

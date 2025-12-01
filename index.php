@@ -17,6 +17,7 @@ require_once './controllers/admin/UserController.php';
 require_once './controllers/admin/BookingController.php';
 require_once './controllers/admin/AdminGuideController.php';
 require_once './controllers/admin/GuideController.php';
+require_once './controllers/admin/DestinationController.php';
 
 require_once './controllers/guides/GuidesController.php';
 
@@ -59,6 +60,13 @@ $routeadmin = [
     'bookings-edit',
     'bookings-delete',
     'bookings-detail',
+    'destination',
+    'destination-add',
+    'destination-update',
+    'destination-insert',
+    'destination-edit',
+    'destination-delete',
+    'destination-detail',
 ];
 $routeguide = [
     'guide',
@@ -118,10 +126,17 @@ match ($act) {
     'admin_guide_edit' => (new GuideController())->edit($_GET['id']),
     'admin_guide_update' => (new GuideController())->update($_GET['id'] ?? null),
     'admin_guide_delete' => (new GuideController())->delete($_GET['id']),
+    // quản lý điểm đến
+    'destination-index' => (new DestinationController())->index(),
+    'destination-create' => (new DestinationController())->create(),
+    'destination-insert' => (new DestinationController())->store(),
+    'destination-edit' => (new DestinationController())->edit(),
+    'destination-update' => (new DestinationController())->update(),
+    'destination-delete' => (new DestinationController())->delete(),
 
     'createTour' => (new IndexController())->createQltour(),
     'test' => (new IndexController())->test(),
     //Hướng dẫn viên
     'guide' => (new GuidesController())->index(),
-    default => require_once './views/404.php'
+    default => require_once './views/404.php',
 };

@@ -65,8 +65,15 @@ if (isset($DataQltour['destination']) && is_string($DataQltour['destination'])) 
                             <label for="destination_id">Điểm đến <span class="text-danger">*</span></label>
                             <select class="form-control" id="destination_id" name="destination_id" required>
                                 <option value="">-- Chọn điểm đến --</option>
-                                <option value="1" <?php echo (isset($DataQltour['destination_id']) && $DataQltour['destination_id'] == '1') ? 'selected' : ''; ?>>Hạ Long</option>
-                                <option value="2" <?php echo (isset($DataQltour['destination_id']) && $DataQltour['destination_id'] == '2') ? 'selected' : ''; ?>>Singapore</option>
+                                <?php if (isset($allDestination) && is_array($allDestination)): ?>
+                                    <?php foreach ($allDestination as $destination): ?>
+                                        <option value="<?php echo $destination['id']; ?>"
+                                            <?php echo (isset($DataQltour['destination_id']) && $DataQltour['destination_id'] == $destination['id']) ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($destination['name']); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+
+                                <?php endif; ?>
                             </select>
                         </div>
 
@@ -78,7 +85,22 @@ if (isset($DataQltour['destination']) && is_string($DataQltour['destination'])) 
                         </div>
 
 
+                        <!-- ngày bắt đầu  -->
+                        <div class="form-group">
+                            <label for="start_date">Ngày bắt đầu <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="start_date" name="start_date"
 
+                                value="<?php echo isset($DataQltour['start_date']) ? $DataQltour['start_date'] : ''; ?>"
+                                required>
+                        </div>
+
+                        <!-- ngày kết thúc  -->
+                        <div class="form-group">
+                            <label for="end_date">Ngày kết thúc <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="end_date" name="end_date"
+                                value="<?php echo isset($DataQltour['end_date']) ? $DataQltour['end_date'] : ''; ?>"
+                                required>
+                        </div>
                         <!-- Giá -->
                         <div class="form-group">
                             <label for="price">Giá (VNĐ) <span class="text-danger">*</span></label>
