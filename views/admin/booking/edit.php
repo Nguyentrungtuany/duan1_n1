@@ -103,15 +103,23 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                         </div>
 
                         <!-- Điểm đến -->
+
+
                         <div class="form-group">
                             <label for="tour_id">Điểm đến <span class="text-danger">*</span></label>
                             <select class="form-control" id="tour_id" name="tour_id" required>
                                 <option value="">-- Chọn điểm đến --</option>
+                                <?php foreach ($allTour as $tour): ?>
+                                    <option value="<?= $tour['id'] ?>"
+                                        <?= (isset($booking['tour_id']) && $booking['tour_id'] == $tour['id']) ? 'selected' : '' ?>
 
-                                <?php foreach ($allTour as $des): ?>
-                                    <option value="<?= $des['id'] ?>"
-                                        <?= (isset($booking['tour_id']) && $booking['tour_id'] == $des['id']) ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($des['name']) ?>
+                                        data-name="<?= htmlspecialchars($tour['name']) ?>"
+                                        data-price="<?= $tour['price'] ?>"
+                                        data-description="<?= htmlspecialchars($tour['description'] ?? '') ?>"
+                                        data-category="<?= $tour['category_id'] ?>"
+                                        data-start="<?= $tour['start_date'] ?? '' ?>"
+                                        data-end="<?= $tour['end_date'] ?? '' ?>">
+                                        <?= htmlspecialchars($tour['name']) ?> - <?= number_format($tour['price']) ?> VNĐ
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -433,7 +441,59 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
     let accommodationCount = <?= count($accommodations) ?>;
     let scheduleCount = <?= count($schedules) ?>;
     let peopleCount = <?= count($peoples) ?>;
+    // ===== AUTO-FILL KHI CHỌN TOUR =====
+    document.getElementById('tour_id').addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
 
+        if (selectedOption.value) {
+            // Lấy data attributes
+            const tourName = selectedOption.getAttribute('data-name');
+            const price = selectedOption.getAttribute('data-price');
+            const description = selectedOption.getAttribute('data-description');
+            const categoryId = selectedOption.getAttribute('data-category');
+            const startDate = selectedOption.getAttribute('data-start');
+            const endDate = selectedOption.getAttribute('data-end');
+
+            // Tự động điền vào các trường
+            if (tourName) {
+                document.getElementById('name').value = tourName;
+            }
+
+            if (price) {
+                document.getElementById('price').value = price;
+            }
+
+            if (description) {
+                document.getElementById('description').value = description;
+            }
+
+            if (categoryId) {
+                document.getElementById('category_id').value = categoryId;
+            }
+
+            if (startDate) {
+                document.getElementById('start_date').value = startDate;
+            }
+
+            if (endDate) {
+                document.getElementById('end_date').value = endDate;
+            }
+
+            // Hiển thị thông báo
+            console.log('Đã tự động điền thông tin tour');
+        } else {
+            // Xóa dữ liệu nếu bỏ chọn
+            document.getElementById('name').value = '';
+            document.getElementById('price').value = '';
+            document.getElementById('description').value = '';
+        }
+    });
+
+    // Validation ngày
+    document.getElementById('start_date').addEventListener('change', function() {
+        const endDate = document.getElementById('end_date');
+        endDate.min = this.value;
+    });
     // Thêm phương tiện
     document.getElementById('add-transport').addEventListener('click', function() {
         const container = document.getElementById('transports-container');
