@@ -30,6 +30,8 @@ class BookingController
             exit;
         }
 
+        // exit();
+
         try {
             $id = $_POST['id'];
 
@@ -152,8 +154,8 @@ class BookingController
                 $this->BookingModel->deleteSchedules($id, $keepIds);
             }
 
-            header("Location: index.php?act=bookings&msg=success");
-            exit;
+            header("Location: index.php?act=bookings");
+            // exit;
         } catch (Exception $e) {
             echo "Lỗi cập nhật: " . $e->getMessage();
             error_log("Booking Update Error: " . $e->getMessage());

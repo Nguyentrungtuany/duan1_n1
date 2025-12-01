@@ -12,7 +12,7 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                     <h4>Form tạo booking mới</h4>
                 </div>
                 <div class="form-body">
-                    <form method="POST" action="<?php echo BASE_URL; ?>index.php?act=bookings-store" enctype="multipart/form-data">
+                    <form method="POST" action="<?php echo BASE_URL; ?>index.php?act=bookings-create" enctype="multipart/form-data">
 
                         <h4 class="text-primary" style="margin-top: 20px; margin-bottom: 15px; border-bottom: 2px solid #337ab7; padding-bottom: 10px;">
                             <i class="fa fa-info-circle"></i> Thông tin cơ bản

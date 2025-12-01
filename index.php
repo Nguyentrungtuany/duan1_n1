@@ -1,7 +1,9 @@
 
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-session_start();
 // Require toàn bộ các file khai báo môi trường, thực thi,...(không require view)
 
 // Require file Common
@@ -56,7 +58,7 @@ $routeadmin = [
     'bookings',
     'bookings-add',
     'bookings-update',
-    'bookings-insert',
+    'bookings-create',
     'bookings-edit',
     'bookings-delete',
     'bookings-detail',
@@ -71,14 +73,21 @@ $routeadmin = [
 $routeguide = [
     'guide',
     'job-guide',
+    'rollcall_Guide',
 ];
 
-if (in_array($act, $routeadmin)) {
-    Auth::checkAdmin();
-}
+
 if (in_array($act, $routeguide)) {
+    // echo "ĐANG CHẠY CHECK GUIDE";
     Auth::checkguide();
 }
+
+if (in_array($act, $routeadmin)) {
+    // echo "ĐANG CHẠY CHECK ADMIN";
+    Auth::checkadmin();
+}
+
+
 
 // Để bảo bảo tính chất chỉ gọi 1 hàm Controller để xử lý request thì mình sử dụng match
 $db = connectDB();
@@ -133,5 +142,6 @@ match ($act) {
     //Hướng dẫn viên
     'guide' => (new GuidesController())->index(),
     'job-guide' => (new GuidesController())->detail(),
+    'rollcall_Guide' => (new GuidesController())->rollcall(),
     default => require_once './views/404.php',
 };

@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../layout/admin/header.php';
-echo json_encode($booking, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+// echo json_encode($booking, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 // Decode JSON data nếu cần
 if (isset($booking['tour']) && is_string($booking['tour'])) {
     $booking['tour'] = json_decode($booking['tour'], true);
