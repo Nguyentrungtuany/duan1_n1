@@ -134,11 +134,6 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                                         <a href="?act=destination-edit&id=<?= $cate['id'] ?>" class="btn btn-primary btn-sm">
                                             <i class="fa fa-edit"></i> Sửa
                                         </a>
-                                        <a onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')"
-                                            href="?act=destination-delete&id=<?= $cate['id'] ?>"
-                                            class="btn btn-danger btn-sm">
-                                            <i class="fa fa-trash"></i> Xóa
-                                        </a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

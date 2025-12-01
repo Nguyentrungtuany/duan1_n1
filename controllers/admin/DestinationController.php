@@ -73,15 +73,5 @@ class DestinationController
         exit();
     }
 
-   
-    //  Xóa điểm đến
-   
-    public function delete()
-    {
-        $id = $_GET['id'];
-        $this->destinationModel->delete($id);
-
-        header("Location: ?act=destination-index");
-        exit();
-    }
+    
 }
