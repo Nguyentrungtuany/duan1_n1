@@ -76,10 +76,10 @@ class GuideModel
             ':id' => $id
         ]);
     }
-    public function delete($id)
-    {
-        $sql = "DELETE FROM guides WHERE id = :id";
-        $stmt = $this->conn->prepare($sql);
-        return $stmt->execute([':id' => $id]);
-    }
+    // public function delete($id)
+    // {
+    //     $sql = "DELETE FROM guides WHERE id = :id";
+    //     $stmt = $this->conn->prepare($sql);
+    //     return $stmt->execute([':id' => $id]);
+    // }
 }
