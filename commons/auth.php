@@ -18,6 +18,7 @@ class Auth
     {
         if (!isset($_SESSION['user']) || $_SESSION['user']['role'] != 'guide') {
             header('Location: index.php?act=logout');
+            header('Location: index.php?act=logout');
             exit();
         }
     }

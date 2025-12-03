@@ -1,6 +1,15 @@
-<div class="container mt-4">
-    <h2 class="mb-3 text-center">Danh sách hướng dẫn viên</h2>
-    <a href="?act=admin_guide_create" class="btn btn-primary mb-3">+ Thêm hướng dẫn viên</a>
+<?php
+require_once __DIR__ . '/../../layout/admin/header.php';
+?>
+
+<!-- header-starts -->
+
+
+<!-- main content start-->
+<div id="page-wrapper">
+    <div class="main-page">
+        <h2 class="mb-3 text-center">Danh sách hướng dẫn viên</h2>
+    <a href="?act=admin_guide_create" class="btn btn-primary mb-3 ">+ Thêm hướng dẫn viên</a>
     <table class="table table-bordered table-hover">
         <thead class="table-dark text-center">
             <tr>
@@ -24,11 +33,17 @@
                     <td><?= htmlspecialchars($g['status']) ?></td>
                     <td class="text-center">
                         <a href="?act=admin_guide_edit&id=<?= $g['id'] ?>" class="btn btn-warning btn-sm">Sửa</a>
-                        <a href="?act=admin_guide_delete&id=<?= $g['id'] ?>" class="btn btn-danger btn-sm"
-                            onclick="return confirm('Xóa hướng dẫn viên này?')">Xóa</a>
+                        <!-- <a href="?act=admin_guide_delete&id=<?= $g['id'] ?>" class="btn btn-danger btn-sm"
+                            onclick="return confirm('Xóa hướng dẫn viên này?')">Xóa</a> -->
                     </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
 </div>
+
+<?php
+require_once __DIR__ . '/../../layout/admin/footer.php';
+?>
+

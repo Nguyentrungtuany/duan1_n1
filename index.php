@@ -129,6 +129,13 @@ match ($act) {
     'bookings-create' => (new BookingController())->create(),
     'bookings-delete' => (new BookingController())->delete(),
     'bookings-detail' => (new BookingController())->detail(),
+
+    //Quản lý hướng dẫn viên
+    'admin_guides' => (new GuideController())->index(),
+    'admin_guide_create' => (new GuideController())->create(),
+    'admin_guide_edit' => (new GuideController())->edit($_GET['id']),
+    'admin_guide_update' => (new GuideController())->update($_GET['id'] ?? null),
+    // 'admin_guide_delete' => (new GuideController())->delete($_GET['id']),
     // quản lý điểm đến
     'destination-index' => (new DestinationController())->index(),
     'destination-create' => (new DestinationController())->create(),
