@@ -70,11 +70,11 @@ class GuideController
         }
     }
 
-    public function delete($id)
-    {
-        $this->model->delete($id);
-        $_SESSION['success'] = "Xóa hướng dẫn viên thành công!";
-        header("Location: ?act=admin_guides");
-        exit;
-    }
+    // public function delete($id)
+    // {
+    //     $this->model->delete($id);
+    //     $_SESSION['success'] = "Xóa hướng dẫn viên thành công!";
+    //     header("Location: ?act=admin_guides");
+    //     exit;
+    // }
 }
