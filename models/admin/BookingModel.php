@@ -465,18 +465,11 @@ class BookingModel
 
         $placeholders = implode(',', array_fill(0, count($keepIds), '?'));
         $sql = "DELETE FROM schedules 
-                WHERE tour_id = ? AND id NOT IN ($placeholders)";
+            WHERE tour_id = ? AND id NOT IN ($placeholders)";
 
         $params = array_merge([$tourId], $keepIds);
         $stmt = $this->conn->prepare($sql);
-
-
-        return $stmt->execute([
-            ':booking_id' => $data['booking_id'],
-            ':fullname'   => $data['fullname'],
-            ':date'       => $data['date'],
-            ':phone'      => $data['phone']
-        ]);
+        return $stmt->execute($params);
     }
 
     // ==========================================

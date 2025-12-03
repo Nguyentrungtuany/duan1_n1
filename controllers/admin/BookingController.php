@@ -109,8 +109,6 @@ class BookingController
             exit;
         }
 
-        // exit();
-
         try {
             $id = $_POST['id'];
 
@@ -135,8 +133,8 @@ class BookingController
             // 4. Xử lý PEOPLE (Người tham gia)
             $this->handlePeople($id);
 
-            header("Location: index.php?act=bookings");
-            // exit;
+            header("Location: index.php?act=bookings&msg=success");
+            exit;
         } catch (Exception $e) {
             echo "Lỗi cập nhật: " . $e->getMessage();
             error_log("Booking Update Error: " . $e->getMessage());
@@ -188,95 +186,81 @@ class BookingController
 
     private function handleAccommodations($bookingId)
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: index.php?act=bookings");
-            exit;
+        if (!isset($_POST['accommodations'])) {
+            return;
         }
 
-        try {
-            // 1. Tạo booking chính với đầy đủ thông tin
-            $bookingData = [
-                'tour_id' => $_POST['tour_id'],
-                'guide_id' => $_POST['guide_id'],
-                'start_date' => $_POST['start_date'],
-                'end_date' => $_POST['end_date'],
-                'special_request' => $_POST['special_request'] ?? '',
-                'status' => $_POST['status'] ?? 'pending',
+        $keepIds = [];
+
+        foreach ($_POST['accommodations'] as $accommodation) {
+            if (empty($accommodation['name'])) {
+                continue;
+            }
+
+            $data = [
+                'name' => $accommodation['name'] ?? '',
+                'address' => $accommodation['address'] ?? '',
+                'type' => $accommodation['type'] ?? ''
             ];
 
-            $booking_id = $this->BookingModel->createBooking($bookingData);
-
-            // ===== XỬ LÝ TRANSPORTS =====
-            if (isset($_POST['transports']) && is_array($_POST['transports'])) {
-                foreach ($_POST['transports'] as $transport) {
-                    // Chỉ thêm nếu có dữ liệu
-                    if (!empty($transport['type']) || !empty($transport['company'])) {
-                        $data = [
-                            'booking_id' => $booking_id,
-                            'type' => $transport['type'] ?? '',
-                            'company' => $transport['company'] ?? '',
-                            'seats' => $transport['seats'] ?? 0,
-                        ];
-                        $this->BookingModel->createTransports($booking_id, $data);
-                    }
-                }
+            if (isset($accommodation['id']) && !empty($accommodation['id'])) {
+                // UPDATE
+                $keepIds[] = $accommodation['id'];
+                $this->BookingModel->updateAccommodations($accommodation['id'], $bookingId, $data);
+            } else {
+                // CREATE
+                $this->BookingModel->createAccommodations($bookingId, $data);
+                $keepIds[] = $this->BookingModel->getLastInsertId();
             }
-
-            // ===== XỬ LÝ ACCOMMODATIONS =====
-            if (isset($_POST['accommodations']) && is_array($_POST['accommodations'])) {
-                foreach ($_POST['accommodations'] as $accommodation) {
-                    if (!empty($accommodation['name'])) {
-                        $data = [
-                            'booking_id' => $booking_id,
-                            'name' => $accommodation['name'] ?? '',
-                            'address' => $accommodation['address'] ?? '',
-                            'type' => $accommodation['type'] ?? '',
-                        ];
-                        $this->BookingModel->createAccommodations($booking_id, $data);
-                    }
-                }
-            }
-
-            // ===== XỬ LÝ SCHEDULES =====
-            if (isset($_POST['schedules']) && is_array($_POST['schedules'])) {
-                foreach ($_POST['schedules'] as $schedule) {
-                    if (!empty($schedule['location']) || !empty($schedule['activities'])) {
-                        $data = [
-                            'booking_id' => $booking_id,
-                            'day_number' => $schedule['day_number'] ?? 1,
-                            'date' => $schedule['date'] ?? null,
-                            'location' => $schedule['location'] ?? '',
-                            'activities' => $schedule['activities'] ?? '',
-                            'notes' => $schedule['notes'] ?? '',
-                        ];
-                        $this->BookingModel->createSchedules($booking_id, $data);
-                    }
-                }
-            }
-
-            // ===== XỬ LÝ PEOPLE =====
-            if (isset($_POST['peoples']) && is_array($_POST['peoples'])) {
-                foreach ($_POST['peoples'] as $person) {
-                    // Kiểm tra có tên và số điện thoại
-                    if (!empty($person['fullname']) && !empty($person['phone'])) {
-                        $data = [
-                            'booking_id' => $booking_id,
-                            'fullname' => $person['fullname'],
-                            'date' => $person['date'] ?? null,
-                            'phone' => $person['phone'],
-                        ];
-                        $this->BookingModel->addPerson($data);
-                    }
-                }
-            }
-
-            header("Location: index.php?act=bookings");
-            exit();
-        } catch (Exception $e) {
-            echo "Lỗi tạo booking: " . $e->getMessage();
-            error_log("Booking Create Error: " . $e->getMessage());
         }
+
+        $this->BookingModel->deleteAccommodations($bookingId, $keepIds);
     }
+
+    // ==========================================
+    // XỬ LÝ PEOPLE - Người tham gia
+    // ==========================================
+
+    private function handlePeople($bookingId)
+    {
+        // ✅ ĐỔI TỪNG people THÀNH peoples
+        if (!isset($_POST['peoples'])) {
+            return;
+        }
+
+        $keepIds = [];
+
+        foreach ($_POST['peoples'] as $person) {
+            // Kiểm tra có dữ liệu không
+            if (empty($person['fullname']) && empty($person['phone'])) {
+                continue;
+            }
+
+            $data = [
+                'fullname' => $person['fullname'] ?? '',
+                'phone' => $person['phone'] ?? '',
+                'date' => $person['date'] ?? date('Y-m-d'),
+                'cccd' => $person['cccd'] ?? ''
+            ];
+
+            if (!empty($person['id']) && is_numeric($person['id'])) {
+                // UPDATE - chỉ update khi ID là số thật
+                $keepIds[] = $person['id'];
+                $this->BookingModel->updatePeople($person['id'], $bookingId, $data);
+            } else {
+                // CREATE
+                $this->BookingModel->createPeople($bookingId, $data);
+                $keepIds[] = $this->BookingModel->getLastInsertId();
+            }
+        }
+
+        $this->BookingModel->deletePeople($bookingId, $keepIds);
+    }
+
+    // ==========================================
+    // XÓA BOOKING
+    // ==========================================
+
     public function delete()
     {
         $id = $_GET['id'];

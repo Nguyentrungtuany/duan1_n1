@@ -8,7 +8,8 @@ class GuidesModel
     {
         $this->conn = connectDB();
     }
-    public function jobinformation($booking_id)
+
+    public function jobinformation($user_id)
     {
         $sql = "SELECT 
     b.*,
@@ -107,6 +108,7 @@ class GuidesModel
         WHERE bp.booking_id = b.id
     ) AS people,
 
+    /* ✅ SỬA: schedules liên kết qua tour_id, không phải booking_id */
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -121,7 +123,7 @@ class GuidesModel
             )
         )
         FROM schedules s
-        WHERE s.booking_id = b.id
+        WHERE s.tour_id = b.tour_id
     ) AS schedules,
 
     (
@@ -179,12 +181,15 @@ INNER JOIN guides g ON g.id = b.guide_id
 INNER JOIN users u ON u.id = g.user_id
 
 /* =========================
-       ⭐ FILTER BY USER_ID
+       ⭐ FILTER BY USER_ID - SỬA DÙNG PREPARED STATEMENT
 ========================= */
-WHERE g.user_id = $booking_id";
-        $stmt = $this->conn->query($sql);
-        return $stmt->fetchAll();
+WHERE g.user_id = :user_id";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['user_id' => $user_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
     public function getBookingById($booking_id)
     {
         $sql = "SELECT 
@@ -284,6 +289,7 @@ WHERE g.user_id = $booking_id";
             WHERE bp.booking_id = b.id
         ) AS people,
 
+        /* ✅ SỬA: schedules liên kết qua tour_id */
         (
             SELECT JSON_ARRAYAGG(
                 JSON_OBJECT(
@@ -298,7 +304,7 @@ WHERE g.user_id = $booking_id";
                 )
             )
             FROM schedules s
-            WHERE s.booking_id = b.id
+            WHERE s.tour_id = b.tour_id
         ) AS schedules,
 
         (
@@ -346,12 +352,13 @@ WHERE g.user_id = $booking_id";
     LEFT JOIN customers cu ON cu.id = b.customer_id
     INNER JOIN guides g ON g.id = b.guide_id
     INNER JOIN users u ON u.id = g.user_id
-    WHERE b.id = :booking_id"; // ← Filter theo booking_id
+    WHERE b.id = :booking_id";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute(['booking_id' => $booking_id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC); // ← fetch() không phải fetchAll()
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
     public function jobStatus($user_id)
     {
         $sql = "
@@ -365,23 +372,21 @@ WHERE g.user_id = $booking_id";
             SUM(CASE WHEN b.status = 'completed' THEN 1 ELSE 0 END) as total_completed
         FROM bookings b
         INNER JOIN guides g ON g.id = b.guide_id
-        WHERE g.user_id = $user_id
-    ";
+        WHERE g.user_id = :user_id";
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
-
+        $stmt->execute(['user_id' => $user_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function booking_people($booking_id)
     {
         $sql = "SELECT *
-FROM bookings_people
-WHERE booking_id = $booking_id;
-        ";
+                FROM bookings_people
+                WHERE booking_id = :booking_id";
+
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
+        $stmt->execute(['booking_id' => $booking_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

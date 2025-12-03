@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../layout/admin/header.php';
-// echo json_encode($booking, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+echo json_encode($booking, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 // Decode JSON data nếu cần
 if (isset($booking['tour']) && is_string($booking['tour'])) {
     $booking['tour'] = json_decode($booking['tour'], true);
@@ -103,23 +103,16 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                         </div>
 
                         <!-- Điểm đến -->
-
-
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="tour_id">Điểm đến <span class="text-danger">*</span></label>
                             <select class="form-control" id="tour_id" name="tour_id" required>
                                 <option value="">-- Chọn điểm đến --</option>
-                                <?php foreach ($allTour as $tour): ?>
-                                    <option value="<?= $tour['id'] ?>"
-                                        <?= (isset($booking['tour_id']) && $booking['tour_id'] == $tour['id']) ? 'selected' : '' ?>
 
-                                        data-name="<?= htmlspecialchars($tour['name']) ?>"
-                                        data-price="<?= $tour['price'] ?>"
-                                        data-description="<?= htmlspecialchars($tour['description'] ?? '') ?>"
-                                        data-category="<?= $tour['category_id'] ?>"
-                                        data-start="<?= $tour['start_date'] ?? '' ?>"
-                                        data-end="<?= $tour['end_date'] ?? '' ?>">
-                                        <?= htmlspecialchars($tour['name']) ?> - <?= number_format($tour['price']) ?> VNĐ
+                                <?php foreach ($allTour as $des): ?>
+                                    <option value="<?= $des['id'] ?>"
+                                        <?= (isset($booking['tour_id']) && $booking['tour_id'] == $des['id']) ? 'selected' : '' ?>>
+
+                                        <?= htmlspecialchars($des['name']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -476,65 +469,122 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
     <?= print_r($booking) ?>
 </div>
 <script>
-    // Đếm số lượng hiện tại
-    let transportCount = <?= count($transports) ?>;
-    let accommodationCount = <?= count($accommodations) ?>;
-    let scheduleCount = <?= count($schedules) ?>;
-    let peopleCount = <?= count($peoples) ?>;
+    // ===== KHỞI TẠO BIẾN ĐẾM =====
+    let transportCount = document.querySelectorAll('.transport-item').length;
+    let accommodationCount = document.querySelectorAll('.accommodation-item').length;
+    let scheduleCount = document.querySelectorAll('.schedule-item').length;
+    let peopleCount = document.querySelectorAll('.people-item').length;
+
     // ===== AUTO-FILL KHI CHỌN TOUR =====
     document.getElementById('tour_id').addEventListener('change', function() {
         const selectedOption = this.options[this.selectedIndex];
 
-        if (selectedOption.value) {
-            // Lấy data attributes
-            const tourName = selectedOption.getAttribute('data-name');
-            const price = selectedOption.getAttribute('data-price');
-            const description = selectedOption.getAttribute('data-description');
-            const categoryId = selectedOption.getAttribute('data-category');
-            const startDate = selectedOption.getAttribute('data-start');
-            const endDate = selectedOption.getAttribute('data-end');
-
-            // Tự động điền vào các trường
-            if (tourName) {
-                document.getElementById('name').value = tourName;
-            }
-
-            if (price) {
-                document.getElementById('price').value = price;
-            }
-
-            if (description) {
-                document.getElementById('description').value = description;
-            }
-
-            if (categoryId) {
-                document.getElementById('category_id').value = categoryId;
-            }
-
-            if (startDate) {
-                document.getElementById('start_date').value = startDate;
-            }
-
-            if (endDate) {
-                document.getElementById('end_date').value = endDate;
-            }
-
-            // Hiển thị thông báo
-            console.log('Đã tự động điền thông tin tour');
-        } else {
+        if (!selectedOption.value) {
             // Xóa dữ liệu nếu bỏ chọn
             document.getElementById('name').value = '';
             document.getElementById('price').value = '';
             document.getElementById('description').value = '';
+            document.getElementById('start_date').value = '';
+            document.getElementById('end_date').value = '';
+            return;
+        }
+
+        // Lấy data attributes
+        const tourData = {
+            name: selectedOption.getAttribute('data-name'),
+            price: selectedOption.getAttribute('data-price'),
+            description: selectedOption.getAttribute('data-description'),
+            category: selectedOption.getAttribute('data-category'),
+            startDate: selectedOption.getAttribute('data-start'),
+            endDate: selectedOption.getAttribute('data-end'),
+            schedulesData: selectedOption.getAttribute('data-schedules')
+        };
+
+        // Tự động điền thông tin cơ bản
+        if (tourData.name) document.getElementById('name').value = tourData.name;
+        if (tourData.price) document.getElementById('price').value = tourData.price;
+        if (tourData.description) document.getElementById('description').value = tourData.description;
+        if (tourData.category) document.getElementById('category_id').value = tourData.category;
+        if (tourData.startDate) document.getElementById('start_date').value = tourData.startDate;
+        if (tourData.endDate) document.getElementById('end_date').value = tourData.endDate;
+
+        // ✅ XỬ LÝ LỊCH TRÌNH TỰ ĐỘNG
+        if (tourData.schedulesData && tourData.schedulesData !== 'null' && tourData.schedulesData !== '[]') {
+            try {
+                const schedules = JSON.parse(tourData.schedulesData);
+
+                if (schedules && Array.isArray(schedules) && schedules.length > 0) {
+                    updateSchedules(schedules);
+                    console.log(`✅ Đã tự động điền ${schedules.length} lịch trình`);
+                }
+            } catch (e) {
+                console.error('❌ Lỗi parse schedules:', e);
+            }
         }
     });
+
+    // ===== HÀM CẬP NHẬT LỊCH TRÌNH =====
+    function updateSchedules(schedules) {
+        const container = document.getElementById('schedules-container');
+        container.innerHTML = '';
+
+        schedules.forEach((schedule, index) => {
+            const scheduleHTML = `
+                <div class="schedule-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #f0f8ff;">
+                    <h5 style="margin-top: 0;">Ngày ${index + 1}</h5>
+                    <input type="hidden" name="schedules[${index}][day_number]" value="${index + 1}">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Ngày</label>
+                                <input type="date" class="form-control" name="schedules[${index}][date]" 
+                                    value="${schedule.date || ''}" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Địa điểm</label>
+                                <input type="text" class="form-control" name="schedules[${index}][location]" 
+                                    value="${escapeHtml(schedule.location || '')}" 
+                                    placeholder="VD: Hà Nội - Hạ Long" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Hoạt động</label>
+                                <textarea class="form-control" name="schedules[${index}][activities]" rows="2" 
+                                    placeholder="Mô tả hoạt động" disabled>${escapeHtml(schedule.activities || '')}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Ghi chú</label>
+                        <input type="text" class="form-control" name="schedules[${index}][notes]" 
+                            value="${escapeHtml(schedule.notes || '')}" 
+                            placeholder="VD: Mang theo CMND/CCCD" disabled>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', scheduleHTML);
+        });
+
+        scheduleCount = schedules.length;
+    }
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
 
     // Validation ngày
     document.getElementById('start_date').addEventListener('change', function() {
         const endDate = document.getElementById('end_date');
         endDate.min = this.value;
     });
-    // Thêm phương tiện
+
+    // ===== PHƯƠNG TIỆN =====
     document.getElementById('add-transport').addEventListener('click', function() {
         const container = document.getElementById('transports-container');
         const newItem = `
