@@ -33,10 +33,8 @@ class IndexController
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = [
                 'name' => $_POST['name'],
-                'start_date' => $_POST['start_date'],
                 'category_id' => $_POST['category_id'],
                 'description' => $_POST['description'],
-                'end_date' => $_POST['end_date'],
                 'price' => $_POST['price'],
                 'status' => $_POST['status'],
                 'transports' => [],
@@ -166,8 +164,6 @@ class IndexController
                 'end_date' => $_POST['end_date'],
                 'price' => $_POST['price'],
                 'status' => $_POST['status'],
-                'start_date' => $_POST['start_date'],
-                'end_date' => $_POST['end_date'],
             ];
             // $id = $_POST['id'];
             $return = $this->indexModel->createQltour($data);

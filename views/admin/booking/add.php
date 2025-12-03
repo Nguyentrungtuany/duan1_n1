@@ -12,7 +12,7 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                     <h4>Form tạo booking mới</h4>
                 </div>
                 <div class="form-body">
-                    <form method="POST" action="<?php echo BASE_URL; ?>index.php?act=bookings-store" enctype="multipart/form-data">
+                    <form method="POST" action="<?php echo BASE_URL; ?>index.php?act=bookings-create" enctype="multipart/form-data">
 
                         <h4 class="text-primary" style="margin-top: 20px; margin-bottom: 15px; border-bottom: 2px solid #337ab7; padding-bottom: 10px;">
                             <i class="fa fa-info-circle"></i> Thông tin cơ bản
@@ -53,27 +53,31 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                             </select>
                         </div>
 
-
-
                         <!-- Điểm đến (Tour) -->
                         <div class="form-group">
                             <label for="tour_id">Điểm đến <span class="text-danger">*</span></label>
                             <select class="form-control" id="tour_id" name="tour_id" required>
                                 <option value="">-- Chọn điểm đến --</option>
-                                <?php foreach ($allTour as $tour): ?>
+                                <?php foreach ($allTour as $tour):
+                                    // Lấy schedules của tour
+                                    $tourSchedules = [];
+                                    if (isset($tour['schedules'])) {
+                                        $tourSchedules = is_string($tour['schedules'])
+                                            ? json_decode($tour['schedules'], true)
+                                            : $tour['schedules'];
+                                    }
+                                ?>
                                     <option value="<?= $tour['id'] ?>"
                                         data-name="<?= htmlspecialchars($tour['name']) ?>"
                                         data-price="<?= $tour['price'] ?>"
                                         data-description="<?= htmlspecialchars($tour['description'] ?? '') ?>"
                                         data-category="<?= $tour['category_id'] ?>"
-                                        data-start="<?= $tour['start_date'] ?? '' ?>"
-                                        data-end="<?= $tour['end_date'] ?? '' ?>">
+                                        data-schedules='<?= htmlspecialchars(json_encode($tourSchedules ?: []), ENT_QUOTES, 'UTF-8') ?>'>
                                         <?= htmlspecialchars($tour['name']) ?> - <?= number_format($tour['price']) ?> VNĐ
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-
                         <!-- Mô tả -->
                         <div class="form-group">
                             <label for="description">Mô tả <span class="text-danger">*</span></label>
@@ -93,13 +97,13 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="start_date">Ngày bắt đầu <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="start_date" name="start_date" disabled>
+                                    <input type="date" class="form-control" id="start_date" name="start_date">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="end_date">Ngày kết thúc <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="end_date" name="end_date" disabled>
+                                    <input type="date" class="form-control" id="end_date" name="end_date">
                                 </div>
                             </div>
                         </div>
@@ -227,21 +231,21 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Ngày</label>
-                                            <input type="date" class="form-control" name="schedules[0][date]">
+                                            <input type="date" class="form-control" name="schedules[0][date]" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Địa điểm</label>
                                             <input type="text" class="form-control" name="schedules[0][location]"
-                                                placeholder="VD: Hà Nội - Hạ Long">
+                                                placeholder="VD: Hà Nội - Hạ Long" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Hoạt động</label>
                                             <textarea class="form-control" name="schedules[0][activities]" rows="2"
-                                                placeholder="Mô tả hoạt động trong ngày"></textarea>
+                                                placeholder="Mô tả hoạt động trong ngày" disabled></textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-1">
@@ -254,14 +258,10 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                                 <div class="form-group">
                                     <label>Ghi chú</label>
                                     <input type="text" class="form-control" name="schedules[0][notes]"
-                                        placeholder="VD: Mang theo CMND/CCCD">
+                                        placeholder="VD: Mang theo CMND/CCCD" disabled>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-info btn-sm" id="add-schedule">
-                            <i class="fa fa-plus"></i> Thêm ngày
-                        </button>
-
                         <!-- KHÁCH HÀNG -->
                         <h4 class="text-info" style="margin-top: 30px; margin-bottom: 15px; border-bottom: 2px solid #5bc0de; padding-bottom: 10px;">
                             <i class="fa fa-users"></i> Danh sách khách hàng tham gia
@@ -289,6 +289,14 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                                             <label>Số điện thoại</label>
                                             <input type="text" class="form-control" name="peoples[0][phone]"
                                                 placeholder="0987654321">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>CCCD</label>
+                                            <input type="text" class="form-control" name="peoples[0][cccd]"
+                                                placeholder="123456789">
                                         </div>
                                     </div>
                                     <div class="col-md-1">
@@ -321,59 +329,114 @@ require_once __DIR__ . '/../../layout/admin/header.php';
 </div>
 
 <script>
-    // Đếm số lượng hiện tại
-    let transportCount = 1;
-    let accommodationCount = 1;
-    let scheduleCount = 1;
-    let peopleCount = 1;
+    // ===== KHỞI TẠO BIẾN ĐẾM =====
+    let transportCount = document.querySelectorAll('.transport-item').length;
+    let accommodationCount = document.querySelectorAll('.accommodation-item').length;
+    let scheduleCount = document.querySelectorAll('.schedule-item').length;
+    let peopleCount = document.querySelectorAll('.people-item').length;
 
     // ===== AUTO-FILL KHI CHỌN TOUR =====
     document.getElementById('tour_id').addEventListener('change', function() {
         const selectedOption = this.options[this.selectedIndex];
 
-        if (selectedOption.value) {
-            // Lấy data attributes
-            const tourName = selectedOption.getAttribute('data-name');
-            const price = selectedOption.getAttribute('data-price');
-            const description = selectedOption.getAttribute('data-description');
-            const categoryId = selectedOption.getAttribute('data-category');
-            const startDate = selectedOption.getAttribute('data-start');
-            const endDate = selectedOption.getAttribute('data-end');
-
-            // Tự động điền vào các trường
-            if (tourName) {
-                document.getElementById('name').value = tourName;
-            }
-
-            if (price) {
-                document.getElementById('price').value = price;
-            }
-
-            if (description) {
-                document.getElementById('description').value = description;
-            }
-
-            if (categoryId) {
-                document.getElementById('category_id').value = categoryId;
-            }
-
-            if (startDate) {
-                document.getElementById('start_date').value = startDate;
-            }
-
-            if (endDate) {
-                document.getElementById('end_date').value = endDate;
-            }
-
-            // Hiển thị thông báo
-            console.log('Đã tự động điền thông tin tour');
-        } else {
+        if (!selectedOption.value) {
             // Xóa dữ liệu nếu bỏ chọn
             document.getElementById('name').value = '';
             document.getElementById('price').value = '';
             document.getElementById('description').value = '';
+            document.getElementById('start_date').value = '';
+            document.getElementById('end_date').value = '';
+            return;
+        }
+
+        // Lấy data attributes
+        const tourData = {
+            name: selectedOption.getAttribute('data-name'),
+            price: selectedOption.getAttribute('data-price'),
+            description: selectedOption.getAttribute('data-description'),
+            category: selectedOption.getAttribute('data-category'),
+            startDate: selectedOption.getAttribute('data-start'),
+            endDate: selectedOption.getAttribute('data-end'),
+            schedulesData: selectedOption.getAttribute('data-schedules')
+        };
+
+        // Tự động điền thông tin cơ bản
+        if (tourData.name) document.getElementById('name').value = tourData.name;
+        if (tourData.price) document.getElementById('price').value = tourData.price;
+        if (tourData.description) document.getElementById('description').value = tourData.description;
+        if (tourData.category) document.getElementById('category_id').value = tourData.category;
+        if (tourData.startDate) document.getElementById('start_date').value = tourData.startDate;
+        if (tourData.endDate) document.getElementById('end_date').value = tourData.endDate;
+
+        // ✅ XỬ LÝ LỊCH TRÌNH TỰ ĐỘNG
+        if (tourData.schedulesData && tourData.schedulesData !== 'null' && tourData.schedulesData !== '[]') {
+            try {
+                const schedules = JSON.parse(tourData.schedulesData);
+
+                if (schedules && Array.isArray(schedules) && schedules.length > 0) {
+                    updateSchedules(schedules);
+                    console.log(`✅ Đã tự động điền ${schedules.length} lịch trình`);
+                }
+            } catch (e) {
+                console.error('❌ Lỗi parse schedules:', e);
+            }
         }
     });
+
+    // ===== HÀM CẬP NHẬT LỊCH TRÌNH =====
+    function updateSchedules(schedules) {
+        const container = document.getElementById('schedules-container');
+        container.innerHTML = '';
+
+        schedules.forEach((schedule, index) => {
+            const scheduleHTML = `
+                <div class="schedule-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #f0f8ff;">
+                    <h5 style="margin-top: 0;">Ngày ${index + 1}</h5>
+                    <input type="hidden" name="schedules[${index}][day_number]" value="${index + 1}">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Ngày</label>
+                                <input type="date" class="form-control" name="schedules[${index}][date]" 
+                                    value="${schedule.date || ''}" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Địa điểm</label>
+                                <input type="text" class="form-control" name="schedules[${index}][location]" 
+                                    value="${escapeHtml(schedule.location || '')}" 
+                                    placeholder="VD: Hà Nội - Hạ Long" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Hoạt động</label>
+                                <textarea class="form-control" name="schedules[${index}][activities]" rows="2" 
+                                    placeholder="Mô tả hoạt động" disabled>${escapeHtml(schedule.activities || '')}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Ghi chú</label>
+                        <input type="text" class="form-control" name="schedules[${index}][notes]" 
+                            value="${escapeHtml(schedule.notes || '')}" 
+                            placeholder="VD: Mang theo CMND/CCCD" disabled>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', scheduleHTML);
+        });
+
+        scheduleCount = schedules.length;
+    }
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
 
     // Validation ngày
     document.getElementById('start_date').addEventListener('change', function() {
@@ -419,12 +482,6 @@ require_once __DIR__ . '/../../layout/admin/header.php';
         transportCount++;
     });
 
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.remove-transport')) {
-            e.target.closest('.transport-item').remove();
-        }
-    });
-
     // ===== KHÁCH SẠN =====
     document.getElementById('add-accommodation').addEventListener('click', function() {
         const container = document.getElementById('accommodations-container');
@@ -468,61 +525,6 @@ require_once __DIR__ . '/../../layout/admin/header.php';
         accommodationCount++;
     });
 
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.remove-accommodation')) {
-            e.target.closest('.accommodation-item').remove();
-        }
-    });
-
-    // ===== LỊCH TRÌNH =====
-    document.getElementById('add-schedule').addEventListener('click', function() {
-        const container = document.getElementById('schedules-container');
-        const newItem = `
-        <div class="schedule-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #f0f8ff;">
-            <h5 style="margin-top: 0;">Ngày ${scheduleCount + 1}</h5>
-            <input type="hidden" name="schedules[${scheduleCount}][day_number]" value="${scheduleCount + 1}">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label>Ngày</label>
-                        <input type="date" class="form-control" name="schedules[${scheduleCount}][date]">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Địa điểm</label>
-                        <input type="text" class="form-control" name="schedules[${scheduleCount}][location]" placeholder="VD: Hà Nội - Hạ Long">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Hoạt động</label>
-                        <textarea class="form-control" name="schedules[${scheduleCount}][activities]" rows="2" placeholder="Mô tả hoạt động trong ngày"></textarea>
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <label>&nbsp;</label>
-                    <button type="button" class="btn btn-danger btn-sm form-control remove-schedule">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Ghi chú</label>
-                <input type="text" class="form-control" name="schedules[${scheduleCount}][notes]" placeholder="VD: Mang theo CMND/CCCD">
-            </div>
-        </div>
-    `;
-        container.insertAdjacentHTML('beforeend', newItem);
-        scheduleCount++;
-    });
-
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.remove-schedule')) {
-            e.target.closest('.schedule-item').remove();
-        }
-    });
-
     // ===== KHÁCH HÀNG =====
     document.getElementById('add-people').addEventListener('click', function() {
         const container = document.getElementById('people-container');
@@ -548,6 +550,12 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                         <input type="text" class="form-control" name="peoples[${peopleCount}][phone]" placeholder="0987654321">
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>CCCD</label>
+                        <input type="text" class="form-control" name="peoples[${peopleCount}][cccd]" placeholder="Nhập số CCCD">
+                    </div>
+                </div>
                 <div class="col-md-1">
                     <label>&nbsp;</label>
                     <button type="button" class="btn btn-danger btn-sm form-control remove-people">
@@ -562,10 +570,48 @@ require_once __DIR__ . '/../../layout/admin/header.php';
     });
 
     document.addEventListener('click', function(e) {
-        if (e.target.closest('.remove-people')) {
-            e.target.closest('.people-item').remove();
+        const target = e.target;
+
+        // Xóa phương tiện
+        if (target.classList.contains('remove-transport') || target.closest('.remove-transport')) {
+            const item = target.closest('.transport-item');
+            if (item) {
+                item.remove();
+                console.log('✅ Đã xóa phương tiện');
+            }
+        }
+
+        if (target.classList.contains('remove-accommodation') || target.closest('.remove-accommodation')) {
+            const item = target.closest('.accommodation-item');
+            if (item) {
+                item.remove();
+                console.log('✅ Đã xóa khách sạn');
+            }
+        }
+
+        if (target.classList.contains('remove-schedule') || target.closest('.remove-schedule')) {
+            const item = target.closest('.schedule-item');
+            if (item) {
+                item.remove();
+                console.log('✅ Đã xóa lịch trình');
+            }
+        }
+
+        if (target.classList.contains('remove-people') || target.closest('.remove-people')) {
+            const item = target.closest('.people-item');
+            if (item) {
+                item.remove();
+                console.log('✅ Đã xóa khách hàng');
+            }
         }
     });
+
+    // console.log('✅ Script initialized');
+    // console.log(`📊 Số lượng hiện tại:
+    // - Phương tiện: ${transportCount}
+    // - Khách sạn: ${accommodationCount}
+    // - Lịch trình: ${scheduleCount}
+    // - Khách hàng: ${peopleCount}`);
 </script>
 
 <style>

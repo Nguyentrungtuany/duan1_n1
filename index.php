@@ -56,7 +56,7 @@ $routeadmin = [
     'bookings',
     'bookings-add',
     'bookings-update',
-    'bookings-insert',
+    'bookings-create',
     'bookings-edit',
     'bookings-delete',
     'bookings-detail',
