@@ -424,18 +424,34 @@ class BookingModel
 
     public function createSchedules($tourId, $data)
     {
-        $sql = "INSERT INTO schedules (tour_id, day_number, date, location, activities, notes) 
-                VALUES (:tour_id, :day_number, :date, :location, :activities, :notes)";
+        $sql = "INSERT INTO bookings (
+        tour_id, 
+        guide_id, 
+        start_date, 
+        end_date, 
+        special_request, 
+        status,
+        created_at
+    ) VALUES (
+        :tour_id, 
+        :guide_id, 
+        :start_date, 
+        :end_date, 
+        :special_request, 
+        :status,
+        NOW()
+    )";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([
-            'tour_id' => $tourId,
-            'day_number' => $data['day_number'],
-            'date' => $data['date'],
-            'location' => $data['location'],
-            'activities' => $data['activities'],
-            'notes' => $data['notes']
+            ':tour_id' => $data['tour_id'],
+            ':guide_id' => $data['guide_id'],
+            ':start_date' => $data['start_date'],
+            ':end_date' => $data['end_date'],
+            ':special_request' => $data['special_request'] ?? '',
+            ':status' => $data['status'] ?? 'pending'
         ]);
+
         return $this->conn->lastInsertId();
     }
 
@@ -453,7 +469,14 @@ class BookingModel
 
         $params = array_merge([$tourId], $keepIds);
         $stmt = $this->conn->prepare($sql);
-        return $stmt->execute($params);
+
+
+        return $stmt->execute([
+            ':booking_id' => $data['booking_id'],
+            ':fullname'   => $data['fullname'],
+            ':date'       => $data['date'],
+            ':phone'      => $data['phone']
+        ]);
     }
 
     // ==========================================
