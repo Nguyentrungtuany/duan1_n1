@@ -65,15 +65,12 @@ WHERE t.id = :id;";
         // update table tour
         $sql = "UPDATE `tours` SET `name`= :name ,
         `category_id`= :category_id,`description`= :description,
-        `start_date`= :start_date,`end_date`= :end_date,
         `price`= :price,`status`= :status WHERE `id` = :id";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([
             ':name' => $data['name'],
             ':category_id' => $data['category_id'],
             ':description' => $data['description'],
-            ':start_date' => $data['start_date'],
-            ':end_date' => $data['end_date'],
             ':price' => $data['price'],
             ':status' => $data['status'],
             ':id' => $id
@@ -237,15 +234,13 @@ WHERE t.id = :id;";
     }
     public function createQltour($data)
     {
-        $sql = "INSERT INTO `tours`( `name`, `category_id`, `destination_id`, `description`, `start_date`, `end_date`, `price`, `status`) 
-        VALUES (:name, :category_id, :destination_id, :description, :start_date, :end_date, :price, :status)";
+        $sql = "INSERT INTO `tours`( `name`, `category_id`, `destination_id`, `description`,`price`, `status`) 
+        VALUES (:name, :category_id, :destination_id, :description ,:price, :status)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':name', $data['name']);
         $stmt->bindParam(':category_id', $data['category_id']);
         $stmt->bindParam(':destination_id', $data['destination_id']);
         $stmt->bindParam(':description', $data['description']);
-        $stmt->bindParam(':start_date', $data['start_date']);
-        $stmt->bindParam(':end_date', $data['end_date']);
         $stmt->bindParam(':price', $data['price']);
         $stmt->bindParam(':status', $data['status']);
         return $stmt->execute();

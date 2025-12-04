@@ -37,16 +37,15 @@ foreach ($DataQltour as &$item) {
                                     <th>Tên Tour</th>
                                     <th>Danh mục</th>
                                     <th>Mô tả</th>
-                                    <!-- <th>Ngày bắt đầu</th>
-                                    <th>Ngày kết thúc</th> -->
                                     <th>Giá</th>
+                                    <th>Lịch trình</th>
                                     <th>Trạng thái</th>
                                     <th>Điểm đến</th>
                                     <!-- <th>Phương tiện</th> -->
                                     <!-- <th>Khách sạn</th> -->
                                     <!-- <th>Lịch trình</th> -->
                                     <!-- <th>Cập nhật</th> -->
-                                    <!-- <th>Hành động</th> -->
+                                    <th>Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -58,6 +57,7 @@ foreach ($DataQltour as &$item) {
                                         <td style="max-width: 200px;">
                                             <?= htmlspecialchars(substr($data['description'], 0, 100)) ?>...
                                         </td>
+
                                         <td><strong><?= number_format($data['price'], 0, ',', '.') ?> VNĐ</strong></td>
                                         <td>
                                             <span class="label <?= $data['status'] == 'open' ? 'label-success' : 'label-default' ?>">
@@ -65,6 +65,32 @@ foreach ($DataQltour as &$item) {
                                             </span>
                                         </td>
 
+                                        <!-- Lịch trình -->
+                                        <td style="min-width: 300px;">
+                                            <?php if (!empty($data['schedules'])): ?>
+                                                <?php foreach ($data['schedules'] as $schedule): ?>
+                                                    <div class="schedule-item" style="margin-bottom: 10px; padding: 8px; background: #f9f9f9; border-left: 3px solid #5cb85c; border-radius: 3px;">
+                                                        <div style="margin-bottom: 5px;">
+                                                            <strong style="color: #5cb85c;">Ngày <?= $schedule['day_number'] ?>:</strong>
+                                                            <span style="color: #666;"><?= date('d/m/Y', strtotime($schedule['date'])) ?></span>
+                                                        </div>
+                                                        <div style="margin-bottom: 5px;">
+                                                            <strong><i class="fa fa-map-marker"></i> <?= htmlspecialchars($schedule['location']) ?></strong>
+                                                        </div>
+                                                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">
+                                                            <?= htmlspecialchars(substr($schedule['activities'], 0, 100)) ?>
+                                                        </div>
+                                                        <?php if (!empty($schedule['notes'])): ?>
+                                                            <div style="font-size: 11px; color: #d9534f; font-style: italic;">
+                                                                <i class="fa fa-info-circle"></i> <?= htmlspecialchars($schedule['notes']) ?>
+                                                            </div>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <span class="text-muted">Chưa có lịch trình</span>
+                                            <?php endif; ?>
+                                        </td>
                                         <!-- Điểm đến -->
                                         <td>
                                             <?php if (!empty($data['destination'])): ?>
@@ -103,33 +129,32 @@ foreach ($DataQltour as &$item) {
     body {
         overflow: auto !important;
         height: auto !important;
-        max-height: none !important;
+        max - height: none !important;
     }
 
-    #page-wrapper {
+    #page - wrapper {
         overflow: auto !important;
         height: auto !important;
-        min-height: 100vh;
+        min - height: 100 vh;
     }
 
-    .main-page {
+    .main - page {
         overflow: visible !important;
     }
 
     .table td {
-        vertical-align: top !important;
+        vertical - align: top !important;
     }
 
-    .transport-item,
-    .accommodation-item {
-        border-left: 3px solid #337ab7;
+    .transport - item,
+    .accommodation - item {
+        border - left: 3 px solid #337ab7;
     }
 
     .schedule-item:last-child {
         margin-bottom: 0 !important;
     }
-</style>
 
-<?php
-require_once __DIR__ . '/../layout/admin/footer.php';
-?>
+    </><?php
+        require_once __DIR__ . '/../layout/admin/footer.php';
+        ?>

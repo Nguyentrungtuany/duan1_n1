@@ -11,7 +11,10 @@ if (!empty($booking)) {
     $booking['customer'] = !empty($booking['customer']) ? json_decode($booking['customer'], true) : [];
     $booking['people'] = !empty($booking['people']) ? json_decode($booking['people'], true) : [];
     $booking['category'] = !empty($booking['category']) ? json_decode($booking['category'], true) : [];
+    $booking['guide'] = !empty($booking['guide']) ? json_decode($booking['guide'], true) : [];
+    $booking['user'] = !empty($booking['user']) ? json_decode($booking['user'], true) : [];
 }
+var_dump($booking);
 ?>
 
 <!-- main content start-->
@@ -141,22 +144,22 @@ if (!empty($booking)) {
                     <h4><i class="fa fa-user"></i> Hướng dẫn viên</h4>
                 </div>
                 <div class="panel-body">
-                    <?php if (!empty($booking['customer']) && is_array($booking['customer'])): ?>
+                    <?php if (!empty($booking['guide']) && is_array($booking['guide'])): ?>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="info-group">
                                     <label>Họ và tên:</label>
-                                    <p><strong><?= htmlspecialchars($booking['customer']['full_name'] ?? 'Chưa có tên') ?></strong></p>
+                                    <p><strong><?= htmlspecialchars($booking['guide']['full_name'] ?? 'Chưa có tên') ?></strong></p>
                                 </div>
                                 <div class="info-group">
                                     <label>Email:</label>
-                                    <p><i class="fa fa-envelope"></i> <?= htmlspecialchars($booking['customer']['email'] ?? 'Chưa có email') ?></p>
+                                    <p><i class="fa fa-envelope"></i> <?= htmlspecialchars($booking['user']['email'] ?? 'Chưa có email') ?></p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="info-group">
                                     <label>Số điện thoại:</label>
-                                    <p><i class="fa fa-phone"></i> <?= htmlspecialchars($booking['customer']['phone'] ?? 'Chưa có SĐT') ?></p>
+                                    <p><i class="fa fa-phone"></i> <?= htmlspecialchars($booking['user']['phone'] ?? 'Chưa có SĐT') ?></p>
                                 </div>
                             </div>
                         </div>

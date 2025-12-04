@@ -25,7 +25,7 @@ class IndexController
         $id = $_GET['id'];
         $DataQltour = $this->indexModel->findTour($id);
         $allCategory = $this->indexModel->allCategory();
-
+        $allDestination = $this->indexModel->allDestination();
         require_once './views/admin/edit-qltour.php';
     }
     public function updateqltour()
@@ -33,10 +33,8 @@ class IndexController
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = [
                 'name' => $_POST['name'],
-                'start_date' => $_POST['start_date'],
                 'category_id' => $_POST['category_id'],
                 'description' => $_POST['description'],
-                'end_date' => $_POST['end_date'],
                 'price' => $_POST['price'],
                 'status' => $_POST['status'],
                 'transports' => [],

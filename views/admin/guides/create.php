@@ -1,5 +1,11 @@
-<div class="container mt-4">
-    <h2 class="text-center mb-3">Thêm hướng dẫn viên mới</h2>
+<?php
+require_once __DIR__ . '/../../layout/admin/header.php';
+?>
+
+<!-- main content start-->
+<div id="page-wrapper">
+    <div class="main-page">
+        <h2 class="text-center mb-3">Thêm hướng dẫn viên mới</h2>
     <form action="" method="POST" class="col-md-8 mx-auto">
         <div class="mb-3">
             <label class="form-label">Họ tên</label>
@@ -28,6 +34,24 @@
                 <option value="inactive">Tạm nghỉ</option>
             </select>
         </div>
+        <div class="mb-3">
+            <label class="form-label">Chọn tài khoản hướng dẫn viên</label>
+            <select name="user_id" class="form-select" required>
+                <option value="">-- Chọn user --</option>
+                <?php foreach ($availableUsers as $user): ?>
+                    <option value="<?= $user['id'] ?>">
+                        <?= htmlspecialchars($user['full_name'] . ' (' . $user['username'] . ' - ' . $user['email'] . ')') ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
         <button class="btn btn-success w-100">Lưu</button>
+        <button type="button" class="btn btn-secondary w-100" onclick="window.location.href='?act=admin_guides'">Hủy</button>
     </form>
+    </div>
 </div>
+
+<?php
+require_once __DIR__ . '/../../layout/admin/footer.php';
+?>
+

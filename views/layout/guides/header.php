@@ -1,4 +1,4 @@
-`<!--
+<!--
 Author: W3layouts
 Author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
@@ -162,13 +162,13 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 
 
                             <li class="treeview">
-                                <a href="?act=bookings">
-                                    <i class="fa fa-table"></i> <span>Quản lý booking</span>
+                                <a href="?act=job-guide">
+                                    <i class="fa fa-table"></i> <span>Xem công việc</span>
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </a>
                                 <ul class="treeview-menu">
                                     <li>
-                                        <a href="?act=bookings"><i class="fa fa-angle-right"></i> Quản Lý booking </a>
+                                        <a href="?act=job-guide"><i class="fa fa-angle-right"></i> Xem công việc </a>
                                     </li>
                                 </ul>
 
