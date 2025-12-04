@@ -126,7 +126,15 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                             </select>
                         </div>
 
-
+                        <!-- Số chỗ tối đa -->
+                        <div class="form-group">
+                            <label for="max_people">Số chỗ tối đa <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="max_people" name="max_people"
+                                placeholder="Nhập số chỗ tối đa (VD: 30)" min="1" max="999" required>
+                            <small class="form-text text-muted">
+                                <i class="fa fa-info-circle"></i> Giới hạn số người tối đa có thể tham gia tour này
+                            </small>
+                        </div>
 
                         <!-- PHƯƠNG TIỆN -->
                         <h4 class="text-success" style="margin-top: 30px; margin-bottom: 15px; border-bottom: 2px solid #5cb85c; padding-bottom: 10px;">

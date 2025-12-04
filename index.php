@@ -69,6 +69,9 @@ $routeadmin = [
     'destination-edit',
     'destination-delete',
     'destination-detail',
+
+    'get-available-people',
+    'check-person-conflict',
 ];
 $routeguide = [
     'guide',
@@ -143,6 +146,9 @@ match ($act) {
     'destination-edit' => (new DestinationController())->edit(),
     'destination-update' => (new DestinationController())->update(),
     'destination-delete' => (new DestinationController())->delete(),
+
+    'get-available-people' => (new BookingController())->getAvailablePeopleApi(),
+    'check-person-conflict' => (new BookingController())->checkPersonConflictApi(),
 
     'createTour' => (new IndexController())->createQltour(),
     'test' => (new IndexController())->test(),

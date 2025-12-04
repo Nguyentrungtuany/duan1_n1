@@ -7,6 +7,7 @@ class BookingModel
     {
         $this->conn = connectDB();
     }
+
     // ==========================================
     // HELPER METHOD
     // ==========================================
@@ -14,6 +15,26 @@ class BookingModel
     public function getLastInsertId()
     {
         return $this->conn->lastInsertId();
+    }
+
+    // ✅ KIỂM TRA SỐ CHỖ CÒN TRỐNG
+    public function checkAvailableSeats($bookingId)
+    {
+        $sql = "SELECT 
+                b.max_people,
+                (SELECT COUNT(*) FROM bookings_people WHERE booking_id = b.id) as current_people
+                FROM bookings b
+                WHERE b.id = :booking_id";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['booking_id' => $bookingId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            'max_people' => $result['max_people'],
+            'current_people' => $result['current_people'],
+            'available_seats' => $result['max_people'] - $result['current_people']
+        ];
     }
 
     // ==========================================
@@ -190,11 +211,11 @@ class BookingModel
 
     public function createBooking($data)
     {
-        // ✅ THÊM guide_id VÀO SQL
-        $sql = "INSERT INTO bookings (tour_id, guide_id, start_date, end_date, special_request)
-            VALUES (:tour_id, :guide_id, :start_date, :end_date, :special_request)";
+        $sql = "INSERT INTO bookings (tour_id, guide_id, start_date, end_date, special_request, max_people)
+            VALUES (:tour_id, :guide_id, :start_date, :end_date, :special_request, :max_people)";
 
         $stmt = $this->conn->prepare($sql);
+        $data['max_people'] = $data['max_people'] ?? 30;
         $stmt->execute($data);
         return $this->conn->lastInsertId();
     }
@@ -209,6 +230,7 @@ class BookingModel
                 special_request = :special_request,
                 start_date = :start_date,
                 end_date = :end_date,
+                max_people = :max_people,
                 updated_at = NOW()
                 WHERE id = :id";
 
@@ -266,13 +288,11 @@ class BookingModel
     public function deleteTransports($bookingId, $keepIds)
     {
         if (empty($keepIds)) {
-            // Xóa tất cả
             $sql = "DELETE FROM transports WHERE booking_id = :id";
             $stmt = $this->conn->prepare($sql);
             return $stmt->execute(['id' => $bookingId]);
         }
 
-        // Xóa những cái không có trong danh sách giữ lại
         $placeholders = implode(',', array_fill(0, count($keepIds), '?'));
         $sql = "DELETE FROM transports 
                 WHERE booking_id = ? AND id NOT IN ($placeholders)";
@@ -341,6 +361,243 @@ class BookingModel
     // PEOPLE - Người tham gia
     // ==========================================
 
+    /**
+     * ✅ KIỂM TRA TRÙNG LẶP THÔNG TIN TRONG HỆ THỐNG
+     * Kiểm tra xem người này đã tồn tại trong database chưa (dựa trên tên+ngày sinh, CCCD, hoặc SĐT)
+     */
+    public function checkDuplicatePersonInSystem($fullname, $date, $cccd, $phone, $excludeId = null)
+    {
+        $sql = "SELECT id, fullname, phone, date, cccd, booking_id
+                FROM bookings_people
+                WHERE (
+                    (LOWER(TRIM(fullname)) = LOWER(TRIM(:fullname)) AND date = :date)
+                    OR (cccd = :cccd AND cccd != '' AND cccd IS NOT NULL AND :cccd != '')
+                    OR (phone = :phone AND phone != '' AND phone IS NOT NULL AND :phone != '')
+                )";
+
+        if ($excludeId) {
+            $sql .= " AND id != :exclude_id";
+        }
+
+        $sql .= " LIMIT 1";
+
+        $stmt = $this->conn->prepare($sql);
+        $params = [
+            'fullname' => trim($fullname),
+            'date' => $date,
+            'cccd' => $cccd ?? '',
+            'phone' => $phone ?? ''
+        ];
+
+        if ($excludeId) {
+            $params['exclude_id'] = $excludeId;
+        }
+
+        $stmt->execute($params);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * ✅ KIỂM TRA NGƯỜI NÀY ĐÃ CÓ TRONG BOOKING NÀY CHƯA
+     */
+    public function checkPersonExistsInBooking($bookingId, $fullname, $date, $cccd, $phone)
+    {
+        $sql = "SELECT id, fullname, phone, date, cccd
+                FROM bookings_people
+                WHERE booking_id = :booking_id
+                AND (
+                    (LOWER(TRIM(fullname)) = LOWER(TRIM(:fullname)) AND date = :date)
+                    OR (cccd = :cccd AND cccd != '' AND cccd IS NOT NULL AND :cccd != '')
+                    OR (phone = :phone AND phone != '' AND phone IS NOT NULL AND :phone != '')
+                )
+                LIMIT 1";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+            'booking_id' => $bookingId,
+            'fullname' => trim($fullname),
+            'date' => $date,
+            'cccd' => $cccd ?? '',
+            'phone' => $phone ?? ''
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * ✅ KIỂM TRA TRÙNG LỊCH TOUR
+     */
+    public function checkPersonScheduleConflict($personId, $startDate, $endDate, $excludeBookingId = null)
+    {
+        $sql = "SELECT b.id, b.start_date, b.end_date, t.name as tour_name
+                FROM bookings_people bp
+                INNER JOIN bookings b ON bp.booking_id = b.id
+                INNER JOIN tours t ON b.tour_id = t.id
+                WHERE bp.id = :person_id
+                AND b.status NOT IN ('cancelled')
+                AND (
+                    (b.start_date <= :end_date AND b.end_date >= :start_date)
+                    OR (b.start_date >= :start_date AND b.start_date <= :end_date)
+                )";
+
+        if ($excludeBookingId) {
+            $sql .= " AND b.id != :exclude_booking_id";
+        }
+
+        $stmt = $this->conn->prepare($sql);
+        $params = [
+            'person_id' => $personId,
+            'start_date' => $startDate,
+            'end_date' => $endDate
+        ];
+
+        if ($excludeBookingId) {
+            $params['exclude_booking_id'] = $excludeBookingId;
+        }
+
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * ✅ LẤY DANH SÁCH NGƯỜI CÓ SẴN (Không trùng lịch)
+     */
+    public function getAvailablePeople($startDate, $endDate, $excludeBookingId = null)
+    {
+        $sql = "SELECT DISTINCT 
+                    bp.id,
+                    bp.fullname,
+                    bp.phone,
+                    bp.date,
+                    bp.cccd,
+                    COUNT(DISTINCT bp.booking_id) as total_bookings
+                FROM bookings_people bp
+                WHERE bp.id NOT IN (
+                    SELECT bp2.id 
+                    FROM bookings_people bp2
+                    INNER JOIN bookings b2 ON bp2.booking_id = b2.id
+                    WHERE (
+                        (b2.start_date <= :end_date AND b2.end_date >= :start_date)
+                        OR (b2.start_date >= :start_date AND b2.start_date <= :end_date)
+                    )
+                    AND b2.status NOT IN ('cancelled')";
+
+        if ($excludeBookingId) {
+            $sql .= " AND b2.id != :exclude_booking_id";
+        }
+
+        $sql .= ")
+                GROUP BY bp.id, bp.fullname, bp.phone, bp.date, bp.cccd
+                ORDER BY bp.fullname ASC";
+
+        $stmt = $this->conn->prepare($sql);
+        $params = [
+            'start_date' => $startDate,
+            'end_date' => $endDate
+        ];
+
+        if ($excludeBookingId) {
+            $params['exclude_booking_id'] = $excludeBookingId;
+        }
+
+        $stmt->execute($params);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Debug log
+        error_log("✅ getAvailablePeople: Tìm thấy " . count($result) . " người");
+        error_log("   Start: $startDate, End: $endDate, Exclude: " . ($excludeBookingId ?? 'none'));
+
+        return $result;
+    }
+
+    /**
+     * ✅ THÊM NGƯỜI MỚI (Có kiểm tra trùng lặp đầy đủ)
+     */
+    public function createPeople($bookingId, $data)
+    {
+        // 1. Kiểm tra giới hạn chỗ
+        $seats = $this->checkAvailableSeats($bookingId);
+        if ($seats['available_seats'] <= 0) {
+            throw new Exception("❌ Booking đã đầy! Hiện có {$seats['current_people']}/{$seats['max_people']} người.");
+        }
+
+        // 2. Chuẩn hóa dữ liệu
+        $fullname = trim($data['fullname'] ?? '');
+        $date = $data['date'] ?? date('Y-m-d');
+        $cccd = trim($data['cccd'] ?? '');
+        $phone = trim($data['phone'] ?? '');
+
+        if (empty($fullname)) {
+            throw new Exception("❌ Vui lòng nhập họ tên!");
+        }
+
+        // 3. Kiểm tra trùng lặp TRONG BOOKING NÀY
+        $existsInBooking = $this->checkPersonExistsInBooking($bookingId, $fullname, $date, $cccd, $phone);
+        if ($existsInBooking) {
+            throw new Exception("❌ Người này đã có trong booking này! (Trùng: {$existsInBooking['fullname']})");
+        }
+
+        // 4. Thêm vào database
+        $sql = "INSERT INTO bookings_people (booking_id, fullname, phone, date, cccd) 
+                VALUES (:booking_id, :fullname, :phone, :date, :cccd)";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+            'booking_id' => $bookingId,
+            'fullname' => $fullname,
+            'phone' => $phone,
+            'date' => $date,
+            'cccd' => $cccd
+        ]);
+
+        return $this->conn->lastInsertId();
+    }
+
+    /**
+     * ✅ THÊM NGƯỜI CÓ SẴN VÀO BOOKING
+     */
+    public function addExistingPersonToBooking($bookingId, $personId)
+    {
+        // 1. Lấy thông tin người từ ID
+        $sql = "SELECT fullname, phone, date, cccd 
+                FROM bookings_people 
+                WHERE id = :person_id 
+                LIMIT 1";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['person_id' => $personId]);
+        $person = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$person) {
+            throw new Exception("❌ Không tìm thấy thông tin người này!");
+        }
+
+        // 2. Kiểm tra giới hạn chỗ
+        $seats = $this->checkAvailableSeats($bookingId);
+        if ($seats['available_seats'] <= 0) {
+            throw new Exception("❌ Booking đã đầy! Hiện có {$seats['current_people']}/{$seats['max_people']} người.");
+        }
+
+        // 3. Kiểm tra người này đã có trong booking chưa
+        $existsInBooking = $this->checkPersonExistsInBooking(
+            $bookingId,
+            $person['fullname'],
+            $person['date'],
+            $person['cccd'],
+            $person['phone']
+        );
+
+        if ($existsInBooking) {
+            throw new Exception("❌ Người này đã có trong booking này!");
+        }
+
+        // 4. Thêm bản sao mới vào booking
+        return $this->createPeople($bookingId, $person);
+    }
+
+    /**
+     * ✅ CẬP NHẬT THÔNG TIN NGƯỜI
+     */
     public function updatePeople($personId, $bookingId, $data)
     {
         $sql = "UPDATE bookings_people SET 
@@ -352,32 +609,19 @@ class BookingModel
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([
-            'fullname' => $data['fullname'],
-            'phone' => $data['phone'],
+            'fullname' => trim($data['fullname']),
+            'phone' => trim($data['phone']),
             'date' => $data['date'],
-            'cccd' => $data['cccd'],
+            'cccd' => trim($data['cccd']),
             'id' => $personId,
             'booking_id' => $bookingId
         ]);
         return true;
     }
 
-    public function createPeople($bookingId, $data)
-    {
-        $sql = "INSERT INTO bookings_people (booking_id, fullname, phone, date, cccd) 
-                VALUES (:booking_id, :fullname, :phone, :date, :cccd)";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute([
-            'booking_id' => $bookingId,
-            'fullname' => $data['fullname'],
-            'phone' => $data['phone'],
-            'date' => $data['date'] ?? date('Y-m-d'),
-            'cccd' => $data['cccd']
-        ]);
-        return $this->conn->lastInsertId();
-    }
-
+    /**
+     * ✅ XÓA NGƯỜI (Giữ lại những người trong $keepIds)
+     */
     public function deletePeople($bookingId, $keepIds)
     {
         if (empty($keepIds)) {
@@ -391,83 +635,6 @@ class BookingModel
                 WHERE booking_id = ? AND id NOT IN ($placeholders)";
 
         $params = array_merge([$bookingId], $keepIds);
-        $stmt = $this->conn->prepare($sql);
-        return $stmt->execute($params);
-    }
-
-    // ==========================================
-    // SCHEDULES - Lịch trình
-    // ==========================================
-
-    public function updateSchedules($scheduleId, $tourId, $data)
-    {
-        $sql = "UPDATE schedules SET 
-                day_number = :day_number,
-                date = :date,
-                location = :location,
-                activities = :activities,
-                notes = :notes
-                WHERE id = :id AND tour_id = :tour_id";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute([
-            'day_number' => $data['day_number'],
-            'date' => $data['date'],
-            'location' => $data['location'],
-            'activities' => $data['activities'],
-            'notes' => $data['notes'],
-            'id' => $scheduleId,
-            'tour_id' => $tourId
-        ]);
-        return true;
-    }
-
-    public function createSchedules($tourId, $data)
-    {
-        $sql = "INSERT INTO bookings (
-        tour_id, 
-        guide_id, 
-        start_date, 
-        end_date, 
-        special_request, 
-        status,
-        created_at
-    ) VALUES (
-        :tour_id, 
-        :guide_id, 
-        :start_date, 
-        :end_date, 
-        :special_request, 
-        :status,
-        NOW()
-    )";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute([
-            ':tour_id' => $data['tour_id'],
-            ':guide_id' => $data['guide_id'],
-            ':start_date' => $data['start_date'],
-            ':end_date' => $data['end_date'],
-            ':special_request' => $data['special_request'] ?? '',
-            ':status' => $data['status'] ?? 'pending'
-        ]);
-
-        return $this->conn->lastInsertId();
-    }
-
-    public function deleteSchedules($tourId, $keepIds)
-    {
-        if (empty($keepIds)) {
-            $sql = "DELETE FROM schedules WHERE tour_id = :id";
-            $stmt = $this->conn->prepare($sql);
-            return $stmt->execute(['id' => $tourId]);
-        }
-
-        $placeholders = implode(',', array_fill(0, count($keepIds), '?'));
-        $sql = "DELETE FROM schedules 
-            WHERE tour_id = ? AND id NOT IN ($placeholders)";
-
-        $params = array_merge([$tourId], $keepIds);
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute($params);
     }
