@@ -181,11 +181,13 @@ class BookingController
             $this->handlePeople($id);
 
             $_SESSION['success'] = "Cập nhật booking thành công!";
-            header("Location: index.php?act=bookings&msg=success");
+
+            // ✅ THAY ĐỔI: Redirect về chính trang edit với thông báo
+            header("Location: http://localhost/duan1_n1/index.php?act=bookings-edit&id=" . $id);
             exit;
         } catch (Exception $e) {
             $_SESSION['error'] = $e->getMessage();
-            header("Location: index.php?act=booking-edit&id=" . $id);
+            header("Location: index.php?act=booking-edit&id=" . $id . "&error=1");
             exit;
         }
     }
@@ -210,7 +212,12 @@ class BookingController
             $data = [
                 'type' => $transport['type'] ?? '',
                 'company' => $transport['company'] ?? '',
-                'seats' => $transport['seats'] ?? 0
+                'seats' => $transport['seats'] ?? 0,
+                'driver_name' => $transport['driver_name'] ?? '',
+                'driver_phone' => $transport['driver_phone'] ?? '',
+                'driver_cccd' => $transport['driver_cccd'] ?? '',
+                'driver_birthdate' => $transport['driver_birthdate'] ?? '',
+                'license_plate' => $transport['license_plate'] ?? ''
             ];
 
             if (isset($transport['id']) && !empty($transport['id'])) {
@@ -245,7 +252,8 @@ class BookingController
             $data = [
                 'name' => $accommodation['name'] ?? '',
                 'address' => $accommodation['address'] ?? '',
-                'type' => $accommodation['type'] ?? ''
+                'type' => $accommodation['type'] ?? '',
+                'sdt' => $accommodation['sdt'] ?? ''
             ];
 
             if (isset($accommodation['id']) && !empty($accommodation['id'])) {

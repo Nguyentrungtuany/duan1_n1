@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../layout/admin/header.php';
 
+echo json_encode($booking, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 // Decode JSON data nếu cần
 if (isset($booking['tour']) && is_string($booking['tour'])) {
     $booking['tour'] = json_decode($booking['tour'], true);
@@ -43,9 +44,9 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
         <div class="forms">
             <h2 class="title1">Cập nhật booking</h2>
 
-            <!-- ✅ ALERT MESSAGES BÊN TRONG PAGE-WRAPPER -->
+            <!-- ✅ ALERT MESSAGES -->
             <?php if (isset($_SESSION['error'])): ?>
-                <div class="alert alert-danger alert-dismissible" role="alert" style="margin-bottom: 20px;">
+                <div class="alert alert-danger alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -56,7 +57,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
             endif; ?>
 
             <?php if (isset($_SESSION['warning'])): ?>
-                <div class="alert alert-warning alert-dismissible" role="alert" style="margin-bottom: 20px;">
+                <div class="alert alert-warning alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -67,7 +68,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
             endif; ?>
 
             <?php if (isset($_SESSION['success'])): ?>
-                <div class="alert alert-success alert-dismissible" role="alert" style="margin-bottom: 20px;">
+                <div class="alert alert-success alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -77,13 +78,12 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
             <?php unset($_SESSION['success']);
             endif; ?>
 
-            <div class="form-grids row widget-shadow" data-example-id="basic-forms">
+            <div class="form-grids row widget-shadow">
                 <div class="form-title">
                     <h4>Form cập nhật thông tin booking</h4>
                 </div>
                 <div class="form-body">
                     <form method="POST" action="<?php echo BASE_URL; ?>index.php?act=bookings-update" enctype="multipart/form-data">
-                        <!-- Hidden ID -->
                         <input type="hidden" name="id" value="<?php echo isset($booking['id']) ? $booking['id'] : ''; ?>">
 
                         <h4 class="text-primary" style="margin-top: 20px; margin-bottom: 15px; border-bottom: 2px solid #337ab7; padding-bottom: 10px;">
@@ -101,9 +101,9 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                         <!-- Danh mục -->
                         <div class="form-group">
                             <label for="category_id">Danh mục <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="category_id" category_id="category_id"
+                            <input type="text" class="form-control" id="category_id"
                                 value="<?php echo isset($booking['category']['name']) ? htmlspecialchars($booking['category']['name']) : ''; ?>"
-                                placeholder="Nhập tên tour" disabled>
+                                disabled>
                         </div>
 
                         <!-- HDV -->
@@ -116,13 +116,12 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                         <?= isset($booking['guide_id']) && $booking['guide_id'] == $gui['id'] ? 'selected' : '' ?>>
                                         <?= htmlspecialchars($gui['full_name']) ?>
                                         (<?= htmlspecialchars($gui['phone']) ?>)
-                                        (<?= htmlspecialchars($gui['email']) ?>)
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
 
-                        <!-- Điểm đến (Tour) -->
+                        <!-- Điểm đến -->
                         <div class="form-group">
                             <label for="tour_id">Điểm đến <span class="text-danger">*</span></label>
                             <select class="form-control" id="tour_id" name="tour_id" required>
@@ -153,19 +152,17 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
 
                         <!-- Mô tả -->
                         <div class="form-group">
-                            <label for="description">Mô tả <span class="text-danger">*</span></label>
-                            <textarea class="form-control" id="description" name="description" rows="4"
-                                placeholder="Nhập mô tả tour"><?php echo isset($booking['tour']['description']) ? htmlspecialchars($booking['tour']['description']) : ''; ?></textarea>
+                            <label for="description">Mô tả</label>
+                            <textarea class="form-control" id="description" name="description" rows="4"><?php echo isset($booking['tour']['description']) ? htmlspecialchars($booking['tour']['description']) : ''; ?></textarea>
                         </div>
 
-                        <!-- Yêu cầu -->
+                        <!-- Yêu cầu đặc biệt -->
                         <div class="form-group">
                             <label for="special_request">Yêu cầu đặc biệt</label>
-                            <textarea class="form-control" id="special_request" name="special_request" rows="4"
-                                placeholder="Nhập yêu cầu đặc biệt"><?php echo isset($booking['special_request']) ? htmlspecialchars($booking['special_request']) : ''; ?></textarea>
+                            <textarea class="form-control" id="special_request" name="special_request" rows="3"><?php echo isset($booking['special_request']) ? htmlspecialchars($booking['special_request']) : ''; ?></textarea>
                         </div>
 
-                        <!-- Ngày bắt đầu và Ngày kết thúc -->
+                        <!-- Ngày bắt đầu và kết thúc -->
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -188,27 +185,31 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                             <label for="price">Giá (VNĐ) <span class="text-danger">*</span></label>
                             <input type="number" class="form-control" id="price" name="price"
                                 value="<?php echo isset($booking['tour']['price']) ? $booking['tour']['price'] : ''; ?>"
-                                placeholder="Nhập giá tour" min="0" required>
+                                min="0" required>
                         </div>
 
                         <!-- Trạng thái -->
-                        <div class="form-group">
-                            <label for="status">Trạng thái</label>
-                            <select class="form-control" id="status" name="status">
-                                <option value="pending" <?php echo (isset($booking['status']) && $booking['status'] == 'pending') ? 'selected' : ''; ?>>Đang chờ xử lý</option>
-                                <option value="confirmed" <?php echo (isset($booking['status']) && $booking['status'] == 'confirmed') ? 'selected' : ''; ?>>Đã xác nhận</option>
-                                <option value="cancelled" <?php echo (isset($booking['status']) && $booking['status'] == 'cancelled') ? 'selected' : ''; ?>>Đã hủy</option>
-                                <option value="completed" <?php echo (isset($booking['status']) && $booking['status'] == 'completed') ? 'selected' : ''; ?>>Hoàn thành</option>
-                            </select>
-                        </div>
-
-                        <!-- Chuyển tiền -->
-                        <div class="form-group">
-                            <label for="payment_status">Trạng thái thanh toán</label>
-                            <select class="form-control" id="payment_status" name="payment_status">
-                                <option value="unpaid" <?php echo (isset($booking['payment_status']) && $booking['payment_status'] == 'unpaid') ? 'selected' : ''; ?>>Chưa thanh toán</option>
-                                <option value="paid" <?php echo (isset($booking['payment_status']) && $booking['payment_status'] == 'paid') ? 'selected' : ''; ?>>Đã thanh toán</option>
-                            </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="status">Trạng thái</label>
+                                    <select class="form-control" id="status" name="status">
+                                        <option value="pending" <?php echo (isset($booking['status']) && $booking['status'] == 'pending') ? 'selected' : ''; ?>>Đang chờ</option>
+                                        <option value="confirmed" <?php echo (isset($booking['status']) && $booking['status'] == 'confirmed') ? 'selected' : ''; ?>>Đã xác nhận</option>
+                                        <option value="cancelled" <?php echo (isset($booking['status']) && $booking['status'] == 'cancelled') ? 'selected' : ''; ?>>Đã hủy</option>
+                                        <option value="completed" <?php echo (isset($booking['status']) && $booking['status'] == 'completed') ? 'selected' : ''; ?>>Hoàn thành</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="payment_status">Thanh toán</label>
+                                    <select class="form-control" id="payment_status" name="payment_status">
+                                        <option value="unpaid" <?php echo (isset($booking['payment_status']) && $booking['payment_status'] == 'unpaid') ? 'selected' : ''; ?>>Chưa thanh toán</option>
+                                        <option value="paid" <?php echo (isset($booking['payment_status']) && $booking['payment_status'] == 'paid') ? 'selected' : ''; ?>>Đã thanh toán</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Số chỗ tối đa -->
@@ -216,53 +217,40 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                             <label for="max_people">Số chỗ tối đa <span class="text-danger">*</span></label>
                             <input type="number" class="form-control" id="max_people" name="max_people"
                                 value="<?php echo isset($booking['max_people']) ? $booking['max_people'] : 30; ?>"
-                                placeholder="Nhập số chỗ tối đa" min="1" max="999" required>
-                            <small class="form-text text-muted">
-                                <i class="fa fa-info-circle"></i> Giới hạn số người tối đa có thể tham gia tour này
+                                min="1" max="999" required>
+                            <small class="text-muted">
+                                <i class="fa fa-info-circle"></i> Giới hạn số người tối đa
                             </small>
                         </div>
 
-                        <!-- ✅ HIỂN THỊ THÔNG TIN CHỖ TRỐNG -->
+                        <!-- Thông tin chỗ trống -->
                         <?php if (isset($seatInfo)): ?>
-                            <div class="alert <?= $seatInfo['available_seats'] > 0 ? 'alert-success' : 'alert-danger' ?>"
-                                style="margin-bottom: 20px; border-radius: 5px;">
-                                <h4 style="margin-top: 0;">
-                                    <i class="fa fa-users"></i> Thông tin chỗ ngồi
-                                </h4>
+                            <div class="alert <?= $seatInfo['available_seats'] > 0 ? 'alert-success' : 'alert-danger' ?>">
+                                <h4><i class="fa fa-users"></i> Thông tin chỗ ngồi</h4>
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <strong>Tổng số chỗ:</strong>
-                                        <span class="badge" style="font-size: 14px; background-color: #337ab7;">
+                                        <strong>Tổng:</strong>
+                                        <span class="badge" style="font-size: 14px; background: #337ab7;">
                                             <?= $seatInfo['max_people'] ?> chỗ
                                         </span>
                                     </div>
                                     <div class="col-md-4">
                                         <strong>Đã đặt:</strong>
-                                        <span class="badge" style="font-size: 14px; background-color: #f0ad4e;">
+                                        <span class="badge" style="font-size: 14px; background: #f0ad4e;">
                                             <?= $seatInfo['current_people'] ?> người
                                         </span>
                                     </div>
                                     <div class="col-md-4">
                                         <strong>Còn trống:</strong>
-                                        <span class="badge" style="font-size: 14px; background-color: <?= $seatInfo['available_seats'] > 0 ? '#5cb85c' : '#d9534f' ?>;">
+                                        <span class="badge" style="font-size: 14px; background: <?= $seatInfo['available_seats'] > 0 ? '#5cb85c' : '#d9534f' ?>;">
                                             <?= $seatInfo['available_seats'] ?> chỗ
                                         </span>
                                     </div>
                                 </div>
-                                <?php if ($seatInfo['available_seats'] <= 0): ?>
-                                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.3);">
-                                        <i class="fa fa-exclamation-triangle"></i>
-                                        <strong>Tour đã đầy!</strong> Không thể thêm người mới.
-                                    </div>
-                                <?php elseif ($seatInfo['available_seats'] <= 5): ?>
-                                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.3);">
-                                        <i class="fa fa-warning"></i>
-                                        <strong>Sắp đầy!</strong> Chỉ còn <?= $seatInfo['available_seats'] ?> chỗ trống.
-                                    </div>
-                                <?php endif; ?>
                             </div>
                         <?php endif; ?>
 
+                        <!-- PHƯƠNG TIỆN -->
                         <!-- PHƯƠNG TIỆN -->
                         <h4 class="text-success" style="margin-top: 30px; margin-bottom: 15px; border-bottom: 2px solid #5cb85c; padding-bottom: 10px;">
                             <i class="fa fa-bus"></i> Phương tiện di chuyển
@@ -272,7 +260,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                             <?php
                             $transports = isset($booking['transports']) ? $booking['transports'] : [];
                             if (empty($transports)) {
-                                $transports = [['type' => '', 'seats' => '', 'company' => '']];
+                                $transports = [['type' => '', 'seats' => '', 'company' => '', 'driver_name' => '', 'driver_phone' => '', 'driver_cccd' => '', 'driver_birthdate' => '', 'license_plate' => '']];
                             }
                             foreach ($transports as $index => $transport):
                             ?>
@@ -280,17 +268,17 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                     <?php if (isset($transport['id']) && !empty($transport['id'])): ?>
                                         <input type="hidden" name="transports[<?= $index ?>][id]" value="<?= $transport['id'] ?>">
                                     <?php endif; ?>
-                                    <h5 style="margin-top: 0;">Phương tiện #<?= $index + 1 ?></h5>
+                                    <h5>Phương tiện #<?= $index + 1 ?></h5>
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label>Loại phương tiện</label>
+                                                <label>Loại</label>
                                                 <input type="text" class="form-control" name="transports[<?= $index ?>][type]"
                                                     value="<?= isset($transport['type']) ? htmlspecialchars($transport['type']) : '' ?>"
                                                     placeholder="VD: Xe du lịch 45 chỗ">
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <div class="form-group">
                                                 <label>Số chỗ</label>
                                                 <input type="number" class="form-control" name="transports[<?= $index ?>][seats]"
@@ -298,21 +286,63 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                                     placeholder="45">
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Công ty</label>
                                                 <input type="text" class="form-control" name="transports[<?= $index ?>][company]"
                                                     value="<?= isset($transport['company']) ? htmlspecialchars($transport['company']) : '' ?>"
-                                                    placeholder="VD: Hoàng Long Travel">
+                                                    placeholder="VD: Hoàng Long">
                                             </div>
                                         </div>
-                                        <div class="col-md-1">
-                                            <label>&nbsp;</label>
-                                            <button type="button" class="btn btn-danger btn-sm form-control remove-transport" <?= $index == 0 ? 'style="display:none;"' : '' ?>>
-                                                <i class="fa fa-trash"></i>
-                                            </button>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Biển số xe</label>
+                                                <input type="text" class="form-control" name="transports[<?= $index ?>][license_plate]"
+                                                    value="<?= isset($transport['license_plate']) ? htmlspecialchars($transport['license_plate']) : '' ?>"
+                                                    placeholder="29A-12345">
+                                            </div>
                                         </div>
                                     </div>
+
+                                    <!-- THÔNG TIN TÀI XẾ -->
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Tên tài xế</label>
+                                                <input type="text" class="form-control" name="transports[<?= $index ?>][driver_name]"
+                                                    value="<?= isset($transport['driver_name']) ? htmlspecialchars($transport['driver_name']) : '' ?>"
+                                                    placeholder="Nguyễn Văn Tài">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>SĐT tài xế</label>
+                                                <input type="text" class="form-control" name="transports[<?= $index ?>][driver_phone]"
+                                                    value="<?= isset($transport['driver_phone']) ? htmlspecialchars($transport['driver_phone']) : '' ?>"
+                                                    placeholder="0123456789">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>CCCD tài xế</label>
+                                                <input type="text" class="form-control" name="transports[<?= $index ?>][driver_cccd]"
+                                                    value="<?= isset($transport['driver_cccd']) ? htmlspecialchars($transport['driver_cccd']) : '' ?>"
+                                                    placeholder="001234567890">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Ngày sinh</label>
+                                                <input type="date" class="form-control" name="transports[<?= $index ?>][driver_birthdate]"
+                                                    value="<?= isset($transport['driver_birthdate']) ? $transport['driver_birthdate'] : '' ?>">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" class="btn btn-danger btn-sm remove-transport"
+                                        <?= $index == 0 ? 'style="display:none;"' : '' ?>>
+                                        <i class="fa fa-trash"></i> Xóa
+                                    </button>
                                 </div>
                             <?php endforeach; ?>
                         </div>
@@ -322,7 +352,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
 
                         <!-- KHÁCH SẠN -->
                         <h4 class="text-warning" style="margin-top: 30px; margin-bottom: 15px; border-bottom: 2px solid #f0ad4e; padding-bottom: 10px;">
-                            <i class="fa fa-hotel"></i> Khách sạn / Nơi lưu trú
+                            <i class="fa fa-hotel"></i> Khách sạn
                         </h4>
 
                         <div id="accommodations-container">
@@ -337,21 +367,21 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                     <?php if (isset($accommodation['id']) && !empty($accommodation['id'])): ?>
                                         <input type="hidden" name="accommodations[<?= $index ?>][id]" value="<?= $accommodation['id'] ?>">
                                     <?php endif; ?>
-                                    <h5 style="margin-top: 0;">Khách sạn #<?= $index + 1 ?></h5>
+                                    <h5>Khách sạn #<?= $index + 1 ?></h5>
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label>Tên khách sạn</label>
+                                                <label>Tên</label>
                                                 <input type="text" class="form-control" name="accommodations[<?= $index ?>][name]"
                                                     value="<?= isset($accommodation['name']) ? htmlspecialchars($accommodation['name']) : '' ?>"
-                                                    placeholder="VD: Hạ Long Bay Resort">
+                                                    placeholder="VD: Hạ Long Resort">
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Loại</label>
                                                 <select class="form-control" name="accommodations[<?= $index ?>][type]">
-                                                    <option value="">Chọn loại</option>
+                                                    <option value="">Chọn</option>
                                                     <option value="Hotel" <?= (isset($accommodation['type']) && $accommodation['type'] == 'Hotel') ? 'selected' : '' ?>>Hotel</option>
                                                     <option value="Resort" <?= (isset($accommodation['type']) && $accommodation['type'] == 'Resort') ? 'selected' : '' ?>>Resort</option>
                                                     <option value="Homestay" <?= (isset($accommodation['type']) && $accommodation['type'] == 'Homestay') ? 'selected' : '' ?>>Homestay</option>
@@ -363,12 +393,21 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                                 <label>Địa chỉ</label>
                                                 <input type="text" class="form-control" name="accommodations[<?= $index ?>][address]"
                                                     value="<?= isset($accommodation['address']) ? htmlspecialchars($accommodation['address']) : '' ?>"
-                                                    placeholder="VD: Bãi Cháy, Quảng Ninh">
+                                                    placeholder="Bãi Cháy, Quảng Ninh">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Số điện thoại</label>
+                                                <input type="text" class="form-control" name="accommodations[<?= $index ?>][sdt]"
+                                                    value="<?= isset($accommodation['sdt']) ? htmlspecialchars($accommodation['sdt']) : '' ?>"
+                                                    placeholder="0123456789">
                                             </div>
                                         </div>
                                         <div class="col-md-1">
                                             <label>&nbsp;</label>
-                                            <button type="button" class="btn btn-danger btn-sm form-control remove-accommodation" <?= $index == 0 ? 'style="display:none;"' : '' ?>>
+                                            <button type="button" class="btn btn-danger btn-sm form-control remove-accommodation"
+                                                <?= $index == 0 ? 'style="display:none;"' : '' ?>>
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </div>
@@ -382,7 +421,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
 
                         <!-- LỊCH TRÌNH -->
                         <h4 class="text-info" style="margin-top: 30px; margin-bottom: 15px; border-bottom: 2px solid #5bc0de; padding-bottom: 10px;">
-                            <i class="fa fa-calendar"></i> Lịch trình chi tiết
+                            <i class="fa fa-calendar"></i> Lịch trình
                         </h4>
 
                         <div id="schedules-container">
@@ -397,7 +436,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                     <?php if (isset($schedule['id']) && !empty($schedule['id'])): ?>
                                         <input type="hidden" name="schedules[<?= $index ?>][id]" value="<?= $schedule['id'] ?>">
                                     <?php endif; ?>
-                                    <h5 style="margin-top: 0;">Ngày <?= isset($schedule['day_number']) ? $schedule['day_number'] : ($index + 1) ?></h5>
+                                    <h5>Ngày <?= isset($schedule['day_number']) ? $schedule['day_number'] : ($index + 1) ?></h5>
                                     <input type="hidden" name="schedules[<?= $index ?>][day_number]" value="<?= $index + 1 ?>">
                                     <div class="row">
                                         <div class="col-md-3">
@@ -418,8 +457,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Hoạt động</label>
-                                                <textarea class="form-control" name="schedules[<?= $index ?>][activities]" rows="2"
-                                                    placeholder="Mô tả hoạt động trong ngày" disabled><?= isset($schedule['activities']) ? htmlspecialchars($schedule['activities']) : '' ?></textarea>
+                                                <textarea class="form-control" name="schedules[<?= $index ?>][activities]" rows="2" disabled><?= isset($schedule['activities']) ? htmlspecialchars($schedule['activities']) : '' ?></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -427,18 +465,15 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                         <label>Ghi chú</label>
                                         <input type="text" class="form-control" name="schedules[<?= $index ?>][notes]"
                                             value="<?= isset($schedule['notes']) ? htmlspecialchars($schedule['notes']) : '' ?>"
-                                            placeholder="VD: Mang theo CMND/CCCD" disabled>
+                                            placeholder="Mang CMND/CCCD" disabled>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
                         </div>
 
-                        <!-- Khách hàng -->
+                        <!-- KHÁCH HÀNG -->
                         <h4 class="text-info" style="margin-top: 30px; margin-bottom: 15px; border-bottom: 2px solid #5bc0de; padding-bottom: 10px;">
-                            <i class="fa fa-users"></i> Danh sách khách hàng tham gia
-                            <small class="text-muted" style="font-size: 12px; font-weight: normal;">
-                                (Chọn từ database hoặc thêm mới)
-                            </small>
+                            <i class="fa fa-users"></i> Danh sách khách hàng
                         </h4>
 
                         <div id="people-container">
@@ -450,11 +485,11 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                             foreach ($peoples as $index => $people):
                             ?>
                                 <div class="people-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #f0f8ff;">
-                                    <h5 style="margin-top: 0; display: flex; align-items: center; justify-content: space-between;">
+                                    <h5 style="display: flex; justify-content: space-between;">
                                         <span>
                                             Khách hàng #<?= $index + 1 ?>
-                                            <span class="badge person-type-badge" style="background-color: #5cb85c; margin-left: 10px; font-size: 11px;">
-                                                <?= !empty($people['id']) ? 'Đã có trong hệ thống' : 'Thêm mới' ?>
+                                            <span class="badge person-type-badge" style="background: #5cb85c; font-size: 11px;">
+                                                <?= !empty($people['id']) ? 'Đã có' : 'Mới' ?>
                                             </span>
                                         </span>
                                         <button type="button" class="btn btn-danger btn-sm remove-people"
@@ -463,27 +498,23 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                         </button>
                                     </h5>
 
-                                    <!-- Hidden ID (nếu đã có trong booking) -->
                                     <?php if (isset($people['id']) && !empty($people['id'])): ?>
                                         <input type="hidden" name="peoples[<?= $index ?>][id]" value="<?= $people['id'] ?>">
                                     <?php endif; ?>
 
-                                    <!-- Dropdown chọn người có sẵn -->
+                                    <!-- Dropdown chọn người -->
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>
-                                                    <i class="fa fa-database"></i> Chọn từ danh sách có sẵn
-                                                    <small class="text-muted">(Chỉ hiện những người không trùng lịch)</small>
+                                                    <i class="fa fa-database"></i> Chọn từ danh sách
+                                                    <small class="text-muted">(Không trùng lịch)</small>
                                                 </label>
                                                 <select class="form-control person-selector"
                                                     name="peoples[<?= $index ?>][existing_id]"
-                                                    data-index="<?= $index ?>"
-                                                    style="font-weight: 500;">
-                                                    <option value="new">➕ Thêm người mới (nhập thông tin bên dưới)</option>
-
+                                                    data-index="<?= $index ?>">
+                                                    <option value="new">➕ Thêm mới</option>
                                                     <?php
-                                                    // ✅ RENDER SẴN DANH SÁCH NGƯỜI
                                                     if (isset($availablePeople) && !empty($availablePeople)):
                                                         foreach ($availablePeople as $person):
                                                     ?>
@@ -493,8 +524,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                                                 data-date="<?= htmlspecialchars($person['date'] ?? '') ?>"
                                                                 data-cccd="<?= htmlspecialchars($person['cccd'] ?? '') ?>">
                                                                 <?= htmlspecialchars($person['fullname']) ?> -
-                                                                <?= htmlspecialchars($person['phone'] ?? 'N/A') ?> -
-                                                                <?= htmlspecialchars($person['date'] ?? 'N/A') ?>
+                                                                <?= htmlspecialchars($person['phone'] ?? 'N/A') ?>
                                                                 (<?= $person['total_bookings'] ?? 0 ?> tour)
                                                             </option>
                                                     <?php
@@ -502,28 +532,16 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                                     endif;
                                                     ?>
                                                 </select>
-
-                                                <?php if (empty($availablePeople)): ?>
-                                                    <small class="text-warning" style="display: block; margin-top: 5px;">
-                                                        <i class="fa fa-exclamation-triangle"></i>
-                                                        Không có người nào khả dụng trong thời gian này
-                                                    </small>
-                                                <?php else: ?>
-                                                    <small class="text-success" style="display: block; margin-top: 5px;">
-                                                        <i class="fa fa-check-circle"></i>
-                                                        Tìm thấy <?= count($availablePeople) ?> người khả dụng
-                                                    </small>
-                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Form nhập thông tin (hiện khi chọn "Thêm mới") -->
+                                    <!-- Form nhập -->
                                     <div class="person-form-fields">
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label>Họ và tên <span class="text-danger">*</span></label>
+                                                    <label>Họ tên <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control person-fullname"
                                                         name="peoples[<?= $index ?>][fullname]"
                                                         value="<?= isset($people['fullname']) ? htmlspecialchars($people['fullname']) : '' ?>"
@@ -540,7 +558,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label>Số điện thoại <span class="text-danger">*</span></label>
+                                                    <label>SĐT <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control person-phone"
                                                         name="peoples[<?= $index ?>][phone]"
                                                         value="<?= isset($people['phone']) ? htmlspecialchars($people['phone']) : '' ?>"
@@ -549,7 +567,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label>CCCD/CMND <span class="text-danger">*</span></label>
+                                                    <label>CCCD <span class="text-danger">*</span></label>
                                                     <input type="text" class="form-control person-cccd"
                                                         name="peoples[<?= $index ?>][cccd]"
                                                         value="<?= isset($people['cccd']) ? htmlspecialchars($people['cccd']) : '' ?>"
@@ -562,16 +580,16 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                             <?php endforeach; ?>
                         </div>
 
-                        <button type="button" class="btn btn-info btn-sm" id="add-people" style="margin-top: 10px;">
+                        <button type="button" class="btn btn-info btn-sm" id="add-people">
                             <i class="fa fa-plus"></i> Thêm khách hàng
                         </button>
 
                         <!-- Buttons -->
                         <div class="form-group" style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd;">
                             <button type="submit" class="btn btn-primary" name="submit">
-                                <i class="fa fa-save"></i> Cập nhật Tour
+                                <i class="fa fa-save"></i> Cập nhật
                             </button>
-                            <a href="index.php?act=QlTour" class="btn btn-default">
+                            <a href="index.php?act=bookings" class="btn btn-default">
                                 <i class="fa fa-arrow-left"></i> Quay lại
                             </a>
                         </div>
@@ -581,111 +599,237 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
         </div>
     </div>
 </div>
+
 <script>
     (function() {
         'use strict';
 
-        console.log('🚀 Script khởi động...');
-
-        // Kiểm tra trang
-        const peopleContainer = document.getElementById('people-container');
-        if (!peopleContainer) {
-            console.log('⏭️ Không phải trang booking-edit');
-            return;
-        }
-
+        // Khởi tạo biến đếm
+        let transportCount = document.querySelectorAll('.transport-item').length;
+        let accommodationCount = document.querySelectorAll('.accommodation-item').length;
+        let scheduleCount = document.querySelectorAll('.schedule-item').length;
         let peopleCount = document.querySelectorAll('.people-item').length;
 
-        // ==========================================
-        // EVENT: CHỌN NGƯỜI TỪ DROPDOWN
-        // ==========================================
-        document.addEventListener('change', function(e) {
-            if (!e.target.classList.contains('person-selector')) return;
+        // ===== AUTO-FILL KHI CHỌN TOUR =====
+        document.getElementById('tour_id').addEventListener('change', function() {
+            const opt = this.options[this.selectedIndex];
+            if (!opt.value) return;
 
-            const select = e.target;
-            const peopleItem = select.closest('.people-item');
-            if (!peopleItem) return;
+            const data = {
+                name: opt.getAttribute('data-name'),
+                price: opt.getAttribute('data-price'),
+                description: opt.getAttribute('data-description'),
+                startDate: opt.getAttribute('data-start'),
+                endDate: opt.getAttribute('data-end'),
+                schedulesData: opt.getAttribute('data-schedules')
+            };
 
-            const formFields = peopleItem.querySelector('.person-form-fields');
-            const typeBadge = peopleItem.querySelector('.person-type-badge');
+            if (data.name) document.getElementById('name').value = data.name;
+            if (data.price) document.getElementById('price').value = data.price;
+            if (data.description) document.getElementById('description').value = data.description;
+            if (data.startDate) document.getElementById('start_date').value = data.startDate;
+            if (data.endDate) document.getElementById('end_date').value = data.endDate;
 
-            if (select.value === 'new') {
-                // Chọn "Thêm mới"
-                formFields.style.display = 'block';
-                typeBadge.textContent = 'Thêm mới';
-                typeBadge.style.backgroundColor = '#5cb85c';
-
-                // Xóa dữ liệu cũ
-                peopleItem.querySelector('.person-fullname').value = '';
-                peopleItem.querySelector('.person-phone').value = '';
-                peopleItem.querySelector('.person-date').value = '';
-                peopleItem.querySelector('.person-cccd').value = '';
-
-                // Bật input
-                toggleFields(peopleItem, false);
-            } else {
-                // Chọn người có sẵn
-                const opt = select.options[select.selectedIndex];
-
-                // Điền dữ liệu từ data-*
-                peopleItem.querySelector('.person-fullname').value = opt.dataset.fullname || '';
-                peopleItem.querySelector('.person-phone').value = opt.dataset.phone || '';
-                peopleItem.querySelector('.person-date').value = opt.dataset.date || '';
-                peopleItem.querySelector('.person-cccd').value = opt.dataset.cccd || '';
-
-                // Ẩn form
-                formFields.style.display = 'none';
-                typeBadge.textContent = 'Từ database';
-                typeBadge.style.backgroundColor = '#f0ad4e';
-
-                // Khóa input
-                toggleFields(peopleItem, true);
+            if (data.schedulesData && data.schedulesData !== 'null' && data.schedulesData !== '[]') {
+                try {
+                    const schedules = JSON.parse(data.schedulesData);
+                    if (schedules && Array.isArray(schedules) && schedules.length > 0) {
+                        updateSchedules(schedules);
+                    }
+                } catch (e) {
+                    console.error('❌ Lỗi parse schedules:', e);
+                }
             }
         });
 
-        function toggleFields(peopleItem, disabled) {
-            const fields = peopleItem.querySelectorAll('.person-fullname, .person-phone, .person-date, .person-cccd');
-            fields.forEach(field => {
-                field.disabled = disabled;
-                field.required = !disabled;
+        // ===== CẬP NHẬT LỊCH TRÌNH =====
+        function updateSchedules(schedules) {
+            const container = document.getElementById('schedules-container');
+            container.innerHTML = '';
+
+            schedules.forEach((schedule, index) => {
+                const html = `
+                <div class="schedule-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #f0f8ff;">
+                    <h5>Ngày ${index + 1}</h5>
+                    <input type="hidden" name="schedules[${index}][day_number]" value="${index + 1}">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Ngày</label>
+                                <input type="date" class="form-control" name="schedules[${index}][date]" 
+                                    value="${schedule.date || ''}" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Địa điểm</label>
+                                <input type="text" class="form-control" name="schedules[${index}][location]" 
+                                    value="${escapeHtml(schedule.location || '')}" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Hoạt động</label>
+                                <textarea class="form-control" name="schedules[${index}][activities]" rows="2" disabled>${escapeHtml(schedule.activities || '')}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Ghi chú</label>
+                        <input type="text" class="form-control" name="schedules[${index}][notes]" 
+                            value="${escapeHtml(schedule.notes || '')}" disabled>
+                    </div>
+                </div>
+            `;
+                container.insertAdjacentHTML('beforeend', html);
             });
+            scheduleCount = schedules.length;
         }
 
-        // ==========================================
-        // EVENT: THÊM NGƯỜI MỚI
-        // ==========================================
-        const addBtn = document.getElementById('add-people');
-        if (addBtn) {
-            addBtn.addEventListener('click', function() {
-                const maxPeople = parseInt(document.getElementById('max_people')?.value) || 30;
-                const currentPeople = document.querySelectorAll('.people-item').length;
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
 
-                if (currentPeople >= maxPeople) {
-                    alert(`⚠️ Đã đạt giới hạn ${maxPeople} người!`);
-                    return;
-                }
+        // ===== THÊM PHƯƠNG TIỆN =====
+        document.getElementById('add-transport').addEventListener('click', function() {
+            const container = document.getElementById('transports-container');
+            const html = `
+    <div class="transport-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #f9f9f9;">
+        <h5>Phương tiện #${transportCount + 1}</h5>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Loại</label>
+                    <input type="text" class="form-control" name="transports[${transportCount}][type]" placeholder="Xe du lịch 45 chỗ">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>Số chỗ</label>
+                    <input type="number" class="form-control" name="transports[${transportCount}][seats]" placeholder="45">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Công ty</label>
+                    <input type="text" class="form-control" name="transports[${transportCount}][company]" placeholder="Hoàng Long">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Biển số xe</label>
+                    <input type="text" class="form-control" name="transports[${transportCount}][license_plate]" placeholder="29A-12345">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Tên tài xế</label>
+                    <input type="text" class="form-control" name="transports[${transportCount}][driver_name]" placeholder="Nguyễn Văn Tài">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>SĐT tài xế</label>
+                    <input type="text" class="form-control" name="transports[${transportCount}][driver_phone]" placeholder="0123456789">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>CCCD tài xế</label>
+                    <input type="text" class="form-control" name="transports[${transportCount}][driver_cccd]" placeholder="001234567890">
+                </div>
+            </div>
+            
+        </div>
+        <button type="button" class="btn btn-danger btn-sm remove-transport">
+            <i class="fa fa-trash"></i> Xóa
+        </button>
+    </div>
+`;
+            container.insertAdjacentHTML('beforeend', html);
+            transportCount++;
+        });
 
-                // Clone dropdown options từ dropdown đầu tiên
-                const firstSelect = document.querySelector('.person-selector');
-                let optionsHtml = '';
-                if (firstSelect) {
-                    Array.from(firstSelect.options).forEach(opt => {
-                        optionsHtml += `<option value="${opt.value}"
-                        data-fullname="${opt.dataset.fullname || ''}"
-                        data-phone="${opt.dataset.phone || ''}"
-                        data-date="${opt.dataset.date || ''}"
-                        data-cccd="${opt.dataset.cccd || ''}">${opt.textContent}</option>`;
-                    });
-                } else {
-                    optionsHtml = '<option value="new">➕ Thêm mới</option>';
-                }
+        // ===== THÊM KHÁCH SẠN =====
+        document.getElementById('add-accommodation').addEventListener('click', function() {
+            const container = document.getElementById('accommodations-container');
+            const html = `
+    <div class="accommodation-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #fffbf0;">
+        <h5>Khách sạn #${accommodationCount + 1}</h5>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Tên</label>
+                    <input type="text" class="form-control" name="accommodations[${accommodationCount}][name]" placeholder="Hạ Long Resort">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Loại</label>
+                    <select class="form-control" name="accommodations[${accommodationCount}][type]">
+                        <option value="">Chọn</option>
+                        <option value="Hotel">Hotel</option>
+                        <option value="Resort">Resort</option>
+                        <option value="Homestay">Homestay</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Địa chỉ</label>
+                    <input type="text" class="form-control" name="accommodations[${accommodationCount}][address]" placeholder="Bãi Cháy">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label>SĐT</label>
+                    <input type="text" class="form-control" name="accommodations[${accommodationCount}][sdt]" placeholder="0123456789">
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-danger btn-sm remove-accommodation">
+            <i class="fa fa-trash"></i> Xóa
+        </button>
+    </div>
+`;
+            container.insertAdjacentHTML('beforeend', html);
+            accommodationCount++;
+        });
 
-                const html = `
+        // ===== THÊM KHÁCH HÀNG =====
+        document.getElementById('add-people').addEventListener('click', function() {
+            const maxPeople = parseInt(document.getElementById('max_people')?.value) || 30;
+            const currentPeople = document.querySelectorAll('.people-item').length;
+
+            if (currentPeople >= maxPeople) {
+                alert(`⚠️ Đã đạt giới hạn ${maxPeople} người!`);
+                return;
+            }
+
+            const firstSelect = document.querySelector('.person-selector');
+            let optionsHtml = '<option value="new">➕ Thêm mới</option>';
+
+            if (firstSelect) {
+                Array.from(firstSelect.options).slice(1).forEach(opt => {
+                    optionsHtml += `<option value="${opt.value}"
+                    data-fullname="${opt.dataset.fullname || ''}"
+                    data-phone="${opt.dataset.phone || ''}"
+                    data-date="${opt.dataset.date || ''}"
+                    data-cccd="${opt.dataset.cccd || ''}">${opt.textContent}</option>`;
+                });
+            }
+
+            const html = `
             <div class="people-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #f0f8ff;">
-                <h5 style="margin-top: 0; display: flex; justify-content: space-between;">
+                <h5 style="display: flex; justify-content: space-between;">
                     <span>
                         Khách hàng #${peopleCount + 1}
-                        <span class="badge person-type-badge" style="background-color: #5cb85c; margin-left: 10px; font-size: 11px;">Thêm mới</span>
+                        <span class="badge person-type-badge" style="background: #5cb85c; font-size: 11px;">Mới</span>
                     </span>
                     <button type="button" class="btn btn-danger btn-sm remove-people">
                         <i class="fa fa-trash"></i> Xóa
@@ -730,46 +874,82 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                     </div>
                 </div>
             </div>
-            `;
+        `;
+            document.getElementById('people-container').insertAdjacentHTML('beforeend', html);
+            peopleCount++;
+        });
 
-                peopleContainer.insertAdjacentHTML('beforeend', html);
-                peopleCount++;
+        // ===== XỬ LÝ KHI CHỌN NGƯỜI =====
+        document.addEventListener('change', function(e) {
+            if (!e.target.classList.contains('person-selector')) return;
+
+            const select = e.target;
+            const item = select.closest('.people-item');
+            const formFields = item.querySelector('.person-form-fields');
+            const badge = item.querySelector('.person-type-badge');
+
+            if (select.value === 'new') {
+                formFields.style.display = 'block';
+                badge.textContent = 'Mới';
+                badge.style.backgroundColor = '#5cb85c';
+
+                item.querySelector('.person-fullname').value = '';
+                item.querySelector('.person-phone').value = '';
+                item.querySelector('.person-date').value = '';
+                item.querySelector('.person-cccd').value = '';
+
+                toggleFields(item, false);
+            } else {
+                const opt = select.options[select.selectedIndex];
+
+                item.querySelector('.person-fullname').value = opt.dataset.fullname || '';
+                item.querySelector('.person-phone').value = opt.dataset.phone || '';
+                item.querySelector('.person-date').value = opt.dataset.date || '';
+                item.querySelector('.person-cccd').value = opt.dataset.cccd || '';
+
+                formFields.style.display = 'none';
+                badge.textContent = 'Từ DB';
+                badge.style.backgroundColor = '#f0ad4e';
+
+                toggleFields(item, true);
+            }
+        });
+
+        function toggleFields(item, disabled) {
+            const fields = item.querySelectorAll('.person-fullname, .person-phone, .person-date, .person-cccd');
+            fields.forEach(field => {
+                field.disabled = disabled;
+                field.required = !disabled;
             });
         }
 
-        // ==========================================
-        // EVENT: XÓA NGƯỜI
-        // ==========================================
+        // ===== XÓA ITEMS =====
         document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-transport') || e.target.closest('.remove-transport')) {
+                e.target.closest('.transport-item')?.remove();
+            }
+            if (e.target.classList.contains('remove-accommodation') || e.target.closest('.remove-accommodation')) {
+                e.target.closest('.accommodation-item')?.remove();
+            }
             if (e.target.classList.contains('remove-people') || e.target.closest('.remove-people')) {
-                const item = e.target.closest('.people-item');
-                if (item && confirm('⚠️ Xác nhận xóa?')) {
-                    item.remove();
+                if (confirm('⚠️ Xác nhận xóa?')) {
+                    e.target.closest('.people-item')?.remove();
                 }
             }
         });
 
-        // ==========================================
-        // EVENT: THAY ĐỔI NGÀY → RELOAD TRANG
-        // ==========================================
+        // ===== RELOAD KHI ĐỔI NGÀY =====
         const startDateEl = document.getElementById('start_date');
         const endDateEl = document.getElementById('end_date');
 
         if (startDateEl && endDateEl) {
-            let dateChangeTimeout;
+            let dateTimeout;
 
             function handleDateChange() {
-                clearTimeout(dateChangeTimeout);
-                dateChangeTimeout = setTimeout(() => {
-                    const startDate = startDateEl.value;
-                    const endDate = endDateEl.value;
-
-                    if (startDate && endDate) {
-                        const url = new URL(window.location.href);
-                        const bookingId = url.searchParams.get('id');
-
-                        if (confirm('🔄 Ngày đã thay đổi. Reload trang để cập nhật danh sách người?')) {
-                            // Reload trang để PHP render lại
+                clearTimeout(dateTimeout);
+                dateTimeout = setTimeout(() => {
+                    if (startDateEl.value && endDateEl.value) {
+                        if (confirm('🔄 Ngày thay đổi. Reload để cập nhật danh sách người?')) {
                             window.location.reload();
                         }
                     }
@@ -780,18 +960,14 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
             endDateEl.addEventListener('change', handleDateChange);
         }
 
-        console.log('✅ Script loaded successfully');
+        console.log('✅ Script loaded');
     })();
 </script>
+
 <style>
     .person-selector {
         font-weight: 500;
         border: 2px solid #5bc0de;
-    }
-
-    .person-selector:focus {
-        border-color: #46b8da;
-        box-shadow: 0 0 5px rgba(70, 184, 218, 0.5);
     }
 
     .person-form-fields {
@@ -801,17 +977,8 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
     }
 
     .person-type-badge {
-        font-size: 11px;
         padding: 4px 10px;
         border-radius: 3px;
-    }
-
-    .people-item {
-        transition: all 0.3s ease;
-    }
-
-    .people-item:hover {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     input:disabled,
@@ -819,11 +986,8 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
         background-color: #e9ecef !important;
         cursor: not-allowed;
     }
-
-    #add-people:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
 </style>
+
 <?php
 require_once __DIR__ . '/../../layout/admin/footer.php';
+?>
