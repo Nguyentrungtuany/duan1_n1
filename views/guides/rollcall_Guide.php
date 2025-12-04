@@ -542,17 +542,64 @@ if (isset($booking['people']) && is_string($booking['people'])) {
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label>
-                                    <i class="fa fa-calendar-check-o"></i>
-                                    Ngày điểm danh
-                                </label>
-                                <input type="date"
-                                    id="attendance_date"
-                                    name="attendance_date"
-                                    value="<?= date('Y-m-d') ?>"
-                                    required>
-                            </div>
+    <label>
+        <i class="fa fa-calendar-check-o"></i>
+        Ngày điểm danh
+    </label>
+    <select id="attendance_date" name="attendance_date" required style="font-size: 15px;">
+        <?php
+        $startDate = new DateTime($booking['start_date']);
+        $endDate   = new DateTime($booking['end_date']);
+        $endDate->modify('+1 day'); // để bao gồm cả ngày cuối
+        $period    = new DatePeriod($startDate, new DateInterval('P1D'), $endDate);
 
+        $today = date('Y-m-d');
+        $vietnameseDays = [
+            'Monday'    => 'Thứ Hai',
+            'Tuesday'   => 'Thứ Ba',
+            'Wednesday' => 'Thứ Tư',
+            'Thursday'  => 'Thứ Năm',
+            'Friday'    => 'Thứ Sáu',
+            'Saturday'  => 'Thứ Bảy',
+            'Sunday'    => 'Chủ Nhật'
+        ];
+
+        // Giữ ngày đã chọn nếu form bị submit lại (lỗi validate chẳng hạn)
+        $selectedDate = $_POST['attendance_date'] ?? $today;
+
+        foreach ($period as $date) {
+            $dateStr   = $date->format('Y-m-d');
+            $dayName   = $vietnameseDays[$date->format('l')];
+            $display   = $date->format('d/m/Y') . " - " . $dayName;
+
+            $isToday   = ($dateStr === $today);
+            $isFirst   = ($dateStr === $booking['start_date']);
+            $isLast    = ($dateStr === $booking['end_date']);
+
+            // Thêm nhãn đặc biệt
+            $label = '';
+            if ($isToday)   $label = ' → Hôm nay';
+            if ($isFirst)   $label = ' → Ngày đầu tour';
+            if ($isLast && !$isToday) $label = ' → Ngày cuối tour';
+            if ($isFirst && $isLast)  $label = ' → Tour 1 ngày';
+
+            // Ưu tiên chọn: hôm nay → nếu không có thì ngày đầu tour
+            $selected = '';
+            if (isset($_POST['attendance_date'])) {
+                $selected = ($dateStr === $_POST['attendance_date']) ? 'selected' : '';
+            } else {
+                if ($isToday && $dateStr >= $booking['start_date'] && $dateStr <= $booking['end_date']) {
+                    $selected = 'selected';
+                } elseif (!$selected && $isFirst) {
+                    $selected = 'selected';
+                }
+            }
+
+            echo "<option value=\"{$dateStr}\" {$selected}>{$display}{$label}</option>";
+        }
+        ?>
+    </select>
+</div>
                             <div class="form-group">
                                 <label>
                                     <i class="fa fa-clock-o"></i>
