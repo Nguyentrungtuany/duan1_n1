@@ -78,6 +78,12 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                                 <?php endforeach; ?>
                             </select>
                         </div>
+                        <!-- booking số người -->
+                        <div class="form-group">
+                            <label for="go_people">Số người <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="go_people" name="go_people"
+                                placeholder="Nhập số người" required>
+                        </div>
                         <!-- Mô tả -->
                         <div class="form-group">
                             <label for="description">Mô tả <span class="text-danger">*</span></label>
@@ -203,6 +209,14 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                                             <label>Địa chỉ</label>
                                             <input type="text" class="form-control" name="accommodations[0][address]"
                                                 placeholder="VD: Bãi Cháy, Quảng Ninh">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Số điện thoại</label>
+                                            <input type="text" class="form-control" name="accommodations[0][sdt]"
+                                                placeholder="VD: 0123456789">
                                         </div>
                                     </div>
                                     <div class="col-md-1">

@@ -61,7 +61,7 @@ class BookingController
                 $end_date = $_POST['end_date'];
                 $special_request = $_POST['special_request'] ?? '';
 
-                // Tạo booking - ✅ THÊM guide_id VÀO ĐÂY
+                // 1. Tạo booking
                 $booking_id = $this->BookingModel->createBooking([
                     'tour_id' => $tour_id,
                     'guide_id' => $guide_id,
@@ -70,7 +70,43 @@ class BookingController
                     'special_request' => $special_request
                 ]);
 
-                // ✅ XỬ LÝ PEOPLE GIỐNG NHƯ UPDATE
+                // 2. ✅ XỬ LÝ TRANSPORTS (Phương tiện)
+                if (isset($_POST['transports']) && is_array($_POST['transports'])) {
+                    foreach ($_POST['transports'] as $transport) {
+                        // Bỏ qua nếu không có dữ liệu
+                        if (empty($transport['type']) && empty($transport['company'])) {
+                            continue;
+                        }
+
+                        $data = [
+                            'type' => $transport['type'] ?? '',
+                            'company' => $transport['company'] ?? '',
+                            'seats' => $transport['seats'] ?? 0
+                        ];
+
+                        $this->BookingModel->createTransports($booking_id, $data);
+                    }
+                }
+
+                // 3. ✅ XỬ LÝ ACCOMMODATIONS (Khách sạn)
+                if (isset($_POST['accommodations']) && is_array($_POST['accommodations'])) {
+                    foreach ($_POST['accommodations'] as $accommodation) {
+                        // Bỏ qua nếu không có dữ liệu
+                        if (empty($accommodation['name'])) {
+                            continue;
+                        }
+
+                        $data = [
+                            'name' => $accommodation['name'] ?? '',
+                            'address' => $accommodation['address'] ?? '',
+                            'type' => $accommodation['type'] ?? ''
+                        ];
+
+                        $this->BookingModel->createAccommodations($booking_id, $data);
+                    }
+                }
+
+                // 4. ✅ XỬ LÝ PEOPLE (Người tham gia)
                 if (isset($_POST['peoples']) && is_array($_POST['peoples'])) {
                     foreach ($_POST['peoples'] as $person) {
                         // Bỏ qua nếu không có dữ liệu
@@ -147,6 +183,9 @@ class BookingController
 
     private function handleTransports($bookingId)
     {
+        // Debug
+        error_log("POST transports: " . print_r($_POST['transports'] ?? 'EMPTY', true));
+
         if (!isset($_POST['transports'])) {
             return;
         }
@@ -162,22 +201,31 @@ class BookingController
             $data = [
                 'type' => $transport['type'] ?? '',
                 'company' => $transport['company'] ?? '',
-                'seats' => $transport['seats'] ?? 0
+                'seats' => $transport['seats'] ?? 0,
+                'license_plate' => $transport['license_plate'] ?? '',
+                'driver_cccd' => $transport['driver_cccd'] ?? '',
+                'driver_name' => $transport['driver_name'] ?? '',
+                'driver_phone' => $transport['driver_phone'] ?? '',
+                'driver_birthdate' => !empty($transport['driver_birthdate']) ? $transport['driver_birthdate'] : null
             ];
 
-            if (isset($transport['id']) && !empty($transport['id'])) {
+            // ✅ KIỂM TRA ID CÓ TỒN TẠI VÀ LÀ SỐ THỰC SỰ
+            if (isset($transport['id']) && !empty($transport['id']) && is_numeric($transport['id'])) {
                 // ĐÃ TỒN TẠI -> UPDATE
                 $keepIds[] = $transport['id'];
                 $this->BookingModel->updateTransports($transport['id'], $bookingId, $data);
+                error_log("✅ Updated transport ID: {$transport['id']}");
             } else {
                 // CHƯA TỒN TẠI -> CREATE MỚI
-                $this->BookingModel->createTransports($bookingId, $data);
-                $keepIds[] = $this->BookingModel->getLastInsertId();
+                $newId = $this->BookingModel->createTransports($bookingId, $data);
+                $keepIds[] = $newId;
+                error_log("✅ Created new transport ID: {$newId}");
             }
         }
 
         // Xóa những cái không còn trong form
         $this->BookingModel->deleteTransports($bookingId, $keepIds);
+        error_log("✅ Kept transport IDs: " . implode(', ', $keepIds));
     }
 
     // ==========================================
@@ -200,7 +248,8 @@ class BookingController
             $data = [
                 'name' => $accommodation['name'] ?? '',
                 'address' => $accommodation['address'] ?? '',
-                'type' => $accommodation['type'] ?? ''
+                'type' => $accommodation['type'] ?? '',
+                'sdt' => $accommodation['sdt'] ?? ''
             ];
 
             if (isset($accommodation['id']) && !empty($accommodation['id'])) {

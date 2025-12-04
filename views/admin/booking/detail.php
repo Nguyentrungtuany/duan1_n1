@@ -1,20 +1,55 @@
 <?php
 require_once __DIR__ . '/../../layout/admin/header.php';
 
-// Giải mã JSON an toàn cho booking detail
-if (!empty($booking)) {
-    $booking['destination'] = !empty($booking['destination']) ? json_decode($booking['destination'], true) : [];
-    $booking['transports'] = !empty($booking['transports']) ? json_decode($booking['transports'], true) : [];
-    $booking['accommodations'] = !empty($booking['accommodations']) ? json_decode($booking['accommodations'], true) : [];
-    $booking['schedules'] = !empty($booking['schedules']) ? json_decode($booking['schedules'], true) : [];
-    $booking['tour'] = !empty($booking['tour']) ? json_decode($booking['tour'], true) : [];
-    $booking['customer'] = !empty($booking['customer']) ? json_decode($booking['customer'], true) : [];
-    $booking['people'] = !empty($booking['people']) ? json_decode($booking['people'], true) : [];
-    $booking['category'] = !empty($booking['category']) ? json_decode($booking['category'], true) : [];
-    $booking['guide'] = !empty($booking['guide']) ? json_decode($booking['guide'], true) : [];
-    $booking['user'] = !empty($booking['user']) ? json_decode($booking['user'], true) : [];
+// Giải mã JSON an toàn
+if (isset($booking['tour']) && is_string($booking['tour'])) {
+    $booking['tour'] = json_decode($booking['tour'], true);
 }
-var_dump($booking);
+if (isset($booking['customer']) && is_string($booking['customer'])) {
+    $booking['customer'] = json_decode($booking['customer'], true);
+}
+if (isset($booking['destination']) && is_string($booking['destination'])) {
+    $booking['destination'] = json_decode($booking['destination'], true);
+}
+if (isset($booking['transports']) && is_string($booking['transports'])) {
+    $booking['transports'] = json_decode($booking['transports'], true);
+}
+if (isset($booking['people']) && is_string($booking['people'])) {
+    $booking['people'] = json_decode($booking['people'], true);
+}
+if (isset($booking['schedules']) && is_string($booking['schedules'])) {
+    $booking['schedules'] = json_decode($booking['schedules'], true);
+}
+if (isset($booking['customer_support']) && is_string($booking['customer_support'])) {
+    $booking['customer_support'] = json_decode($booking['customer_support'], true);
+}
+if (isset($booking['accommodations']) && is_string($booking['accommodations'])) {
+    $booking['accommodations'] = json_decode($booking['accommodations'], true);
+}
+if (isset($booking['category']) && is_string($booking['category'])) {
+    $booking['category'] = json_decode($booking['category'], true);
+}
+if (isset($booking['user']) && is_string($booking['user'])) {
+    $booking['user'] = json_decode($booking['user'], true);
+}
+if (isset($booking['guide']) && is_string($booking['guide'])) {
+    $booking['guide'] = json_decode($booking['guide'], true);
+}
+
+// // ✅ DEBUG: Kiểm tra dữ liệu
+// echo '<div style="background: #f0f0f0; padding: 20px; margin: 20px; border: 2px solid #333;">';
+// echo '<h3>🔍 DEBUG INFO</h3>';
+// echo '<p><strong>Booking ID:</strong> ' . ($booking['id'] ?? 'KHÔNG CÓ') . '</p>';
+// echo '<p><strong>Transports:</strong> ' . (is_array($booking['transports']) ? 'Array[' . count($booking['transports']) . ']' : 'KHÔNG PHẢI ARRAY') . '</p>';
+// echo '<p><strong>People:</strong> ' . (is_array($booking['people']) ? 'Array[' . count($booking['people']) . ']' : 'KHÔNG PHẢI ARRAY') . '</p>';
+// echo '<p><strong>Schedules:</strong> ' . (is_array($booking['schedules']) ? 'Array[' . count($booking['schedules']) . ']' : 'KHÔNG PHẢI ARRAY') . '</p>';
+// echo '<p><strong>Accommodations:</strong> ' . (is_array($booking['accommodations']) ? 'Array[' . count($booking['accommodations']) . ']' : 'KHÔNG PHẢI ARRAY') . '</p>';
+
+// if (is_array($booking['transports']) && count($booking['transports']) > 0) {
+//     echo '<h4>Transport [0]:</h4>';
+//     echo '<pre>' . print_r($booking['transports'][0], true) . '</pre>';
+// }
+// echo '</div>';
 ?>
 
 <!-- main content start-->
@@ -191,7 +226,28 @@ var_dump($booking);
                                         </div>
                                         <div class="info-group">
                                             <label>Công ty:</label>
-                                            <p><i class="fa fa-building"></i> <?= htmlspecialchars($transport['company']) ?></p>
+                                            <p><i class="fa fa-building"></i> <?= htmlspecialchars($transport['company'] ?? 'Chưa cá nhân') ?></p>
+                                        </div>
+
+                                        <div class="info-group">
+                                            <label>Biển số xe:</label>
+                                            <p><i class="fa fa-id-card"></i> <?= htmlspecialchars($transport['license_plate'] ?? 'Chưa có biển số') ?></p>
+                                        </div>
+                                        <div class="info-group">
+                                            <label>CCCD tài xế:</label>
+                                            <p><i class="fa fa-id-card"></i> <?= htmlspecialchars($transport['driver_cccd'] ?? 'Chưa có CCCD') ?></p>
+                                        </div>
+                                        <div class="info-group">
+                                            <label>Tên tài xế:</label>
+                                            <p><i class="fa fa-user"></i> <?= htmlspecialchars($transport['driver_name'] ?? 'Chưa có tên') ?></p>
+                                        </div>
+                                        <div class="info-group">
+                                            <label>Số điện thoại tài xế:</label>
+                                            <p><i class="fa fa-phone"></i> <?= htmlspecialchars($transport['driver_phone'] ?? 'Chưa có số điện thoại') ?></p>
+                                        </div>
+                                        <div class="info-group">
+                                            <label>Ngày sinh tài xế:</label>
+                                            <p><i class="fa fa-calendar"></i> <?= htmlspecialchars($transport['driver_birthdate'] ?? 'Chưa có ngày sinh') ?></p>
                                         </div>
                                     </div>
                                 </div>
@@ -226,6 +282,11 @@ var_dump($booking);
                                         <div class="info-group">
                                             <label>Địa chỉ:</label>
                                             <p><i class="fa fa-map-marker"></i> <?= htmlspecialchars($accommodation['address']) ?></p>
+                                        </div>
+
+                                        <div class="info-group">
+                                            <label>Số điện thoại:</label>
+                                            <p><i class="fa fa-phone"></i> <?= htmlspecialchars($accommodation['sdt']) ?></p>
                                         </div>
                                     </div>
                                 </div>

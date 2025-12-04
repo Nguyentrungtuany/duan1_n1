@@ -150,6 +150,13 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                 <?php endforeach; ?>
                             </select>
                         </div>
+                        <!-- booking số người -->
+                        <div class="form-group">
+                            <label for="go_people">Số người <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="go_people" name="go_people"
+                                value="<?php echo isset($booking['go_people']) ? htmlspecialchars($booking['go_people']) : ''; ?>"
+                                placeholder="Nhập số người" required>
+                        </div>
                         <!-- Mô tả -->
                         <div class="form-group">
                             <label for="description">Mô tả <span class="text-danger">*</span></label>
@@ -217,7 +224,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                             <?php
                             $transports = isset($booking['transports']) ? $booking['transports'] : [];
                             if (empty($transports)) {
-                                $transports = [['type' => '', 'seats' => '', 'company' => '']];
+                                $transports = [['type' => '', 'seats' => '', 'company' => '', 'license_plate' => '', 'driver_cccd' => '', 'driver_name' => '', 'driver_phone' => '', 'driver_birthdate' => '']];
                             }
                             foreach ($transports as $index => $transport):
                             ?>
@@ -246,6 +253,46 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                                 <input type="text" class="form-control" name="transports[<?= $index ?>][company]"
                                                     value="<?= isset($transport['company']) ? htmlspecialchars($transport['company']) : '' ?>"
                                                     placeholder="VD: Hoàng Long Travel">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Biển số xe</label>
+                                                <input type="text" class="form-control" name="transports[<?= $index ?>][license_plate]"
+                                                    value="<?= isset($transport['license_plate']) ? htmlspecialchars($transport['license_plate']) : '' ?>"
+                                                    placeholder="VD: 30A-12345">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Căn cước tài xế</label>
+                                                <input type="text" class="form-control" name="transports[<?= $index ?>][driver_cccd]"
+                                                    value="<?= isset($transport['driver_cccd']) ? htmlspecialchars($transport['driver_cccd']) : '' ?>"
+                                                    placeholder="VD: 123456789">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Tên tài xế</label>
+                                                <input type="text" class="form-control" name="transports[<?= $index ?>][driver_name]"
+                                                    value="<?= isset($transport['driver_name']) ? htmlspecialchars($transport['driver_name']) : '' ?>"
+                                                    placeholder="VD: Nguyễn Văn A">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Số điện thoại tài xế</label>
+                                                <input type="text" class="form-control" name="transports[<?= $index ?>][driver_phone]"
+                                                    value="<?= isset($transport['driver_phone']) ? htmlspecialchars($transport['driver_phone']) : '' ?>"
+                                                    placeholder="VD: 0123456789">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Ngày sinh tài xế</label>
+                                                <input type="date" class="form-control" name="transports[<?= $index ?>][driver_birthdate]"
+                                                    value="<?= isset($transport['driver_birthdate']) ? htmlspecialchars($transport['driver_birthdate']) : '' ?>"
+                                                    placeholder="VD: 01/01/1980">
                                             </div>
                                         </div>
                                         <div class="col-md-1">
@@ -306,6 +353,14 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                                 <input type="text" class="form-control" name="accommodations[<?= $index ?>][address]"
                                                     value="<?= isset($accommodation['address']) ? htmlspecialchars($accommodation['address']) : '' ?>"
                                                     placeholder="VD: Bãi Cháy, Quảng Ninh">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Số điện thoại</label>
+                                                <input type="text" class="form-control" name="accommodations[<?= $index ?>][sdt]"
+                                                    value="<?= isset($accommodation['sdt']) ? htmlspecialchars($accommodation['sdt']) : '' ?>"
+                                                    placeholder="VD: 0123456789">
                                             </div>
                                         </div>
                                         <div class="col-md-1">
@@ -466,7 +521,6 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
             </div>
         </div>
     </div>
-    <?= print_r($booking) ?>
 </div>
 <script>
     // ===== KHỞI TẠO BIẾN ĐẾM =====
@@ -588,38 +642,70 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
     document.getElementById('add-transport').addEventListener('click', function() {
         const container = document.getElementById('transports-container');
         const newItem = `
-        <div class="transport-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #f9f9f9;">
-            <h5 style="margin-top: 0;">Phương tiện #${transportCount + 1}</h5>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Loại phương tiện</label>
-                        <input type="text" class="form-control" name="transports[${transportCount}][type]" placeholder="VD: Xe du lịch 45 chỗ">
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label>Số chỗ</label>
-                        <input type="number" class="form-control" name="transports[${transportCount}][seats]" placeholder="45">
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Công ty</label>
-                        <input type="text" class="form-control" name="transports[${transportCount}][company]" placeholder="VD: Hoàng Long Travel">
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <label>&nbsp;</label>
-                    <button type="button" class="btn btn-danger btn-sm form-control remove-transport">
-                        <i class="fa fa-trash"></i>
-                    </button>
+    <div class="transport-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #f9f9f9;">
+        <!-- ⚠️ KHÔNG CÓ hidden input id cho item mới -->
+        <h5 style="margin-top: 0;">Phương tiện #${transportCount + 1}</h5>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Loại phương tiện</label>
+                    <input type="text" class="form-control" name="transports[${transportCount}][type]" placeholder="VD: Xe du lịch 45 chỗ">
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Số chỗ</label>
+                    <input type="number" class="form-control" name="transports[${transportCount}][seats]" placeholder="45">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Công ty</label>
+                    <input type="text" class="form-control" name="transports[${transportCount}][company]" placeholder="VD: Hoàng Long Travel">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Biển số xe</label>
+                    <input type="text" class="form-control" name="transports[${transportCount}][license_plate]" placeholder="VD: 30A-12345">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Căn cước tài xế</label>
+                    <input type="text" class="form-control" name="transports[${transportCount}][driver_cccd]" placeholder="VD: 123456789">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Tên tài xế</label>
+                    <input type="text" class="form-control" name="transports[${transportCount}][driver_name]" placeholder="VD: Nguyễn Văn A">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Số điện thoại tài xế</label>
+                    <input type="text" class="form-control" name="transports[${transportCount}][driver_phone]" placeholder="VD: 0123456789">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Ngày sinh tài xế</label>
+                    <input type="date" class="form-control" name="transports[${transportCount}][driver_birthdate]">
+                </div>
+            </div>
+            <div class="col-md-1">
+                <label>&nbsp;</label>
+                <button type="button" class="btn btn-danger btn-sm form-control remove-transport">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </div>
         </div>
-    `;
+    </div>
+`;
         container.insertAdjacentHTML('beforeend', newItem);
         transportCount++;
+        console.log('✅ Added new transport (no ID, will be created on submit)');
     });
 
     // ===== KHÁCH SẠN =====
