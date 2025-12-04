@@ -542,64 +542,69 @@ if (isset($booking['people']) && is_string($booking['people'])) {
 
                         <div class="form-row">
                             <div class="form-group">
-    <label>
-        <i class="fa fa-calendar-check-o"></i>
-        Ngày điểm danh
-    </label>
+    <label><i class="fa fa-calendar-check-o"></i> Ngày điểm danh</label>
     <select id="attendance_date" name="attendance_date" required style="font-size: 15px;">
         <?php
-        $startDate = new DateTime($booking['start_date']);
-        $endDate   = new DateTime($booking['end_date']);
-        $endDate->modify('+1 day'); // để bao gồm cả ngày cuối
-        $period    = new DatePeriod($startDate, new DateInterval('P1D'), $endDate);
+        // 1. Ưu tiên lấy từ attendance_dates (chuẩn nhất)
+        $sql = "SELECT date FROM attendance_dates WHERE booking_id = :booking_id ORDER BY date";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['booking_id' => $booking['id']]);
+        $validDates = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-        $today = date('Y-m-d');
-        $vietnameseDays = [
-            'Monday'    => 'Thứ Hai',
-            'Tuesday'   => 'Thứ Ba',
-            'Wednesday' => 'Thứ Tư',
-            'Thursday'  => 'Thứ Năm',
-            'Friday'    => 'Thứ Sáu',
-            'Saturday'  => 'Thứ Bảy',
-            'Sunday'    => 'Chủ Nhật'
-        ];
+        // 2. Nếu chưa có → tự sinh từ start_date → end_date (fallback an toàn)
+        if (empty($validDates)) {
+            $start = new DateTime($booking['start_date']);
+            $end   = new DateTime($booking['end_date']);
+            $end->modify('+1 day');
+            $period = new DatePeriod($start, new DateInterval('P1D'), $end);
+            foreach ($period as $d) {
+                $validDates[] = $d->format('Y-m-d');
+            }
+        }
 
-        // Giữ ngày đã chọn nếu form bị submit lại (lỗi validate chẳng hạn)
-        $selectedDate = $_POST['attendance_date'] ?? $today;
+        if (empty($validDates)) {
+            echo "<option value=''>Không xác định được ngày tour</option>";
+        } else {
+            $today = date('Y-m-d');
+            $selectedDate = $_POST['attendance_date'] ?? $today;
 
-        foreach ($period as $date) {
-            $dateStr   = $date->format('Y-m-d');
-            $dayName   = $vietnameseDays[$date->format('l')];
-            $display   = $date->format('d/m/Y') . " - " . $dayName;
-
-            $isToday   = ($dateStr === $today);
-            $isFirst   = ($dateStr === $booking['start_date']);
-            $isLast    = ($dateStr === $booking['end_date']);
-
-            // Thêm nhãn đặc biệt
-            $label = '';
-            if ($isToday)   $label = ' → Hôm nay';
-            if ($isFirst)   $label = ' → Ngày đầu tour';
-            if ($isLast && !$isToday) $label = ' → Ngày cuối tour';
-            if ($isFirst && $isLast)  $label = ' → Tour 1 ngày';
-
-            // Ưu tiên chọn: hôm nay → nếu không có thì ngày đầu tour
-            $selected = '';
-            if (isset($_POST['attendance_date'])) {
-                $selected = ($dateStr === $_POST['attendance_date']) ? 'selected' : '';
-            } else {
-                if ($isToday && $dateStr >= $booking['start_date'] && $dateStr <= $booking['end_date']) {
-                    $selected = 'selected';
-                } elseif (!$selected && $isFirst) {
-                    $selected = 'selected';
-                }
+            // Map schedules theo ngày
+            $schedules = $booking['schedules'] ?? [];
+            $schedMap = [];
+            foreach ($schedules as $s) {
+                if (!empty($s['date'])) $schedMap[$s['date']] = $s;
             }
 
-            echo "<option value=\"{$dateStr}\" {$selected}>{$display}{$label}</option>";
+            $vietnameseDays = ['Monday'=>'Thứ Hai','Tuesday'=>'Thứ Ba','Wednesday'=>'Thứ Tư','Thursday'=>'Thứ Năm','Friday'=>'Thứ Sáu','Saturday'=>'Thứ Bảy','Sunday'=>'Chủ Nhật'];
+
+            $dayCounter = 1;
+            foreach ($validDates as $dateStr) {
+                $dateObj = new DateTime($dateStr);
+                $formatted = $dateObj->format('d/m/Y');
+                $dayName   = $vietnameseDays[$dateObj->format('l')];
+
+                $sched = $schedMap[$dateStr] ?? null;
+                $act = $sched['activities'] ?? '';
+                $shortAct = $act ? " → " . mb_substr(strip_tags($act), 0, 40) . "..." : '';
+
+                $label = '';
+                if ($dateStr === $today) $label = ' → HÔM NAY';
+                if ($dayCounter === 1) $label = ' → NGÀY ĐẦU';
+                if ($dateStr === end($validDates) && count($validDates) > 1) $label = ' → NGÀY CUỐI';
+
+                $selected = ($dateStr === $selectedDate) ? 'selected' : '';
+
+                echo "<option value=\"{$dateStr}\" {$selected}>
+                    Ngày {$dayCounter} │ {$formatted} ({$dayName}) │ {$shortAct}{$label}
+                </option>";
+
+                $dayCounter++;
+            }
         }
         ?>
     </select>
 </div>
+
                             <div class="form-group">
                                 <label>
                                     <i class="fa fa-clock-o"></i>
