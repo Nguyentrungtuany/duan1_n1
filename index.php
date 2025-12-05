@@ -18,7 +18,7 @@ require_once './controllers/admin/BookingController.php';
 require_once './controllers/admin/AdminGuideController.php';
 require_once './controllers/admin/GuideController.php';
 require_once './controllers/admin/DestinationController.php';
-
+require_once './controllers/admin/DashboardController.php';
 require_once './controllers/guides/GuidesController.php';
 
 // Require toàn bộ file Models
@@ -26,6 +26,7 @@ require_once './models/TourModel.php';
 require_once './models/admin/IndexModel.php';
 require_once './models/admin/UserModel.php';
 require_once './models/admin/BookingModel.php';
+require_once './models/admin/DashboardModel.php';
 require_once './models/guides/IndexGuideModel.php';
 // Require toàn bộ file Views
 // require_once './views/home.php';
@@ -138,5 +139,7 @@ match ($act) {
     'test' => (new IndexController())->test(),
     //Hướng dẫn viên
     'guide' => (new GuidesController())->index(),
+
+    'admin-dashboard' => (new DashboardController())->index(),
     default => require_once './views/404.php',
 };
