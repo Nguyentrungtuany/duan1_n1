@@ -150,5 +150,6 @@ match ($act) {
     'guide' => (new GuidesController())->index(),
     'job-guide' => (new GuidesController())->detail(),
     'rollcall_Guide' => (new GuidesController())->rollcall(),
+    'save-diem-danh' => (new GuidesController())->saveDiemDanh(),
     default => require_once './views/404.php',
 };
