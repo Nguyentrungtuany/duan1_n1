@@ -44,88 +44,11 @@ class BookingModel
     public function getAllBookings()
     {
         $sql = "SELECT 
-            b.*,
-            JSON_OBJECT(
-                'id', t.id,
-                'name', t.name,
-                'price', t.price,
-                'status', t.status,
-                'description', t.description
-            ) AS tour,
-            JSON_OBJECT(
-                'id', c.id,
-                'name', c.name,
-                'description', c.description
-            ) AS category,
-            JSON_OBJECT(
-                'id', d.id,
-                'name', d.name,
-                'location', d.location,
-                'description', d.description
-            ) AS destination,
-            JSON_OBJECT(
-                'id', cu.id,
-                'full_name', cu.full_name,
-                'phone', cu.phone,
-                'email', cu.email,
-                'address', cu.address,
-                'type', cu.type,
-                'note', cu.note
-            ) AS customer,
-            JSON_OBJECT(
-                'id', g.id,
-                'full_name', g.full_name,
-                'specialization', g.specialization,
-                'experience_years', g.experience_years,
-                'certificates', g.certificates,
-                'languages', g.languages
-            ) AS guide,
-            JSON_OBJECT(
-                'id', u.id,
-                'username', u.username,
-                'email', u.email,
-                'phone', u.phone,
-                'role', u.role,
-                'status', u.status
-            ) AS user,
-            (SELECT JSON_ARRAYAGG(
-                JSON_OBJECT('id', tr.id, 'type', tr.type, 'company', tr.company, 'seats', tr.seats)
-            ) FROM transports tr WHERE tr.booking_id = b.id) AS transports,
-            (SELECT JSON_ARRAYAGG(
-                JSON_OBJECT('id', bp.id, 'fullname', bp.fullname, 'phone', bp.phone, 'date', bp.date, 'cccd', bp.cccd)
-            ) FROM bookings_people bp WHERE bp.booking_id = b.id) AS people,
-            (SELECT JSON_ARRAYAGG(
-                JSON_OBJECT('id', s.id, 'day_number', s.day_number, 'date', s.date, 
-                'location', s.location, 'activities', s.activities, 'guide_id', s.guide_id, 
-                'status', s.status, 'notes', s.notes)
-            ) FROM schedules s WHERE s.tour_id = b.tour_id) AS schedules,
-            (SELECT JSON_ARRAYAGG(
-                JSON_OBJECT('id', cs.id, 'customer_id', cs.customer_id, 'guide_id', cs.guide_id, 
-                'message', cs.message, 'status', cs.status, 'created_at', cs.created_at)
-            ) FROM customer_support cs WHERE cs.booking_id = b.id) AS customer_support,
-            (SELECT JSON_ARRAYAGG(
-                JSON_OBJECT('id', a.id, 'tour_id', a.tour_id, 'booking_id', a.booking_id, 
-                'name', a.name, 'address', a.address, 'type', a.type, 
-                'created_at', a.created_at, 'updated_at', a.updated_at)
-            ) FROM accommodations a WHERE a.booking_id = b.id) AS accommodations,
-            (SELECT COUNT(*) FROM bookings_people bp WHERE bp.booking_id = b.id) AS number_of_people
-        FROM bookings b
-        LEFT JOIN tours t ON t.id = b.tour_id
-        LEFT JOIN tour_categories c ON c.id = t.category_id
-        LEFT JOIN destinations d ON d.id = t.destination_id
-        LEFT JOIN customers cu ON cu.id = b.customer_id
-        LEFT JOIN guides g ON g.id = b.guide_id
-        LEFT JOIN users u ON u.id = g.user_id";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function getBookingById($id)
-    {
-        $sql = "SELECT 
     b.*,
+
+    /* ============================
+            TOUR
+    ============================ */
     JSON_OBJECT(
         'id', t.id,
         'name', t.name,
@@ -133,17 +56,29 @@ class BookingModel
         'status', t.status,
         'description', t.description
     ) AS tour,
+
+    /* ============================
+            CATEGORY
+    ============================ */
     JSON_OBJECT(
         'id', c.id,
         'name', c.name,
         'description', c.description
     ) AS category,
+
+    /* ============================
+            DESTINATION
+    ============================ */
     JSON_OBJECT(
         'id', d.id,
         'name', d.name,
         'location', d.location,
         'description', d.description
     ) AS destination,
+
+    /* ============================
+            CUSTOMER
+    ============================ */
     JSON_OBJECT(
         'id', cu.id,
         'full_name', cu.full_name,
@@ -153,6 +88,10 @@ class BookingModel
         'type', cu.type,
         'note', cu.note
     ) AS customer,
+
+    /* ============================
+            GUIDE
+    ============================ */
     JSON_OBJECT(
         'id', g.id,
         'full_name', g.full_name,
@@ -161,6 +100,10 @@ class BookingModel
         'certificates', g.certificates,
         'languages', g.languages
     ) AS guide,
+
+    /* ============================
+            USER (Guide belongs to user)
+    ============================ */
     JSON_OBJECT(
         'id', u.id,
         'username', u.username,
@@ -169,68 +112,315 @@ class BookingModel
         'role', u.role,
         'status', u.status
     ) AS user,
-    (SELECT JSON_ARRAYAGG(
-        JSON_OBJECT(
-            'id', tr.id, 
-            'tour_id', tr.tour_id,
-            'booking_id', tr.booking_id,
-            'type', tr.type, 
-            'company', tr.company, 
-            'seats', tr.seats,
-            'driver_name', tr.driver_name,
-            'driver_cccd', tr.driver_cccd,
-            'driver_phone', tr.driver_phone,
-            'driver_birthdate', tr.driver_birthdate,
-            'license_plate', tr.license_plate,
-            'created_at', tr.created_at,
-            'updated_at', tr.updated_at
+
+    /* ============================
+            TRANSPORTS
+    ============================ */
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'id', tr.id,
+                'tour_id', tr.tour_id,
+                'booking_id', tr.booking_id,
+                'type', tr.type,
+                'company', tr.company,
+                'seats', tr.seats,
+                'driver_name', tr.driver_name,
+                'driver_cccd', tr.driver_cccd,
+                'driver_phone', tr.driver_phone,
+                'driver_birthdate', tr.driver_birthdate,
+                'license_plate', tr.license_plate,
+                'pickup_location', tr.pickup_location,
+                'pickup_address', tr.pickup_address,
+                'pickup_time', tr.pickup_time,
+                'created_at', tr.created_at,
+                'updated_at', tr.updated_at
+            )
         )
-    ) FROM transports tr WHERE tr.booking_id = b.id) AS transports,
-    (SELECT JSON_ARRAYAGG(
-        JSON_OBJECT(
-            'id', bp.id, 
-            'fullname', bp.fullname, 
-            'phone', bp.phone, 
-            'date', bp.date,
-            'cccd', bp.cccd
+        FROM transports tr 
+        WHERE tr.booking_id = b.id
+    ) AS transports,
+
+    /* ============================
+            PEOPLE
+    ============================ */
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'id', bp.id,
+                'fullname', bp.fullname,
+                'phone', bp.phone,
+                'date', bp.date,
+                'cccd', bp.cccd
+            )
         )
-    ) FROM bookings_people bp WHERE bp.booking_id = b.id) AS people,
-    (SELECT JSON_ARRAYAGG(
-        JSON_OBJECT(
-            'id', s.id, 
-            'day_number', s.day_number, 
-            'date', s.date, 
-            'location', s.location, 
-            'activities', s.activities, 
-            'guide_id', s.guide_id, 
-            'status', s.status, 
-            'notes', s.notes
+        FROM bookings_people bp 
+        WHERE bp.booking_id = b.id
+    ) AS people,
+
+    /* ============================
+            SCHEDULES (theo tour_id)
+    ============================ */
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'id', s.id,
+                'day_number', s.day_number,
+                'date', s.date,
+                'location', s.location,
+                'activities', s.activities,
+                'guide_id', s.guide_id,
+                'status', s.status,
+                'notes', s.notes
+            )
         )
-    ) FROM schedules s WHERE s.tour_id = b.tour_id) AS schedules,
-    (SELECT JSON_ARRAYAGG(
-        JSON_OBJECT(
-            'id', cs.id, 
-            'customer_id', cs.customer_id, 
-            'guide_id', cs.guide_id, 
-            'message', cs.message, 
-            'status', cs.status, 
-            'created_at', cs.created_at
+        FROM schedules s 
+        WHERE s.tour_id = b.tour_id
+    ) AS schedules,
+
+    /* ============================
+            CUSTOMER SUPPORT
+    ============================ */
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'id', cs.id,
+                'customer_id', cs.customer_id,
+                'guide_id', cs.guide_id,
+                'message', cs.message,
+                'status', cs.status,
+                'created_at', cs.created_at
+            )
         )
-    ) FROM customer_support cs WHERE cs.booking_id = b.id) AS customer_support,
-    (SELECT JSON_ARRAYAGG(
-        JSON_OBJECT(
-            'id', a.id, 
-            'tour_id', a.tour_id, 
-            'booking_id', a.booking_id, 
-            'name', a.name, 
-            'sdt', a.sdt,
-            'address', a.address, 
-            'type', a.type, 
-            'created_at', a.created_at, 
-            'updated_at', a.updated_at
+        FROM customer_support cs 
+        WHERE cs.booking_id = b.id
+    ) AS customer_support,
+
+    /* ============================
+            ACCOMMODATIONS
+    ============================ */
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'id', a.id,
+                'tour_id', a.tour_id,
+                'booking_id', a.booking_id,
+                'name', a.name,
+                'sdt', a.sdt,
+                'address', a.address,
+                'type', a.type,
+                'created_at', a.created_at,
+                'updated_at', a.updated_at
+            )
         )
-    ) FROM accommodations a WHERE a.booking_id = b.id) AS accommodations,
-    (SELECT COUNT(*) FROM bookings_people bp WHERE bp.booking_id = b.id) AS number_of_people
+        FROM accommodations a 
+        WHERE a.booking_id = b.id
+    ) AS accommodations,
+
+    /* ============================
+            COUNT PEOPLE
+    ============================ */
+    (SELECT COUNT(*) 
+     FROM bookings_people bp 
+     WHERE bp.booking_id = b.id
+    ) AS number_of_people
+
+FROM bookings b
+LEFT JOIN tours t ON t.id = b.tour_id
+LEFT JOIN tour_categories c ON c.id = t.category_id
+LEFT JOIN destinations d ON d.id = t.destination_id
+LEFT JOIN customers cu ON cu.id = b.customer_id
+LEFT JOIN guides g ON g.id = b.guide_id
+LEFT JOIN users u ON u.id = g.user_id;";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getBookingById($id)
+    {
+        $sql = "SELECT 
+    b.*,
+
+    /* ============================
+            TOUR
+    ============================ */
+    JSON_OBJECT(
+        'id', t.id,
+        'name', t.name,
+        'price', t.price,
+        'status', t.status,
+        'description', t.description
+    ) AS tour,
+
+    /* ============================
+            CATEGORY
+    ============================ */
+    JSON_OBJECT(
+        'id', c.id,
+        'name', c.name,
+        'description', c.description
+    ) AS category,
+
+    /* ============================
+            DESTINATION
+    ============================ */
+    JSON_OBJECT(
+        'id', d.id,
+        'name', d.name,
+        'location', d.location,
+        'description', d.description
+    ) AS destination,
+
+    /* ============================
+            CUSTOMER
+    ============================ */
+    JSON_OBJECT(
+        'id', cu.id,
+        'full_name', cu.full_name,
+        'phone', cu.phone,
+        'email', cu.email,
+        'address', cu.address,
+        'type', cu.type,
+        'note', cu.note
+    ) AS customer,
+
+    /* ============================
+            GUIDE
+    ============================ */
+    JSON_OBJECT(
+        'id', g.id,
+        'full_name', g.full_name,
+        'specialization', g.specialization,
+        'experience_years', g.experience_years,
+        'certificates', g.certificates,
+        'languages', g.languages
+    ) AS guide,
+
+    /* ============================
+            USER (Guide belongs to user)
+    ============================ */
+    JSON_OBJECT(
+        'id', u.id,
+        'username', u.username,
+        'email', u.email,
+        'phone', u.phone,
+        'role', u.role,
+        'status', u.status
+    ) AS user,
+
+    /* ============================
+            TRANSPORTS
+    ============================ */
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'id', tr.id,
+                'tour_id', tr.tour_id,
+                'booking_id', tr.booking_id,
+                'type', tr.type,
+                'company', tr.company,
+                'seats', tr.seats,
+                'driver_name', tr.driver_name,
+                'driver_cccd', tr.driver_cccd,
+                'driver_phone', tr.driver_phone,
+                'driver_birthdate', tr.driver_birthdate,
+                'license_plate', tr.license_plate,
+                'pickup_location', tr.pickup_location,
+                'pickup_address', tr.pickup_address,
+                'pickup_time', tr.pickup_time,
+                'created_at', tr.created_at,
+                'updated_at', tr.updated_at
+            )
+        )
+        FROM transports tr 
+        WHERE tr.booking_id = b.id
+    ) AS transports,
+
+    /* ============================
+            PEOPLE
+    ============================ */
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'id', bp.id,
+                'fullname', bp.fullname,
+                'phone', bp.phone,
+                'date', bp.date,
+                'cccd', bp.cccd
+            )
+        )
+        FROM bookings_people bp 
+        WHERE bp.booking_id = b.id
+    ) AS people,
+
+    /* ============================
+            SCHEDULES (theo tour_id)
+    ============================ */
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'id', s.id,
+                'day_number', s.day_number,
+                'date', s.date,
+                'location', s.location,
+                'activities', s.activities,
+                'guide_id', s.guide_id,
+                'status', s.status,
+                'notes', s.notes
+            )
+        )
+        FROM schedules s 
+        WHERE s.tour_id = b.tour_id
+    ) AS schedules,
+
+    /* ============================
+            CUSTOMER SUPPORT
+    ============================ */
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'id', cs.id,
+                'customer_id', cs.customer_id,
+                'guide_id', cs.guide_id,
+                'message', cs.message,
+                'status', cs.status,
+                'created_at', cs.created_at
+            )
+        )
+        FROM customer_support cs 
+        WHERE cs.booking_id = b.id
+    ) AS customer_support,
+
+    /* ============================
+            ACCOMMODATIONS
+    ============================ */
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'id', a.id,
+                'tour_id', a.tour_id,
+                'booking_id', a.booking_id,
+                'name', a.name,
+                'sdt', a.sdt,
+                'address', a.address,
+                'type', a.type,
+                'created_at', a.created_at,
+                'updated_at', a.updated_at
+            )
+        )
+        FROM accommodations a 
+        WHERE a.booking_id = b.id
+    ) AS accommodations,
+
+    /* ============================
+            COUNT PEOPLE
+    ============================ */
+    (SELECT COUNT(*) 
+     FROM bookings_people bp 
+     WHERE bp.booking_id = b.id
+    ) AS number_of_people
+
 FROM bookings b
 LEFT JOIN tours t ON t.id = b.tour_id
 LEFT JOIN tour_categories c ON c.id = t.category_id
@@ -238,7 +428,8 @@ LEFT JOIN destinations d ON d.id = t.destination_id
 LEFT JOIN customers cu ON cu.id = b.customer_id
 LEFT JOIN guides g ON g.id = b.guide_id
 LEFT JOIN users u ON u.id = g.user_id
-WHERE b.id = :id";
+WHERE b.id = :id;
+";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':id', $id);
@@ -292,45 +483,20 @@ WHERE b.id = :id";
     // TRANSPORTS - Phương tiện (FIXED)
     // ==========================================
 
-    public function updateTransports($transportId, $bookingId, $data)
-    {
-        $sql = "UPDATE transports SET 
-        type = :type,
-        company = :company,
-        seats = :seats,
-        driver_name = :driver_name,
-        driver_phone = :driver_phone,
-        driver_cccd = :driver_cccd,
-        driver_birthdate = :driver_birthdate,
-        license_plate = :license_plate
-        WHERE id = :id AND booking_id = :booking_id";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute([
-            'type' => $data['type'] ?? '',
-            'company' => $data['company'] ?? '',
-            'seats' => $data['seats'] ?? 0,
-            'driver_name' => $data['driver_name'] ?? '',  // ✅ Đổi từ null thành ''
-            'driver_phone' => $data['driver_phone'] ?? '',  // ✅ Đổi từ null thành ''
-            'driver_cccd' => $data['driver_cccd'] ?? '',  // ✅ Đổi từ null thành ''
-            'driver_birthdate' => !empty($data['driver_birthdate']) ? $data['driver_birthdate'] : null,  // ✅ Giữ null cho DATE
-            'license_plate' => $data['license_plate'] ?? '',  // ✅ Đổi từ null thành ''
-            'id' => $transportId,
-            'booking_id' => $bookingId
-        ]);
-        return true;
-    }
+    // ✅ CẬP NHẬT createTransports
     public function createTransports($bookingId, $data)
     {
         $sql = "INSERT INTO transports (
-            booking_id, type, company, seats,
-            driver_name, driver_phone, driver_cccd, 
-            driver_birthdate, license_plate
-        ) VALUES (
-            :booking_id, :type, :company, :seats,
-            :driver_name, :driver_phone, :driver_cccd,
-            :driver_birthdate, :license_plate
-        )";
+        booking_id, type, company, seats,
+        driver_name, driver_phone, driver_cccd, 
+        driver_birthdate, license_plate,
+        pickup_location, pickup_address, pickup_time
+    ) VALUES (
+        :booking_id, :type, :company, :seats,
+        :driver_name, :driver_phone, :driver_cccd,
+        :driver_birthdate, :license_plate,
+        :pickup_location, :pickup_address, :pickup_time
+    )";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([
@@ -342,9 +508,48 @@ WHERE b.id = :id";
             'driver_phone' => !empty($data['driver_phone']) ? $data['driver_phone'] : null,
             'driver_cccd' => !empty($data['driver_cccd']) ? $data['driver_cccd'] : null,
             'driver_birthdate' => !empty($data['driver_birthdate']) ? $data['driver_birthdate'] : null,
-            'license_plate' => !empty($data['license_plate']) ? $data['license_plate'] : null
+            'license_plate' => !empty($data['license_plate']) ? $data['license_plate'] : null,
+            'pickup_location' => $data['pickup_location'] ?? '',
+            'pickup_address' => $data['pickup_address'] ?? '',
+            'pickup_time' => !empty($data['pickup_time']) ? $data['pickup_time'] : null
         ]);
         return $this->conn->lastInsertId();
+    }
+
+    // ✅ CẬP NHẬT updateTransports
+    public function updateTransports($transportId, $bookingId, $data)
+    {
+        $sql = "UPDATE transports SET 
+        type = :type,
+        company = :company,
+        seats = :seats,
+        driver_name = :driver_name,
+        driver_phone = :driver_phone,
+        driver_cccd = :driver_cccd,
+        driver_birthdate = :driver_birthdate,
+        license_plate = :license_plate,
+        pickup_location = :pickup_location,
+        pickup_address = :pickup_address,
+        pickup_time = :pickup_time
+        WHERE id = :id AND booking_id = :booking_id";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+            'type' => $data['type'] ?? '',
+            'company' => $data['company'] ?? '',
+            'seats' => $data['seats'] ?? 0,
+            'driver_name' => $data['driver_name'] ?? '',
+            'driver_phone' => $data['driver_phone'] ?? '',
+            'driver_cccd' => $data['driver_cccd'] ?? '',
+            'driver_birthdate' => !empty($data['driver_birthdate']) ? $data['driver_birthdate'] : null,
+            'license_plate' => $data['license_plate'] ?? '',
+            'pickup_location' => $data['pickup_location'] ?? '',
+            'pickup_address' => $data['pickup_address'] ?? '',
+            'pickup_time' => !empty($data['pickup_time']) ? $data['pickup_time'] : null,
+            'id' => $transportId,
+            'booking_id' => $bookingId
+        ]);
+        return true;
     }
 
     public function deleteTransports($bookingId, $keepIds)
@@ -757,5 +962,89 @@ WHERE b.id = :id";
 
         $stmt = $this->conn->query($sql);
         return $stmt->fetchAll();
+    }
+
+    // ==========================================
+// KIỂM TRA TRÙNG LỊCH HƯỚNG DẪN VIÊN
+// ==========================================
+
+    /**
+     * ✅ KIỂM TRA HDV CÓ TRÙNG LỊCH KHÔNG
+     */
+    public function checkGuideScheduleConflict($guideId, $startDate, $endDate, $excludeBookingId = null)
+    {
+        $sql = "SELECT b.id, b.start_date, b.end_date, t.name as tour_name
+            FROM bookings b
+            INNER JOIN tours t ON b.tour_id = t.id
+            WHERE b.guide_id = :guide_id
+            AND b.status NOT IN ('cancelled')
+            AND (
+                (b.start_date <= :end_date AND b.end_date >= :start_date)
+                OR (b.start_date >= :start_date AND b.start_date <= :end_date)
+            )";
+
+        if ($excludeBookingId) {
+            $sql .= " AND b.id != :exclude_booking_id";
+        }
+
+        $stmt = $this->conn->prepare($sql);
+        $params = [
+            'guide_id' => $guideId,
+            'start_date' => $startDate,
+            'end_date' => $endDate
+        ];
+
+        if ($excludeBookingId) {
+            $params['exclude_booking_id'] = $excludeBookingId;
+        }
+
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * ✅ LẤY DANH SÁCH HDV CÓ SẴN (Không trùng lịch)
+     */
+    public function getAvailableGuides($startDate, $endDate, $excludeBookingId = null)
+    {
+        $sql = "SELECT DISTINCT 
+                g.*,
+                u.username,
+                u.email,
+                u.phone,
+                COUNT(DISTINCT b.id) as total_tours
+            FROM guides g
+            LEFT JOIN users u ON g.user_id = u.id
+            LEFT JOIN bookings b ON g.id = b.guide_id
+            WHERE g.id NOT IN (
+                SELECT b2.guide_id 
+                FROM bookings b2
+                WHERE b2.guide_id IS NOT NULL
+                AND (
+                    (b2.start_date <= :end_date AND b2.end_date >= :start_date)
+                    OR (b2.start_date >= :start_date AND b2.start_date <= :end_date)
+                )
+                AND b2.status NOT IN ('cancelled')";
+
+        if ($excludeBookingId) {
+            $sql .= " AND b2.id != :exclude_booking_id";
+        }
+
+        $sql .= ")
+            GROUP BY g.id
+            ORDER BY g.full_name ASC";
+
+        $stmt = $this->conn->prepare($sql);
+        $params = [
+            'start_date' => $startDate,
+            'end_date' => $endDate
+        ];
+
+        if ($excludeBookingId) {
+            $params['exclude_booking_id'] = $excludeBookingId;
+        }
+
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

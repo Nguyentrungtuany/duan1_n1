@@ -38,10 +38,20 @@ class BookingController
         $allTour = $this->BookingModel->allTour();
         $allGuide = $this->BookingModel->allGuide();
 
-        // ✅ THÊM DÒNG NÀY: Load sẵn danh sách người
+        // ✅ Load danh sách người có sẵn
         $availablePeople = [];
         if (!empty($booking['start_date']) && !empty($booking['end_date'])) {
             $availablePeople = $this->BookingModel->getAvailablePeople(
+                $booking['start_date'],
+                $booking['end_date'],
+                $id
+            );
+        }
+
+        // ✅ THÊM MỚI: Load danh sách HDV có sẵn
+        $availableGuides = [];
+        if (!empty($booking['start_date']) && !empty($booking['end_date'])) {
+            $availableGuides = $this->BookingModel->getAvailableGuides(
                 $booking['start_date'],
                 $booking['end_date'],
                 $id
@@ -57,6 +67,24 @@ class BookingController
         $allDestination = $this->BookingModel->allDestination();
         $allTour = $this->BookingModel->allTour();
         $allGuide = $this->BookingModel->allGuide();
+
+        // ✅ FIX: Load danh sách người và HDV có sẵn
+        $availablePeople = [];
+        $availableGuides = [];
+
+        // Ưu tiên lấy từ GET params (sau khi reload)
+        $startDate = $_GET['start_date'] ?? null;
+        $endDate = $_GET['end_date'] ?? null;
+
+        if ($startDate && $endDate) {
+            // Load danh sách
+            $availablePeople = $this->BookingModel->getAvailablePeople($startDate, $endDate, null);
+            $availableGuides = $this->BookingModel->getAvailableGuides($startDate, $endDate, null);
+
+            // Log để debug
+            error_log("✅ Loaded for add page: " . count($availablePeople) . " people, " . count($availableGuides) . " guides");
+        }
+
         require_once './views/admin/booking/add.php';
     }
 
@@ -79,7 +107,7 @@ class BookingController
             $special_request = $_POST['special_request'] ?? '';
             $max_people = $_POST['max_people'] ?? 30;
 
-            // Tạo booking
+            // 1️⃣ TẠO BOOKING
             $booking_id = $this->BookingModel->createBooking([
                 'tour_id' => $tour_id,
                 'guide_id' => $guide_id,
@@ -89,7 +117,53 @@ class BookingController
                 'max_people' => $max_people
             ]);
 
-            // Xử lý PEOPLE
+            // 2️⃣ XỬ LÝ TRANSPORTS (PHƯƠNG TIỆN)
+            if (isset($_POST['transports']) && is_array($_POST['transports'])) {
+                foreach ($_POST['transports'] as $transport) {
+                    // Bỏ qua nếu không có dữ liệu
+                    if (empty($transport['type']) && empty($transport['company'])) {
+                        continue;
+                    }
+
+                    $data = [
+                        'type' => $transport['type'] ?? '',
+                        'company' => $transport['company'] ?? '',
+                        'seats' => $transport['seats'] ?? 0,
+                        'driver_name' => $transport['driver_name'] ?? '',
+                        'driver_phone' => $transport['driver_phone'] ?? '',
+                        'driver_cccd' => $transport['driver_cccd'] ?? '',
+                        'driver_birthdate' => !empty($transport['driver_birthdate']) ? $transport['driver_birthdate'] : null,
+                        'license_plate' => $transport['license_plate'] ?? '',
+                        // ✅ Thêm 3 dòng này:
+                        'pickup_location' => $transport['pickup_location'] ?? '',
+                        'pickup_address' => $transport['pickup_address'] ?? '',
+                        'pickup_time' => !empty($transport['pickup_time']) ? $transport['pickup_time'] : null
+                    ];
+
+                    $this->BookingModel->createTransports($booking_id, $data);
+                }
+            }
+
+            // 3️⃣ XỬ LÝ ACCOMMODATIONS (KHÁCH SẠN)
+            if (isset($_POST['accommodations']) && is_array($_POST['accommodations'])) {
+                foreach ($_POST['accommodations'] as $accommodation) {
+                    // Bỏ qua nếu không có dữ liệu
+                    if (empty($accommodation['name'])) {
+                        continue;
+                    }
+
+                    $data = [
+                        'name' => $accommodation['name'] ?? '',
+                        'address' => $accommodation['address'] ?? '',
+                        'type' => $accommodation['type'] ?? '',
+                        'sdt' => $accommodation['sdt'] ?? ''
+                    ];
+
+                    $this->BookingModel->createAccommodations($booking_id, $data);
+                }
+            }
+
+            // 4️⃣ XỬ LÝ PEOPLE (KHÁCH HÀNG)
             if (isset($_POST['peoples']) && is_array($_POST['peoples'])) {
                 $addedCount = 0;
                 $errors = [];
@@ -135,6 +209,7 @@ class BookingController
                 }
             }
 
+            // 5️⃣ REDIRECT
             header("Location: index.php?act=bookings&msg=created");
             exit();
         } catch (Exception $e) {
@@ -196,6 +271,10 @@ class BookingController
     // XỬ LÝ TRANSPORTS
     // ==========================================
 
+    // ==========================================
+    // XỬ LÝ TRANSPORTS
+    // ==========================================
+
     private function handleTransports($bookingId)
     {
         if (!isset($_POST['transports'])) {
@@ -216,8 +295,12 @@ class BookingController
                 'driver_name' => $transport['driver_name'] ?? '',
                 'driver_phone' => $transport['driver_phone'] ?? '',
                 'driver_cccd' => $transport['driver_cccd'] ?? '',
-                'driver_birthdate' => $transport['driver_birthdate'] ?? '',
-                'license_plate' => $transport['license_plate'] ?? ''
+                'driver_birthdate' => !empty($transport['driver_birthdate']) ? $transport['driver_birthdate'] : null,
+                'license_plate' => $transport['license_plate'] ?? '',
+                // ✅ THÊM 3 TRƯỜNG MỚI
+                'pickup_location' => $transport['pickup_location'] ?? '',
+                'pickup_address' => $transport['pickup_address'] ?? '',
+                'pickup_time' => !empty($transport['pickup_time']) ? $transport['pickup_time'] : null
             ];
 
             if (isset($transport['id']) && !empty($transport['id'])) {
@@ -364,45 +447,30 @@ class BookingController
 
     public function getAvailablePeopleApi()
     {
-        // ✅ BẮT BUỘC: Set header trước khi output
         header('Content-Type: application/json; charset=utf-8');
-        header('Access-Control-Allow-Origin: *'); // ✅ Cho phép CORS
+        ob_clean(); // ✅ XÓA BUFFER CŨ
 
         try {
             $startDate = $_GET['start_date'] ?? '';
             $endDate = $_GET['end_date'] ?? '';
-            $bookingId = $_GET['booking_id'] ?? null;
-
-            // ✅ Log để debug
-            error_log("📥 API Request: start=$startDate, end=$endDate, booking=$bookingId");
 
             if (empty($startDate) || empty($endDate)) {
-                echo json_encode([
-                    'success' => false,
-                    'message' => 'Missing dates'
-                ], JSON_UNESCAPED_UNICODE);
-                exit;
+                echo json_encode(['success' => false, 'message' => 'Missing dates'], JSON_UNESCAPED_UNICODE);
+                exit; // ✅ DỪNG NGAY
             }
 
-            $people = $this->BookingModel->getAvailablePeople($startDate, $endDate, $bookingId);
-
-            // ✅ Log kết quả
-            error_log("📤 API Response: " . count($people) . " people");
+            $people = $this->BookingModel->getAvailablePeople($startDate, $endDate, null);
 
             echo json_encode([
                 'success' => true,
                 'data' => $people,
                 'count' => count($people)
-            ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT); // ✅ Thêm PRETTY_PRINT để dễ đọc
-
-        } catch (Exception $e) {
-            error_log("❌ API Error: " . $e->getMessage());
-            echo json_encode([
-                'success' => false,
-                'message' => $e->getMessage()
             ], JSON_UNESCAPED_UNICODE);
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()], JSON_UNESCAPED_UNICODE);
         }
-        exit; // ✅ QUAN TRỌNG: Dừng script
+
+        exit; // ✅ QUAN TRỌNG
     }
     // ==========================================
     // API: KIỂM TRA TRÙNG LỊCH
@@ -445,5 +513,80 @@ class BookingController
             ], JSON_UNESCAPED_UNICODE);
         }
         exit;
+    }
+    // ==========================================
+    // API: KIỂM TRA TRÙNG LỊCH HƯỚNG DẪN VIÊN
+    // ==========================================
+
+    public function checkGuideConflictApi()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        header('Access-Control-Allow-Origin: *');
+
+        try {
+            $guideId = $_GET['guide_id'] ?? '';
+            $startDate = $_GET['start_date'] ?? '';
+            $endDate = $_GET['end_date'] ?? '';
+            $bookingId = $_GET['booking_id'] ?? null;
+
+            if (empty($guideId) || empty($startDate) || empty($endDate)) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Thiếu thông tin'
+                ], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
+
+            $conflicts = $this->BookingModel->checkGuideScheduleConflict(
+                $guideId,
+                $startDate,
+                $endDate,
+                $bookingId
+            );
+
+            echo json_encode([
+                'success' => true,
+                'has_conflict' => !empty($conflicts),
+                'conflicts' => $conflicts
+            ], JSON_UNESCAPED_UNICODE);
+        } catch (Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], JSON_UNESCAPED_UNICODE);
+        }
+        exit;
+    }
+
+    // ==========================================
+    // API: LẤY DANH SÁCH HDV CÓ SẴN
+    // ==========================================
+
+    public function getAvailableGuidesApi()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        ob_clean(); // ✅ XÓA BUFFER CŨ
+
+        try {
+            $startDate = $_GET['start_date'] ?? '';
+            $endDate = $_GET['end_date'] ?? '';
+
+            if (empty($startDate) || empty($endDate)) {
+                echo json_encode(['success' => false, 'message' => 'Missing dates'], JSON_UNESCAPED_UNICODE);
+                exit;
+            }
+
+            $guides = $this->BookingModel->getAvailableGuides($startDate, $endDate, null);
+
+            echo json_encode([
+                'success' => true,
+                'data' => $guides,
+                'count' => count($guides)
+            ], JSON_UNESCAPED_UNICODE);
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()], JSON_UNESCAPED_UNICODE);
+        }
+
+        exit; // ✅ QUAN TRỌNG
     }
 }

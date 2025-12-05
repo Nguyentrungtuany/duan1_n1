@@ -72,6 +72,9 @@ $routeadmin = [
 
     'get-available-people',
     'check-person-conflict',
+
+    'check-guide-conflict-api',
+    'get-available-guides-api',
 ];
 $routeguide = [
     'guide',
@@ -149,6 +152,11 @@ match ($act) {
 
     'get-available-people' => (new BookingController())->getAvailablePeopleApi(),
     'check-person-conflict' => (new BookingController())->checkPersonConflictApi(),
+
+    'check-guide-conflict-api' => (new BookingController())->checkGuideConflictApi(),
+    'get-available-guides-api' => (new BookingController())->getAvailableGuidesApi(),
+
+    'get-available-people-api' => (new BookingController())->getAvailablePeopleApi(),
 
     'createTour' => (new IndexController())->createQltour(),
     'test' => (new IndexController())->test(),
