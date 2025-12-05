@@ -549,11 +549,7 @@ WHERE b.id = :id;
             'id' => $transportId,
             'booking_id' => $bookingId
         ]);
-
-        // ✅ Thêm log để debug
-        error_log("Update transport {$transportId}: " . ($result ? 'SUCCESS' : 'FAILED'));
-
-        return $result;
+        return true;
     }
 
     public function deleteTransports($bookingId, $keepIds)
