@@ -22,6 +22,7 @@ class TourController
 
     public function handleLogin()
     {
+        session_start();
         $email = $_POST['email'];
         $password_hash = $_POST['password'];
         $user = $this->tourModel->findEmail($email);
@@ -64,11 +65,9 @@ class TourController
     }
     public function logout()
     {
-        session_start(); // Nếu chưa có thì gọi lại
-        session_unset(); // Xóa toàn bộ biến session
-        session_destroy(); // Hủy session
+        session_start();
+        session_unset();
+        session_destroy();
         header('Location: index.php?act=login');
     }
-    // exit(1);
-
 }

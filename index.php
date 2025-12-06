@@ -1,7 +1,9 @@
 
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-session_start();
 // Require toàn bộ các file khai báo môi trường, thực thi,...(không require view)
 
 // Require file Common
@@ -67,17 +69,31 @@ $routeadmin = [
     'destination-edit',
     'destination-delete',
     'destination-detail',
+
+    'get-available-people',
+    'check-person-conflict',
+
+    'check-guide-conflict-api',
+    'get-available-guides-api',
 ];
 $routeguide = [
     'guide',
+    'job-guide',
+    'rollcall_Guide',
 ];
 
-if (in_array($act, $routeadmin)) {
-    Auth::checkAdmin();
-}
+
 if (in_array($act, $routeguide)) {
+    // echo "ĐANG CHẠY CHECK GUIDE";
     Auth::checkguide();
 }
+
+if (in_array($act, $routeadmin)) {
+    // echo "ĐANG CHẠY CHECK ADMIN";
+    Auth::checkadmin();
+}
+
+
 
 // Để bảo bảo tính chất chỉ gọi 1 hàm Controller để xử lý request thì mình sử dụng match
 $db = connectDB();
@@ -134,9 +150,19 @@ match ($act) {
     'destination-update' => (new DestinationController())->update(),
     'destination-delete' => (new DestinationController())->delete(),
 
+    'get-available-people' => (new BookingController())->getAvailablePeopleApi(),
+    'check-person-conflict' => (new BookingController())->checkPersonConflictApi(),
+
+    'check-guide-conflict-api' => (new BookingController())->checkGuideConflictApi(),
+    'get-available-guides-api' => (new BookingController())->getAvailableGuidesApi(),
+
+    'get-available-people-api' => (new BookingController())->getAvailablePeopleApi(),
+
     'createTour' => (new IndexController())->createQltour(),
     'test' => (new IndexController())->test(),
     //Hướng dẫn viên
     'guide' => (new GuidesController())->index(),
+    'job-guide' => (new GuidesController())->detail(),
+    'rollcall_Guide' => (new GuidesController())->rollcall(),
     default => require_once './views/404.php',
 };
