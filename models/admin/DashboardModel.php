@@ -39,9 +39,7 @@ class DashboardModel
     // Tổng số khách hàng (distinct customer_id)
     public function getTotalCustomers()
     {
-        $sql = "SELECT COUNT(DISTINCT customer_id) as total 
-                FROM bookings 
-                WHERE customer_id IS NOT NULL";
+        $sql = "SELECT COUNT(*) AS total FROM bookings_people;";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -63,9 +61,10 @@ class DashboardModel
     // Tổng doanh thu (booking đã thanh toán)
     public function getTotalRevenue()
     {
-        $sql = "SELECT SUM(total_amount) as revenue 
-                FROM bookings 
-                WHERE payment_status='paid'";
+        $sql = "SELECT SUM(tours.price * bookings.number_of_people) AS revenue
+        FROM bookings
+        JOIN tours ON bookings.tour_id = tours.id
+        WHERE bookings.payment_status = 'paid'";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);

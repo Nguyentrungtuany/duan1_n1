@@ -16,7 +16,7 @@ class IndexController
         $bookingOngoing = $this->dashboardModel->getBookingOngoing();
         $totalCustomers = $this->dashboardModel->getTotalCustomers();
         $totalGuides = $this->dashboardModel->getTotalGuides();
-
+        $totalRevenue = $this->dashboardModel->getTotalRevenue();
 
 
         require_once './views/admin/IndexAdmin.php';

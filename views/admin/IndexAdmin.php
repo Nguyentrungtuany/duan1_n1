@@ -19,8 +19,8 @@ require_once __DIR__ . '/../layout/admin/header.php';
         <div class="r3_counter_box">
           <i class="pull-left fa fa-laptop user1 icon-rounded"></i>
           <div class="stats">
-            <h5><strong>$1019</strong></h5>
-            <span>Online Revenue</span>
+            <h5><strong><?= $totalGuides ?></strong></h5>
+            <span>Tổng Hướng Dẫn viên</span>
           </div>
         </div>
       </div>
@@ -28,8 +28,8 @@ require_once __DIR__ . '/../layout/admin/header.php';
         <div class="r3_counter_box">
           <i class="pull-left fa fa-money user2 icon-rounded"></i>
           <div class="stats">
-            <h5><strong>$1012</strong></h5>
-            <span>Expenses</span>
+            <h5><strong><?= $totalRevenue ?></strong></h5>
+            <span>Doanh thu</span>
           </div>
         </div>
       </div>
@@ -37,8 +37,8 @@ require_once __DIR__ . '/../layout/admin/header.php';
         <div class="r3_counter_box">
           <i class="pull-left fa fa-pie-chart dollar1 icon-rounded"></i>
           <div class="stats">
-            <h5><strong>$450</strong></h5>
-            <span>Expenditure</span>
+            <h5><strong><?= $totalCustomers ?></strong></h5>
+            <span>Tổng khách hàng</span>
           </div>
         </div>
       </div>
