@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../../layout/admin/header.php';
-echo json_encode($bookings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+// echo json_encode($bookings, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+$user = $_SESSION['user'];
+var_dump(strtolower(trim($user['role'])));
+
 /* ======== GIẢI MÃ JSON AN TOÀN ======== */
 foreach ($bookings as &$item) {
     $item['destination']      = !empty($item['destination'])      ? json_decode($item['destination'], true)      : [];
