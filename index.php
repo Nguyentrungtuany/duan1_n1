@@ -35,6 +35,7 @@ require_once './models/guides/IndexGuideModel.php';
 $act = $_GET['act'] ?? '/';
 $routeadmin = [
     'admin',
+    'myaccount',
     'tables',
     'admin-list-user',
     'user-create',
@@ -113,7 +114,7 @@ match ($act) {
     'admin-edit-user' => (new UserController($db))->edit(),               // Hiển thị form sửa
     'admin-update-user' => (new UserController($db))->update(),           // Xử lý cập nhật
     'admin-delete-user' => (new UserController($db))->delete(),     // Xóa
-    'user-search' => (new UserController($db))->search(),
+    'myaccount' => (new UserController($db))->myAccount(),
     'QlTour' => (new IndexController())->QlTuor(),
     'editqltour' => (new IndexController())->editQltour($id),
     'updateqltour' => (new IndexController())->updateQltour(),

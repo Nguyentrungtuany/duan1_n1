@@ -194,17 +194,11 @@ class UserController
         exit();
     }
 
-    // Tìm kiếm tài khoản
-    public function search()
+
+    public function myAccount()
     {
-        $keyword = $_GET['keyword'] ?? '';
 
-        if (empty($keyword)) {
-            header("Location:" . BASE_URL . "?act=admin-list-user");
-            exit();
-        }
-
-        $users = $this->userModel->searchUsers($keyword);
-        require_once 'views/admin/users.php';
+        $user = $_SESSION['user'] ?? null;
+        require_once 'views/admin/myaccount.php';
     }
 }
