@@ -82,3 +82,71 @@
         <?php endif; ?>
     </div>
 </div>
+<style>
+    .page-header {
+        border-bottom: 2px solid #e5e5e5;
+        padding-bottom: 15px;
+    }
+
+    .page-header h2 {
+        font-size: 24px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+
+    .card-header {
+        border-radius: 10px 10px 0 0 !important;
+        padding: 15px 20px;
+        font-size: 16px;
+    }
+
+    .card-body {
+        padding: 30px;
+    }
+
+    .table td {
+        padding: 15px 10px;
+        border-bottom: 1px solid #f5f5f5;
+        vertical-align: middle;
+    }
+
+    .table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .badge {
+        padding: 6px 12px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .badge-danger {
+        background-color: #dc3545;
+    }
+
+    .badge-info {
+        background-color: #17a2b8;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+    }
+
+    .badge-secondary {
+        background-color: #6c757d;
+    }
+
+    .badge-primary {
+        background-color: #007bff;
+    }
+</style>
+
+<?php require_once __DIR__ . '/../layout/admin/footer.php'; ?>
