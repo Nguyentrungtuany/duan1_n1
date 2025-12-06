@@ -1,15 +1,23 @@
 <?php
-
+require_once './models/admin/DashboardModel.php';
 require_once './models/admin/IndexModel.php';
 class IndexController
 {
     public $indexModel;
+    public $dashboardModel;
     public function __construct()
     {
         $this->indexModel = new IndexModel();
+        $this->dashboardModel = new DashboardModel();
     }
     public function index()
     {
+        $bookingDone = $this->dashboardModel->getBookingDone();
+        $bookingOngoing = $this->dashboardModel->getBookingOngoing();
+        $totalCustomers = $this->dashboardModel->getTotalCustomers();
+        $totalGuides = $this->dashboardModel->getTotalGuides();
+
+
 
         require_once './views/admin/IndexAdmin.php';
     }

@@ -10,7 +10,7 @@ require_once __DIR__ . '/../layout/admin/header.php';
         <div class="r3_counter_box">
           <i class="pull-left fa fa-dollar icon-rounded"></i>
           <div class="stats">
-            <h5><strong><?= $data['totalBooking'] ?></strong></h5>
+            <h5><strong><?= $bookingDone ?></strong></h5>
             <span>Tổng Booking</span>
           </div>
         </div>

@@ -18,7 +18,7 @@ require_once './controllers/admin/BookingController.php';
 require_once './controllers/admin/AdminGuideController.php';
 require_once './controllers/admin/GuideController.php';
 require_once './controllers/admin/DestinationController.php';
-require_once './controllers/admin/DashboardController.php';
+
 require_once './controllers/guides/GuidesController.php';
 
 // Require toàn bộ file Models
@@ -140,6 +140,6 @@ match ($act) {
     //Hướng dẫn viên
     'guide' => (new GuidesController())->index(),
 
-    'admin-dashboard' => (new DashboardController())->index(),
+
     default => require_once './views/404.php',
 };
