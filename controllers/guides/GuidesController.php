@@ -187,4 +187,5 @@ if (empty($booking['guide']['user_id'])) {
             echo "<script>alert('Lỗi: " . addslashes($e->getMessage()) . "'); history.back();</script>";
         }
     }
+    //aaaa
 }
