@@ -109,7 +109,6 @@ class GuidesModel
         WHERE bp.booking_id = b.id
     ) AS people,
 
-    /* ✅ SỬA: schedules liên kết qua tour_id, không phải booking_id */
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -414,63 +413,58 @@ public function getAttendanceHistory($booking_id, $date, $session = null)
                 bp.phone,
                 bp.date as birthdate,
                 a.status,
-                a.session,
                 a.note,
                 a.checkin_time
             FROM bookings_people bp
             LEFT JOIN attendances a 
                 ON a.booking_people_id = bp.id 
                 AND a.attendance_date = :date
-                AND (a.session = :session OR :session IS NULL OR a.session IS NULL)
             WHERE bp.booking_id = :booking_id
             ORDER BY bp.fullname";
 
     $stmt = $this->conn->prepare($sql);
     $stmt->execute([
         'booking_id' => $booking_id,
-        'date'       => $date,
-        'session'    => $session
+        'date'       => $date
     ]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-public function saveAttendance($booking_id, $date, $session, $data, $general_notes = '')
+public function saveAttendance($booking_id, $date, $data, $general_notes = '')
 {
-    // Kiểm tra ngày có hợp lệ không
+    // Kiểm tra chỉ được điểm danh hôm nay
     $today = date('Y-m-d');
     if ($date !== $today) {
         return ['success' => false, 'message' => 'Chỉ được điểm danh vào hôm nay!'];
     }
 
-    // Kiểm tra ngày có trong attendance_dates không
-    $sql = "SELECT id FROM attendance_dates WHERE booking_id = ? AND date = ?";
-    $stmt = $this->conn->prepare($sql);
-    $stmt->execute([$booking_id, $date]);
-    if (!$stmt->fetch()) {
+    // Kiểm tra ngày có trong attendance_dates
+    $check = $this->conn->prepare("SELECT 1 FROM attendance_dates WHERE booking_id = ? AND date = ?");
+    $check->execute([$booking_id, $date]);
+    if (!$check->fetch()) {
         return ['success' => false, 'message' => 'Ngày điểm danh không hợp lệ!'];
     }
 
     $this->conn->beginTransaction();
     try {
         $sql = "INSERT INTO attendances 
-                (booking_people_id, attendance_date, session, status, note, checkin_time) 
-                VALUES (?, ?, ?, ?, ?, NOW())
+                (booking_people_id, attendance_date, status, note, checkin_time) 
+                VALUES (?, ?, ?, ?, NOW())
                 ON DUPLICATE KEY UPDATE 
                 status = VALUES(status),
                 note = VALUES(note),
-                session = VALUES(session),
                 checkin_time = NOW()";
 
         $stmt = $this->conn->prepare($sql);
 
+        // Lặp qua danh sách người
         foreach ($data['people'] as $person) {
             $status = isset($data['attendance'][$person['id']]) ? 'present' : 'absent';
-            $note = $data['notes'][$person['id']] ?? '';
+            $note   = $data['notes'][$person['id']] ?? '';
 
             $stmt->execute([
                 $person['id'],
                 $date,
-                $session,
                 $status,
                 $note
             ]);

@@ -160,7 +160,7 @@ $can_edit = $is_today;
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Ngày điểm danh</label>
-                                <select onchange="window.location='index.php?act=rollcall&id=<?= $booking_id ?>&date='+this.value" style="font-size:15px;">
+                                <select onchange="window.location.href='index.php?act=rollcall_Guide&id=<?= $booking_id ?>&date=' + this.value" style="font-size:15px;">
                                     <?php
                                     $dayCounter = 1;
                                     $vnDays = ['Monday'=>'Thứ Hai','Tuesday'=>'Thứ Ba','Wednesday'=>'Thứ Tư','Thursday'=>'Thứ Năm','Friday'=>'Thứ Sáu','Saturday'=>'Thứ Bảy','Sunday'=>'Chủ Nhật'];
@@ -267,7 +267,7 @@ $can_edit = $is_today;
                     <div class="submit-area">
                         <?php if ($can_edit): ?>
                             <button type="submit" class="btn-submit primary">
-                                Lưu điểm danh hôm nay
+                                Lưu điểm danh 
                             </button>
                         <?php else: ?>
                             <div style="padding:25px; background:#fffbeb; border-radius:12px; color:#92400e; font-weight:600; text-align:center; border:1px solid #fcd34d;">
