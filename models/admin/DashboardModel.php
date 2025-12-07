@@ -14,8 +14,7 @@ class DashboardModel
     public function getBookingDone()
     {
         $sql = "SELECT COUNT(*) as total 
-                FROM bookings 
-                WHERE status='confirmed' AND end_date < CURDATE()";
+                FROM bookings ";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
