@@ -90,6 +90,7 @@ $routeadmin = [
 
 
     'admin-reports',
+    'report-detail',
 
 
     
@@ -194,6 +195,8 @@ match ($act) {
     'gui-bao-cao-tour' => (new PostTuorReportController())->store(),
     
     'admin-reports' => (new AdminReportController())->index(),
+    'report-detail' => (new AdminReportController())->detail(),
+
 
 
     /* ---------- 404 ---------- */

@@ -146,4 +146,20 @@ class PostTourReportModel
 
         return $report;
     }
+    public function insertReport($guide_id, $booking_id, $description)
+{
+    $sql = "
+        INSERT INTO tour_assignments_reports (guide_id, booking_id, description, created_at)
+        VALUES (:guide_id, :booking_id, :description, NOW())
+    ";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([
+        ':guide_id' => $guide_id,
+        ':booking_id' => $booking_id,
+        ':description' => $description
+    ]);
+
+    return $this->db->lastInsertId(); 
+}
+
 }

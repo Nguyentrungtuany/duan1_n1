@@ -15,4 +15,12 @@ class AdminReportController
         $reports = $this->model->getAllReports();
         require_once './views/admin/reports/list.php';
     }
+
+    public function detail()
+    {
+        $id = $_GET['id'] ?? 0;
+        $report = $this->model->getOneReport($id);
+
+        require_once './views/admin/reports/detail.php';
+    }
 }
