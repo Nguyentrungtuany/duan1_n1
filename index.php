@@ -28,6 +28,7 @@ require_once './models/TourModel.php';
 require_once './models/admin/IndexModel.php';
 require_once './models/admin/UserModel.php';
 require_once './models/admin/BookingModel.php';
+require_once './models/admin/DashboardModel.php';
 require_once './models/guides/IndexGuideModel.php';
 // Require toàn bộ file Views
 // require_once './views/home.php';
