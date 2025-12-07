@@ -63,7 +63,10 @@ class DashboardModel
         $sql = "SELECT SUM(tours.price * bookings.number_of_people) AS revenue
         FROM bookings
         JOIN tours ON bookings.tour_id = tours.id
-        WHERE bookings.payment_status = 'paid'";
+        WHERE bookings.payment_status = 'paid'
+AND bookings.end_date < CURDATE()
+AND bookings.status = 'confirmed'
+";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
