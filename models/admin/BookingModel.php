@@ -166,7 +166,6 @@ class BookingModel
             JSON_OBJECT(
                 'id', s.id,
                 'day_number', s.day_number,
-                'date', s.date,
                 'location', s.location,
                 'activities', s.activities,
                 'guide_id', s.guide_id,
@@ -362,7 +361,6 @@ LEFT JOIN users u ON u.id = g.user_id;";
             JSON_OBJECT(
                 'id', s.id,
                 'day_number', s.day_number,
-                'date', s.date,
                 'location', s.location,
                 'activities', s.activities,
                 'guide_id', s.guide_id,
@@ -933,7 +931,7 @@ WHERE b.id = :id;
                 c.name AS category_name, 
                 d.name AS destination_name,
                 (SELECT JSON_ARRAYAGG(
-                    JSON_OBJECT('id', s.id, 'day_number', s.day_number, 'date', s.date, 
+                    JSON_OBJECT('id', s.id, 'day_number', s.day_number, 
                     'location', s.location, 'activities', s.activities, 'notes', s.notes, 
                     'status', s.status, 'guide_id', s.guide_id)
                 ) FROM schedules s WHERE s.tour_id = t.id ORDER BY s.day_number) AS schedules

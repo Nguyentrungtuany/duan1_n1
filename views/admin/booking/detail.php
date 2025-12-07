@@ -441,7 +441,6 @@ if (!empty($booking)) {
                                 <div class="schedule-header">
                                     <div class="schedule-day">
                                         <span class="day-number">Ngày <?= $schedule['day_number'] ?></span>
-                                        <span class="day-date"><?= date('d/m/Y', strtotime($schedule['date'])) ?></span>
                                     </div>
                                 </div>
                                 <div class="schedule-body">

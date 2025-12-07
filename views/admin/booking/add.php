@@ -336,12 +336,7 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                                 <h5 style="margin-top: 0;">Ngày 1</h5>
                                 <input type="hidden" name="schedules[0][day_number]" value="1">
                                 <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>Ngày</label>
-                                            <input type="date" class="form-control" name="schedules[0][date]" disabled>
-                                        </div>
-                                    </div>
+
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Địa điểm</label>

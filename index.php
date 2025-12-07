@@ -76,6 +76,8 @@ $routeadmin = [
 
     'check-guide-conflict-api',
     'get-available-guides-api',
+
+    'test',
 ];
 $routeguide = [
     'guide',

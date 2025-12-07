@@ -233,7 +233,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                     </select>
                                 </div>
                             </div>
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="payment_status">Thanh toán</label>
                                     <select class="form-control" id="payment_status" name="payment_status">
@@ -241,7 +241,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                         <option value="paid" <?php echo (isset($booking['payment_status']) && $booking['payment_status'] == 'paid') ? 'selected' : ''; ?>>Đã thanh toán</option>
                                     </select>
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
 
                         <!-- Số chỗ tối đa -->
@@ -507,13 +507,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                     <h5>Ngày <?= isset($schedule['day_number']) ? $schedule['day_number'] : ($index + 1) ?></h5>
                                     <input type="hidden" name="schedules[<?= $index ?>][day_number]" value="<?= $index + 1 ?>">
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label>Ngày</label>
-                                                <input type="date" class="form-control" name="schedules[<?= $index ?>][date]"
-                                                    value="<?= isset($schedule['date']) ? $schedule['date'] : '' ?>" disabled>
-                                            </div>
-                                        </div>
+
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Địa điểm</label>
@@ -737,13 +731,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                 <h5>Ngày ${index + 1}</h5>
                 <input type="hidden" name="schedules[${index}][day_number]" value="${index + 1}">
                 <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Ngày</label>
-                            <input type="date" class="form-control" name="schedules[${index}][date]" 
-                                value="${schedule.date || ''}" disabled>
-                        </div>
-                    </div>
+                    
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Địa điểm</label>
