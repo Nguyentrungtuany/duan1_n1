@@ -316,10 +316,11 @@ foreach ($data as &$item) {
                                 </a>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-12" style="margin-bottom: 10px;">
-                                <a href="index.php?act=bao-cao&booking_id=<?= $booking['id'] ?>" class="btn btn-warning btn-block btn-lg">
-                                    <i class="fa fa-file-text-o"></i> Báo cáo
-                                </a>
-                            </div>
+    <a href="index.php?act=bao-cao-booking&booking_id=<?= $booking['id'] ?>" 
+       class="btn btn-warning btn-block btn-lg">
+        <i class="fa fa-file-text-o"></i> Báo cáo
+    </a>
+</div>
                         </div>
                     </div>
 
@@ -558,7 +559,7 @@ foreach ($data as &$item) {
                                 </a>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-12" style="margin-bottom: 10px;">
-                                <a href="index.php?act=bao-cao&booking_id=<?= $booking['id'] ?>" class="btn btn-warning btn-block btn-lg">
+                                <a href="?act=bao-cao-booking&booking_id=<?= $booking['id'] ?>" class="btn btn-warning btn-block btn-lg">
                                     <i class="fa fa-file-text-o"></i> Báo cáo
                                 </a>
                             </div>
