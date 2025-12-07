@@ -93,7 +93,7 @@ $routeadmin = [
     'admin-reports',
     'report-detail',
 
-
+    'test',
 
 ];
 
