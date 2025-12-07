@@ -23,6 +23,7 @@ require_once './controllers/admin/GuideController.php';
 require_once './controllers/admin/DestinationController.php';
 require_once './controllers/guides/GuidesController.php';
 require_once './controllers/guides/PostTuorReportController.php';
+require_once './controllers/admin/AdminReportController.php';
 
 /* =======================================================
     REQUIRE MODELS
@@ -86,6 +87,10 @@ $routeadmin = [
     'check-guide-conflict-api',
     'get-available-guides-api',
     'get-available-people-api',
+
+
+    'admin-reports',
+
 
     
 ];
@@ -187,6 +192,9 @@ match ($act) {
     'bao-cao-booking' => (new PostTuorReportController())->index(),
     // ⭐ SUBMIT REPORT
     'gui-bao-cao-tour' => (new PostTuorReportController())->store(),
+    
+    'admin-reports' => (new AdminReportController())->index(),
+
 
     /* ---------- 404 ---------- */
     default => require_once './views/404.php',
