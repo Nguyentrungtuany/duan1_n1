@@ -32,10 +32,7 @@
                                         <td><strong>Số điện thoại:</strong></td>
                                         <td><?= htmlspecialchars($user['phone'] ?? 'Chưa cập nhật') ?></td>
                                     </tr>
-                                    <tr>
-                                        <td><strong>Địa chỉ:</strong></td>
-                                        <td><?= htmlspecialchars($user['address'] ?? 'Chưa cập nhật') ?></td>
-                                    </tr>
+
                                     <tr>
                                         <td><strong>Vai trò:</strong></td>
                                         <td>
@@ -82,7 +79,19 @@
         <?php endif; ?>
     </div>
 </div>
+
 <style>
+    .main-content {
+        margin-left: 250px !important;
+        padding: 20px !important;
+    }
+
+    @media (max-width: 991px) {
+        .main-content {
+            margin-left: 0 !important;
+        }
+    }
+
     .page-header {
         border-bottom: 2px solid #e5e5e5;
         padding-bottom: 15px;
