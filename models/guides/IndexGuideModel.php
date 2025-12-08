@@ -44,19 +44,8 @@ class GuidesModel
         'description', d.description
     ) AS destination,
 
-    /* =======================
-            CUSTOMER
-    ======================== */
-    JSON_OBJECT(
-        'id', cu.id,
-        'full_name', cu.full_name,
-        'phone', cu.phone,
-        'email', cu.email,
-        'address', cu.address,
-        'type', cu.type,
-        'note', cu.note
-    ) AS customer,
-
+   
+   
     /* =======================
             GUIDE (from guides)
     ======================== */
@@ -125,21 +114,7 @@ class GuidesModel
         WHERE s.tour_id = b.tour_id
     ) AS schedules,
 
-    (
-        SELECT JSON_ARRAYAGG(
-            JSON_OBJECT(
-                'id', cs.id,
-                'customer_id', cs.customer_id,
-                'guide_id', cs.guide_id,
-                'message', cs.message,
-                'status', cs.status,
-                'created_at', cs.created_at
-            )
-        )
-        FROM customer_support cs
-        WHERE cs.booking_id = b.id
-    ) AS customer_support,
-
+    
     (
         SELECT JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -167,7 +142,6 @@ FROM bookings b
 LEFT JOIN tours t ON t.id = b.tour_id
 LEFT JOIN tour_categories c ON c.id = t.category_id
 LEFT JOIN destinations d ON d.id = t.destination_id
-LEFT JOIN customers cu ON cu.id = b.customer_id
 
 /* =========================
        JOIN GUIDE
@@ -224,18 +198,7 @@ WHERE g.user_id = :user_id";
             'description', d.description
         ) AS destination,
 
-        /* =======================
-                CUSTOMER
-        ======================== */
-        JSON_OBJECT(
-            'id', cu.id,
-            'full_name', cu.full_name,
-            'phone', cu.phone,
-            'email', cu.email,
-            'address', cu.address,
-            'type', cu.type,
-            'note', cu.note
-        ) AS customer,
+       
 
         /* =======================
                 GUIDE (from guides)
@@ -306,20 +269,7 @@ WHERE g.user_id = :user_id";
             WHERE s.tour_id = b.tour_id
         ) AS schedules,
 
-        (
-            SELECT JSON_ARRAYAGG(
-                JSON_OBJECT(
-                    'id', cs.id,
-                    'customer_id', cs.customer_id,
-                    'guide_id', cs.guide_id,
-                    'message', cs.message,
-                    'status', cs.status,
-                    'created_at', cs.created_at
-                )
-            )
-            FROM customer_support cs
-            WHERE cs.booking_id = b.id
-        ) AS customer_support,
+        
 
         (
             SELECT JSON_ARRAYAGG(
@@ -348,7 +298,6 @@ WHERE g.user_id = :user_id";
     LEFT JOIN tours t ON t.id = b.tour_id
     LEFT JOIN tour_categories c ON c.id = t.category_id
     LEFT JOIN destinations d ON d.id = t.destination_id
-    LEFT JOIN customers cu ON cu.id = b.customer_id
     INNER JOIN guides g ON g.id = b.guide_id
     INNER JOIN users u ON u.id = g.user_id
     WHERE b.id = :booking_id";
@@ -392,20 +341,20 @@ WHERE g.user_id = :user_id";
 
     // === THÊM VÀO GuidesModel.php ===
 
-public function getAttendanceDates($booking_id)
-{
-    $sql = "SELECT date, is_locked 
+    public function getAttendanceDates($booking_id)
+    {
+        $sql = "SELECT date, is_locked 
             FROM attendance_dates 
             WHERE booking_id = :booking_id 
             ORDER BY date ASC";
-    $stmt = $this->conn->prepare($sql);
-    $stmt->execute(['booking_id' => $booking_id]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['booking_id' => $booking_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-public function getAttendanceHistory($booking_id, $date, $session = null)
-{
-    $sql = "SELECT 
+    public function getAttendanceHistory($booking_id, $date, $session = null)
+    {
+        $sql = "SELECT 
                 bp.id,
                 bp.fullname,
                 bp.phone,
@@ -420,32 +369,32 @@ public function getAttendanceHistory($booking_id, $date, $session = null)
             WHERE bp.booking_id = :booking_id
             ORDER BY bp.fullname";
 
-    $stmt = $this->conn->prepare($sql);
-    $stmt->execute([
-        'booking_id' => $booking_id,
-        'date'       => $date
-    ]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-public function saveAttendance($booking_id, $date, $data, $general_notes = '')
-{
-    // Kiểm tra chỉ được điểm danh hôm nay
-    $today = date('Y-m-d');
-    if ($date !== $today) {
-        return ['success' => false, 'message' => 'Chỉ được điểm danh vào hôm nay!'];
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+            'booking_id' => $booking_id,
+            'date'       => $date
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Kiểm tra ngày có trong attendance_dates
-    $check = $this->conn->prepare("SELECT 1 FROM attendance_dates WHERE booking_id = ? AND date = ?");
-    $check->execute([$booking_id, $date]);
-    if (!$check->fetch()) {
-        return ['success' => false, 'message' => 'Ngày điểm danh không hợp lệ!'];
-    }
+    public function saveAttendance($booking_id, $date, $data, $general_notes = '')
+    {
+        // Kiểm tra chỉ được điểm danh hôm nay
+        $today = date('Y-m-d');
+        if ($date !== $today) {
+            return ['success' => false, 'message' => 'Chỉ được điểm danh vào hôm nay!'];
+        }
 
-    $this->conn->beginTransaction();
-    try {
-        $sql = "INSERT INTO attendances 
+        // Kiểm tra ngày có trong attendance_dates
+        $check = $this->conn->prepare("SELECT 1 FROM attendance_dates WHERE booking_id = ? AND date = ?");
+        $check->execute([$booking_id, $date]);
+        if (!$check->fetch()) {
+            return ['success' => false, 'message' => 'Ngày điểm danh không hợp lệ!'];
+        }
+
+        $this->conn->beginTransaction();
+        try {
+            $sql = "INSERT INTO attendances 
                 (booking_people_id, attendance_date, status, note, checkin_time) 
                 VALUES (?, ?, ?, ?, NOW())
                 ON DUPLICATE KEY UPDATE 
@@ -453,26 +402,26 @@ public function saveAttendance($booking_id, $date, $data, $general_notes = '')
                 note = VALUES(note),
                 checkin_time = NOW()";
 
-        $stmt = $this->conn->prepare($sql);
+            $stmt = $this->conn->prepare($sql);
 
-        // Lặp qua danh sách người
-        foreach ($data['people'] as $person) {
-            $status = isset($data['attendance'][$person['id']]) ? 'present' : 'absent';
-            $note   = $data['notes'][$person['id']] ?? '';
+            // Lặp qua danh sách người
+            foreach ($data['people'] as $person) {
+                $status = isset($data['attendance'][$person['id']]) ? 'present' : 'absent';
+                $note   = $data['notes'][$person['id']] ?? '';
 
-            $stmt->execute([
-                $person['id'],
-                $date,
-                $status,
-                $note
-            ]);
+                $stmt->execute([
+                    $person['id'],
+                    $date,
+                    $status,
+                    $note
+                ]);
+            }
+
+            $this->conn->commit();
+            return ['success' => true, 'message' => 'Điểm danh thành công!'];
+        } catch (Exception $e) {
+            $this->conn->rollBack();
+            return ['success' => false, 'message' => 'Lỗi: ' . $e->getMessage()];
         }
-
-        $this->conn->commit();
-        return ['success' => true, 'message' => 'Điểm danh thành công!'];
-    } catch (Exception $e) {
-        $this->conn->rollBack();
-        return ['success' => false, 'message' => 'Lỗi: ' . $e->getMessage()];
     }
-}
 }
