@@ -1,15 +1,17 @@
 <?php
 require_once './models/guides/IndexGuideModel.php';
+require_once './models/admin/UserModel.php';
 
 class GuidesController
 {
     public $conn;
     public $GuidesModel;
-
+    public $userModel;
     public function __construct()
     {
         $this->conn = connectDB();
         $this->GuidesModel = new GuidesModel();
+        $this->userModel = new UserModel();
     }
 
     

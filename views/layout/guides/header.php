@@ -145,7 +145,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                             <span class="icon-bar"></span>
                         </button>
                         <h1>
-                            <a class="navbar-brand" href="index.html"><span class="fa fa-area-chart"></span> Glance<span
+                            <a class="navbar-brand" href="?act=admin"><span class="fa fa-area-chart"></span> Glance<span
                                     class="dashboard_text">Design dashboard</span></a>
                         </h1>
                     </div>
@@ -438,7 +438,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     <a href="#"><i class="fa fa-cog"></i> Settings</a>
                                 </li>
                                 <li>
-                                    <a href="#"><i class="fa fa-user"></i> My Account</a>
+                                    <a href="?act=guide-account"><i class="fa fa-user"></i> My Account</a>
                                 </li>
                                 <li>
                                     <a href="#"><i class="fa fa-suitcase"></i> Profile</a>

@@ -114,7 +114,6 @@ class GuidesModel
             JSON_OBJECT(
                 'id', s.id,
                 'day_number', s.day_number,
-                'date', s.date,
                 'location', s.location,
                 'activities', s.activities,
                 'guide_id', s.guide_id,
@@ -280,7 +279,7 @@ WHERE g.user_id = :user_id";
         (
             SELECT JSON_ARRAYAGG(
                 JSON_OBJECT(
-                    'id', bp.id,
+                    'id', bp.id,  
                     'fullname', bp.fullname,
                     'phone', bp.phone,
                     'date', bp.date
@@ -296,7 +295,6 @@ WHERE g.user_id = :user_id";
                 JSON_OBJECT(
                     'id', s.id,
                     'day_number', s.day_number,
-                    'date', s.date,
                     'location', s.location,
                     'activities', s.activities,
                     'guide_id', s.guide_id,

@@ -72,7 +72,6 @@ foreach ($DataQltour as &$item) {
                                                     <div class="schedule-item" style="margin-bottom: 10px; padding: 8px; background: #f9f9f9; border-left: 3px solid #5cb85c; border-radius: 3px;">
                                                         <div style="margin-bottom: 5px;">
                                                             <strong style="color: #5cb85c;">Ngày <?= $schedule['day_number'] ?>:</strong>
-                                                            <span style="color: #666;"><?= date('d/m/Y', strtotime($schedule['date'])) ?></span>
                                                         </div>
                                                         <div style="margin-bottom: 5px;">
                                                             <strong><i class="fa fa-map-marker"></i> <?= htmlspecialchars($schedule['location']) ?></strong>
@@ -129,26 +128,26 @@ foreach ($DataQltour as &$item) {
     body {
         overflow: auto !important;
         height: auto !important;
-        max - height: none !important;
+        max-height: none !important;
     }
 
-    #page - wrapper {
+    #page-wrapper {
         overflow: auto !important;
         height: auto !important;
-        min - height: 100 vh;
+        min-height: 100vh;
     }
 
-    .main - page {
+    .main-page {
         overflow: visible !important;
     }
 
     .table td {
-        vertical - align: top !important;
+        vertical-align: top !important;
     }
 
-    .transport - item,
-    .accommodation - item {
-        border - left: 3 px solid #337ab7;
+    .transport-item,
+    .accommodation-item {
+        border-left: 3px solid #337ab7;
     }
 
     .schedule-item:last-child {
