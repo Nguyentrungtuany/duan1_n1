@@ -81,6 +81,7 @@ $routeguide = [
     'guide',
     'job-guide',
     'rollcall_Guide',
+    'guide-account',
 ];
 
 
@@ -165,5 +166,7 @@ match ($act) {
     'guide' => (new GuidesController())->index(),
     'job-guide' => (new GuidesController())->detail(),
     'rollcall_Guide' => (new GuidesController())->rollcall(),
+    'guide-account' => (new GuidesController())->account(),
+
     default => require_once './views/404.php',
 };

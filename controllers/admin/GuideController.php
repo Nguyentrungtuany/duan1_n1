@@ -37,7 +37,7 @@ class GuideController
             header("Location: ?act=admin_guides");
             exit;
         }
-        
+
         $availableUsers = $this->model->getAvailableUsers();
         $title = "Thêm hướng dẫn viên mới";
         require_once 'views/admin/guides/create.php';
