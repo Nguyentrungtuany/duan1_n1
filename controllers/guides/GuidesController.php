@@ -193,5 +193,24 @@ class GuidesController
             echo "<script>alert('Lỗi: " . addslashes($e->getMessage()) . "'); history.back();</script>";
         }
     }
+    public function account()
+    {
+        // Lấy lại thông tin mới nhất từ database thay vì dùng session cũ
+        $userId = $_SESSION['user']['id'] ?? null;
+
+        if ($userId) {
+            // Load lại dữ liệu mới từ database
+            $user = $this->userModel->getUserById($userId);
+
+            // Cập nhật lại session với dữ liệu mới
+            if ($user) {
+                $_SESSION['user'] = $user;
+            }
+        } else {
+            $user = null;
+        }
+
+        require_once 'views/guides/accountdetail.php';
+    }
     //aaaa
 }
