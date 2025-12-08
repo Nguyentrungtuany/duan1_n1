@@ -102,6 +102,7 @@ $routeguide = [
     'guide',
     'job-guide',
     'rollcall_Guide',
+    'myaccount',
 
     // ⭐ ROUTE REPORT TOUR
     'bao-cao-booking',

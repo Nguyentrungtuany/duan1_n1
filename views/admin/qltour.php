@@ -128,26 +128,26 @@ foreach ($DataQltour as &$item) {
     body {
         overflow: auto !important;
         height: auto !important;
-        max - height: none !important;
+        max-height: none !important;
     }
 
-    #page - wrapper {
+    #page-wrapper {
         overflow: auto !important;
         height: auto !important;
-        min - height: 100 vh;
+        min-height: 100vh;
     }
 
-    .main - page {
+    .main-page {
         overflow: visible !important;
     }
 
     .table td {
-        vertical - align: top !important;
+        vertical-align: top !important;
     }
 
-    .transport - item,
-    .accommodation - item {
-        border - left: 3 px solid #337ab7;
+    .transport-item,
+    .accommodation-item {
+        border-left: 3px solid #337ab7;
     }
 
     .schedule-item:last-child {
