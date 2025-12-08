@@ -90,7 +90,10 @@ $routeadmin = [
     'get-available-guides-api',
     'get-available-people-api',
 
-
+    'admin-guides',
+    'admin_guide_create',
+    'admin_guide_edit',
+    'admin_guide_update',
     'admin-reports',
     'report-detail',
 
@@ -187,7 +190,11 @@ match ($act) {
     'destination-edit' => (new DestinationController())->edit(),
     'destination-update' => (new DestinationController())->update(),
     'destination-delete' => (new DestinationController())->delete(),
-
+    //Quản lý hướng dẫn viên
+    'admin_guides' => (new GuideController())->index(),
+    'admin_guide_create' => (new GuideController())->create(),
+    'admin_guide_edit' => (new GuideController())->edit($_GET['id']),
+    'admin_guide_update' => (new GuideController())->update($_GET['id'] ?? null),
     // API
     'get-available-people' => (new BookingController())->getAvailablePeopleApi(),
     'check-person-conflict' => (new BookingController())->checkPersonConflictApi(),

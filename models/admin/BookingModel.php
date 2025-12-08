@@ -76,18 +76,7 @@ class BookingModel
         'description', d.description
     ) AS destination,
 
-    /* ============================
-            CUSTOMER
-    ============================ */
-    JSON_OBJECT(
-        'id', cu.id,
-        'full_name', cu.full_name,
-        'phone', cu.phone,
-        'email', cu.email,
-        'address', cu.address,
-        'type', cu.type,
-        'note', cu.note
-    ) AS customer,
+  
 
     /* ============================
             GUIDE
@@ -177,23 +166,7 @@ class BookingModel
         WHERE s.tour_id = b.tour_id
     ) AS schedules,
 
-    /* ============================
-            CUSTOMER SUPPORT
-    ============================ */
-    (
-        SELECT JSON_ARRAYAGG(
-            JSON_OBJECT(
-                'id', cs.id,
-                'customer_id', cs.customer_id,
-                'guide_id', cs.guide_id,
-                'message', cs.message,
-                'status', cs.status,
-                'created_at', cs.created_at
-            )
-        )
-        FROM customer_support cs 
-        WHERE cs.booking_id = b.id
-    ) AS customer_support,
+    
 
     /* ============================
             ACCOMMODATIONS
@@ -228,7 +201,6 @@ FROM bookings b
 LEFT JOIN tours t ON t.id = b.tour_id
 LEFT JOIN tour_categories c ON c.id = t.category_id
 LEFT JOIN destinations d ON d.id = t.destination_id
-LEFT JOIN customers cu ON cu.id = b.customer_id
 LEFT JOIN guides g ON g.id = b.guide_id
 LEFT JOIN users u ON u.id = g.user_id;";
         $stmt = $this->conn->prepare($sql);
@@ -271,19 +243,8 @@ LEFT JOIN users u ON u.id = g.user_id;";
         'description', d.description
     ) AS destination,
 
-    /* ============================
-            CUSTOMER
-    ============================ */
-    JSON_OBJECT(
-        'id', cu.id,
-        'full_name', cu.full_name,
-        'phone', cu.phone,
-        'email', cu.email,
-        'address', cu.address,
-        'type', cu.type,
-        'note', cu.note
-    ) AS customer,
-
+   
+   
     /* ============================
             GUIDE
     ============================ */
@@ -372,24 +333,10 @@ LEFT JOIN users u ON u.id = g.user_id;";
         WHERE s.tour_id = b.tour_id
     ) AS schedules,
 
-    /* ============================
-            CUSTOMER SUPPORT
-    ============================ */
-    (
-        SELECT JSON_ARRAYAGG(
-            JSON_OBJECT(
-                'id', cs.id,
-                'customer_id', cs.customer_id,
-                'guide_id', cs.guide_id,
-                'message', cs.message,
-                'status', cs.status,
-                'created_at', cs.created_at
-            )
-        )
-        FROM customer_support cs 
-        WHERE cs.booking_id = b.id
-    ) AS customer_support,
 
+
+    
+    
     /* ============================
             ACCOMMODATIONS
     ============================ */
@@ -423,7 +370,6 @@ FROM bookings b
 LEFT JOIN tours t ON t.id = b.tour_id
 LEFT JOIN tour_categories c ON c.id = t.category_id
 LEFT JOIN destinations d ON d.id = t.destination_id
-LEFT JOIN customers cu ON cu.id = b.customer_id
 LEFT JOIN guides g ON g.id = b.guide_id
 LEFT JOIN users u ON u.id = g.user_id
 WHERE b.id = :id;
