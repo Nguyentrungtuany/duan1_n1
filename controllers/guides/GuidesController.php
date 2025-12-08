@@ -1,14 +1,17 @@
 <?php
 require_once './models/guides/IndexGuideModel.php';
+require_once './models/admin/UserModel.php';
 
 class GuidesController
 {
     public $conn;
     public $GuidesModel;
+    public $userModel;
     public function __construct()
     {
         $this->conn = connectDB();
         $this->GuidesModel = new GuidesModel();
+        $this->userModel = new UserModel();
     }
     public function index()
     {
@@ -40,5 +43,24 @@ class GuidesController
         $booking = $this->GuidesModel->getBookingById($booking_id);
         $dataPeople = $this->GuidesModel->booking_people($booking_id);
         require_once './views/guides/rollcall_Guide.php';
+    }
+    public function account()
+    {
+        // Lấy lại thông tin mới nhất từ database thay vì dùng session cũ
+        $userId = $_SESSION['user']['id'] ?? null;
+
+        if ($userId) {
+            // Load lại dữ liệu mới từ database
+            $user = $this->userModel->getUserById($userId);
+
+            // Cập nhật lại session với dữ liệu mới
+            if ($user) {
+                $_SESSION['user'] = $user;
+            }
+        } else {
+            $user = null;
+        }
+
+        require_once 'views/guides/accountdetail.php';
     }
 }

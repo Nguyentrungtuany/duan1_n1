@@ -438,7 +438,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     <a href="#"><i class="fa fa-cog"></i> Settings</a>
                                 </li>
                                 <li>
-                                    <a href="?act=myaccount"><i class="fa fa-user"></i> My Account</a>
+                                    <a href="?act=guide-account"><i class="fa fa-user"></i> My Account</a>
                                 </li>
                                 <li>
                                     <a href="#"><i class="fa fa-suitcase"></i> Profile</a>

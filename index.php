@@ -102,6 +102,7 @@ $routeguide = [
     'guide',
     'job-guide',
     'rollcall_Guide',
+    'guide-account',
     'myaccount',
 
     // ⭐ ROUTE REPORT TOUR
@@ -198,6 +199,8 @@ match ($act) {
     'guide' => (new GuidesController())->index(),
     'job-guide' => (new GuidesController())->detail(),
     'rollcall_Guide' => (new GuidesController())->rollcall(),
+    'guide-account' => (new GuidesController())->account(),
+
 
     // ⭐ FORM BÁO CÁO TOUR
     'bao-cao-booking' => (new PostTuorReportController())->index(),
