@@ -44,6 +44,7 @@ $id = $_GET['id'] ?? null;
 
 $routeadmin = [
     'admin',
+    'myaccount',
     'tables',
     'admin-list-user',
     'user-create',
@@ -137,6 +138,13 @@ match ($act) {
 
     // Users
     'tables' => (new UserController($db))->index(),
+    'admin-list-user' => (new UserController($db))->index(),        // Danh sách
+    'user-create' => (new UserController($db))->create(),           // Hiển thị form thêm
+    'user-store' => (new UserController($db))->store(),             // Xử lý thêm
+    'admin-edit-user' => (new UserController($db))->edit(),               // Hiển thị form sửa
+    'admin-update-user' => (new UserController($db))->update(),           // Xử lý cập nhật
+    'admin-delete-user' => (new UserController($db))->delete(),     // Xóa
+    'myaccount' => (new UserController($db))->myAccount(),
     'admin-list-user' => (new UserController($db))->index(),
     'user-create' => (new UserController($db))->create(),
     'user-store' => (new UserController($db))->store(),
