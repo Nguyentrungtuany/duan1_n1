@@ -153,7 +153,7 @@ match ($act) {
     'admin-edit-user' => (new UserController($db))->edit(),
     'admin-update-user' => (new UserController($db))->update(),
     'admin-delete-user' => (new UserController($db))->delete(),
-    'user-search' => (new UserController($db))->search(),
+
 
     // Tour
     'QlTour' => (new IndexController())->QlTuor(),
