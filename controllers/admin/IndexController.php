@@ -1,15 +1,23 @@
 <?php
-
+require_once './models/admin/DashboardModel.php';
 require_once './models/admin/IndexModel.php';
 class IndexController
 {
     public $indexModel;
+    public $dashboardModel;
     public function __construct()
     {
         $this->indexModel = new IndexModel();
+        $this->dashboardModel = new DashboardModel();
     }
     public function index()
     {
+        $bookingDone = $this->dashboardModel->getBookingDone();
+        $bookingOngoing = $this->dashboardModel->getBookingOngoing();
+        $totalCustomers = $this->dashboardModel->getTotalCustomers();
+        $totalGuides = $this->dashboardModel->getTotalGuides();
+        $totalRevenue = $this->dashboardModel->getTotalRevenue();
+
 
         require_once './views/admin/IndexAdmin.php';
     }
@@ -34,6 +42,7 @@ class IndexController
             $data = [
                 'name' => $_POST['name'],
                 'category_id' => $_POST['category_id'],
+                'destination_id' => $_POST['destination_id'], // ✅ THÊM DÒNG NÀY
                 'description' => $_POST['description'],
                 'price' => $_POST['price'],
                 'status' => $_POST['status'],
@@ -106,7 +115,6 @@ class IndexController
 
                     $data = [
                         'day_number' => $schedule['day_number'],
-                        'date' => $schedule['date'],
                         'location' => $schedule['location'],
                         'activities' => $schedule['activities'],
                         'notes' => $schedule['notes'],
@@ -117,7 +125,6 @@ class IndexController
                     $data = [
                         'tour_id' => $id,
                         'day_number' => $schedule['day_number'],
-                        'date' => $schedule['date'],
                         'location' => $schedule['location'],
                         'activities' => $schedule['activities'],
                         'notes' => $schedule['notes'],
@@ -160,26 +167,65 @@ class IndexController
                 'category_id' => $_POST['category_id'],
                 'destination_id' => $_POST['destination_id'],
                 'description' => $_POST['description'],
-                'start_date' => $_POST['start_date'],
-                'end_date' => $_POST['end_date'],
                 'price' => $_POST['price'],
                 'status' => $_POST['status'],
             ];
-            // $id = $_POST['id'];
+
+            // Tạo tour mới
             $return = $this->indexModel->createQltour($data);
+
             if ($return) {
+                // Lấy ID của tour vừa tạo
+                $tourId = $this->indexModel->getLastInsertId();
+
+                // Xử lý lưu lịch trình nếu có
+                if (isset($_POST['schedules']) && is_array($_POST['schedules'])) {
+                    foreach ($_POST['schedules'] as $schedule) {
+                        $scheduleData = [
+                            'tour_id' => $tourId,
+                            'day_number' => $schedule['day_number'],
+                            'location' => $schedule['location'] ?? '',
+                            'activities' => $schedule['activities'] ?? '',
+                            'notes' => $schedule['notes'] ?? '',
+                        ];
+                        $this->indexModel->createshedules($tourId, $scheduleData);
+                    }
+                }
+
                 header("Location: index.php?act=QlTour");
+                exit();
             } else {
-                echo "Them moi that bai";
+                echo "Thêm mới thất bại";
             }
         }
     }
     public function test()
     {
-        $data = $this->indexModel->test();
-        echo "<pre>";
-        print_r($data);
-        echo "</pre>";
+        // Lấy dữ liệu thật từ database
+        $mapData = $this->indexModel->getMapData();
+
+        // ✅ NẾU KHÔNG CÓ DỮ LIỆU, DÙNG DỮ LIỆU MẪU
+        if (empty($mapData)) {
+            $mapData = [
+                ['country' => 'Vietnam', 'location' => 'Hà Nội, TP.HCM', 'total_bookings' => 25, 'total_customers' => 75],
+                ['country' => 'Thailand', 'location' => 'Bangkok, Phuket', 'total_bookings' => 18, 'total_customers' => 54],
+                ['country' => 'Japan', 'location' => 'Tokyo, Osaka', 'total_bookings' => 15, 'total_customers' => 45],
+                ['country' => 'South Korea', 'location' => 'Seoul, Busan', 'total_bookings' => 12, 'total_customers' => 36],
+                ['country' => 'Singapore', 'location' => 'Singapore', 'total_bookings' => 10, 'total_customers' => 30],
+                ['country' => 'China', 'location' => 'Beijing, Shanghai', 'total_bookings' => 20, 'total_customers' => 60],
+                ['country' => 'Malaysia', 'location' => 'Kuala Lumpur', 'total_bookings' => 8, 'total_customers' => 24],
+                ['country' => 'Indonesia', 'location' => 'Bali, Jakarta', 'total_bookings' => 14, 'total_customers' => 42],
+                ['country' => 'Philippines', 'location' => 'Manila, Boracay', 'total_bookings' => 6, 'total_customers' => 18],
+                ['country' => 'Cambodia', 'location' => 'Siem Reap, Phnom Penh', 'total_bookings' => 5, 'total_customers' => 15],
+                ['country' => 'France', 'location' => 'Paris, Nice', 'total_bookings' => 12, 'total_customers' => 36],
+                ['country' => 'United States', 'location' => 'New York, LA', 'total_bookings' => 16, 'total_customers' => 48],
+                ['country' => 'Australia', 'location' => 'Sydney, Melbourne', 'total_bookings' => 9, 'total_customers' => 27],
+                ['country' => 'United Kingdom', 'location' => 'London', 'total_bookings' => 7, 'total_customers' => 21],
+                ['country' => 'Germany', 'location' => 'Berlin, Munich', 'total_bookings' => 8, 'total_customers' => 24],
+            ];
+        }
+
+        $mapDataJson = json_encode($mapData, JSON_UNESCAPED_UNICODE);
 
         require_once './views/admin/test.php';
     }
