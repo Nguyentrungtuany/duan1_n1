@@ -286,7 +286,7 @@ require_once __DIR__ . '/layout/header.php';
           <i class="pull-left fa fa-dollar icon-rounded"></i>
           <div class="stats">
             <h5><strong>$452</strong></h5>
-            <span>Tổng số booking</span>
+            <span>Total Revenue</span>
           </div>
         </div>
       </div>
@@ -295,7 +295,7 @@ require_once __DIR__ . '/layout/header.php';
           <i class="pull-left fa fa-laptop user1 icon-rounded"></i>
           <div class="stats">
             <h5><strong>$1019</strong></h5>
-            <span>Tổng số tour</span>
+            <span>Online Revenue</span>
           </div>
         </div>
       </div>
@@ -304,7 +304,7 @@ require_once __DIR__ . '/layout/header.php';
           <i class="pull-left fa fa-money user2 icon-rounded"></i>
           <div class="stats">
             <h5><strong>$1012</strong></h5>
-            <span>Số lượng khách hàng</span>
+            <span>Expenses</span>
           </div>
         </div>
       </div>
@@ -313,7 +313,7 @@ require_once __DIR__ . '/layout/header.php';
           <i class="pull-left fa fa-pie-chart dollar1 icon-rounded"></i>
           <div class="stats">
             <h5><strong>$450</strong></h5>
-            <span>Tổng doanh thu</span>
+            <span>Expenditure</span>
           </div>
         </div>
       </div>

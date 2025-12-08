@@ -164,7 +164,6 @@ if (isset($DataQltour['schedules']) && is_string($DataQltour['schedules'])) {
                             <select class="form-control" id="status" name="status">
                                 <option value="open" <?php echo (isset($DataQltour['status']) && $DataQltour['status'] == 'open') ? 'selected' : ''; ?>>Mở đăng ký</option>
                                 <option value="inactive" <?php echo (isset($DataQltour['status']) && $DataQltour['status'] == 'inactive') ? 'selected' : ''; ?>>Không hoạt động</option>
-                                <option value="full" <?php echo (isset($DataQltour['status']) && $DataQltour['status'] == 'full') ? 'selected' : ''; ?>>Đã đầy</option>
                             </select>
                         </div>
 

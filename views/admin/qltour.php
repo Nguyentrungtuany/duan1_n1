@@ -72,7 +72,6 @@ foreach ($DataQltour as &$item) {
                                                     <div class="schedule-item" style="margin-bottom: 10px; padding: 8px; background: #f9f9f9; border-left: 3px solid #5cb85c; border-radius: 3px;">
                                                         <div style="margin-bottom: 5px;">
                                                             <strong style="color: #5cb85c;">Ngày <?= $schedule['day_number'] ?>:</strong>
-                                                            <span style="color: #666;"><?= date('d/m/Y', strtotime($schedule['date'])) ?></span>
                                                         </div>
                                                         <div style="margin-bottom: 5px;">
                                                             <strong><i class="fa fa-map-marker"></i> <?= htmlspecialchars($schedule['location']) ?></strong>

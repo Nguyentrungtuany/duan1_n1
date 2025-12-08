@@ -15,7 +15,7 @@ class IndexModel
         FROM transports tr WHERE tr.tour_id = t.id) 
         AS transports, (SELECT JSON_ARRAYAGG(JSON_OBJECT('id', ac.id, 'name', ac.name, 'address', ac.address, 'type', ac.type)) 
         FROM accommodations ac WHERE ac.tour_id = t.id) AS accommodations, 
-        (SELECT JSON_ARRAYAGG(JSON_OBJECT('id', sc.id, 'day_number', sc.day_number, 'date', sc.date, 'location', sc.location, 'activities', sc.activities, 'notes', sc.notes)) 
+        (SELECT JSON_ARRAYAGG(JSON_OBJECT('id', sc.id, 'day_number', sc.day_number, 'location', sc.location, 'activities', sc.activities, 'notes', sc.notes)) 
         FROM schedules sc WHERE sc.tour_id = t.id) AS schedules 
         FROM tours t LEFT JOIN tour_categories c ON t.category_id = c.id LEFT JOIN destinations d ON t.destination_id = d.id;";
 
@@ -43,14 +43,14 @@ class IndexModel
         'type', ac.type
     )) FROM accommodations ac WHERE ac.tour_id = t.id) AS accommodations,
 
-    (SELECT JSON_ARRAYAGG(JSON_OBJECT(
-        'id', sc.id, 
-        'day_number', sc.day_number, 
-        'date', sc.date, 
-        'location', sc.location, 
-        'activities', sc.activities, 
-        'notes', sc.notes
-    )) FROM schedules sc WHERE sc.tour_id = t.id) AS schedules
+   (SELECT JSON_ARRAYAGG(JSON_OBJECT(
+    'id', sc.id,
+    'day_number', sc.day_number,
+    'location', sc.location,
+    'activities', sc.activities,
+    'notes', sc.notes
+)) FROM schedules sc WHERE sc.tour_id = t.id) AS schedules
+
 
 FROM tours t
 LEFT JOIN tour_categories c ON t.category_id = c.id
@@ -64,13 +64,15 @@ WHERE t.id = :id;";
     {
         // update table tour
         $sql = "UPDATE `tours` SET `name`= :name ,
-        `category_id`= :category_id,`description`= :description,
+        `category_id`= :category_id,`description`= :description,`destination_id` = :destination_id,
         `price`= :price,`status`= :status WHERE `id` = :id";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([
             ':name' => $data['name'],
             ':category_id' => $data['category_id'],
             ':description' => $data['description'],
+            ':destination_id' => $data['destination_id'],  // ✅ THÊM DÒNG NÀY
+
             ':price' => $data['price'],
             ':status' => $data['status'],
             ':id' => $id
@@ -172,13 +174,12 @@ WHERE t.id = :id;";
     public function updateschedules($Idschedules, $id, $data)
     {
         $sql = "UPDATE `schedules` SET `day_number`=:day_numbersche,
-        `date`=:datesche,`location`=:locationsche,`activities`=:activitiessche,
+        `location`=:locationsche,`activities`=:activitiessche,
         `notes`=:notessche
         WHERE id = :id AND `tour_id` = :tour_id";
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute([
             ':day_numbersche' => $data['day_number'],
-            ':datesche' => $data['date'],
             ':locationsche' => $data['location'],
             ':activitiessche' => $data['activities'],
             ':notessche' => $data['notes'],
@@ -190,14 +191,13 @@ WHERE t.id = :id;";
     public function createshedules($id, $data)
     {
         $sql = "INSERT INTO `schedules`
-        (`tour_id`, `day_number`, `date`, `location`, `activities`, 
+        (`tour_id`, `day_number`, `location`, `activities`, 
         `notes`) 
-        VALUES (:tour_id, :day_number, :date, :location, :activities, :notes)";
+        VALUES (:tour_id, :day_number, :location, :activities, :notes)";
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute([
             ':tour_id' => $id,
             ':day_number' => $data['day_number'],
-            ':date' => $data['date'],
             ':location' => $data['location'],
             ':activities' => $data['activities'],
             ':notes' => $data['notes'],
@@ -260,8 +260,27 @@ WHERE t.id = :id;";
     }
     public function test()
     {
-        $sql = "SELECT t.*, c.name AS category_name, JSON_OBJECT('id', d.id, 'name', d.name, 'location', d.location) AS destination, (SELECT JSON_ARRAYAGG(JSON_OBJECT('id', tr.id, 'type', tr.type, 'company', tr.company, 'seats', tr.seats)) FROM transports tr WHERE tr.tour_id = t.id) AS transports, (SELECT JSON_ARRAYAGG(JSON_OBJECT('id', ac.id, 'name', ac.name, 'address', ac.address, 'type', ac.type)) FROM accommodations ac WHERE ac.tour_id = t.id) AS accommodations, (SELECT JSON_ARRAYAGG(JSON_OBJECT('id', sc.id, 'day_number', sc.day_number, 'date', sc.date, 'location', sc.location, 'activities', sc.activities, 'notes', sc.notes)) FROM schedules sc WHERE sc.tour_id = t.id) AS schedules FROM tours t LEFT JOIN tour_categories c ON t.category_id = c.id LEFT JOIN destinations d ON t.destination_id = d.id;";
+        $sql = "SELECT t.*, c.name AS category_name, JSON_OBJECT('id', d.id, 'name', d.name, 'location', d.location) AS destination, (SELECT JSON_ARRAYAGG(JSON_OBJECT('id', tr.id, 'type', tr.type, 'company', tr.company, 'seats', tr.seats)) FROM transports tr WHERE tr.tour_id = t.id) AS transports, (SELECT JSON_ARRAYAGG(JSON_OBJECT('id', ac.id, 'name', ac.name, 'address', ac.address, 'type', ac.type)) FROM accommodations ac WHERE ac.tour_id = t.id) AS accommodations, (SELECT JSON_ARRAYAGG(JSON_OBJECT('id', sc.id, 'day_number', sc.day_number, 'location', sc.location, 'activities', sc.activities, 'notes', sc.notes)) FROM schedules sc WHERE sc.tour_id = t.id) AS schedules FROM tours t LEFT JOIN tour_categories c ON t.category_id = c.id LEFT JOIN destinations d ON t.destination_id = d.id;";
         $stmt = $this->conn->query($sql);
         return $stmt->fetchAll();
+    }
+
+    public function getMapData()
+    {
+        $sql = "SELECT 
+        d.name as country,
+        d.location,
+        COUNT(DISTINCT b.id) as total_bookings,
+        COUNT(DISTINCT bp.id) as total_customers
+    FROM destinations d
+    LEFT JOIN tours t ON t.destination_id = d.id
+    LEFT JOIN bookings b ON b.tour_id = t.id
+    LEFT JOIN bookings_people bp ON bp.booking_id = b.id
+    GROUP BY d.id, d.name, d.location
+    HAVING total_customers > 0
+    ORDER BY total_customers DESC";
+
+        $stmt = $this->conn->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
