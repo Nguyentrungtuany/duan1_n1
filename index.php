@@ -199,19 +199,6 @@ match ($act) {
     'guide' => (new GuidesController())->index(),
     'job-guide' => (new GuidesController())->detail(),
     'rollcall_Guide' => (new GuidesController())->rollcall(),
-    'guide-account' => (new GuidesController())->account(),
-
-
-    // ⭐ FORM BÁO CÁO TOUR
-    'bao-cao-booking' => (new PostTuorReportController())->index(),
-    // ⭐ SUBMIT REPORT
-    'gui-bao-cao-tour' => (new PostTuorReportController())->store(),
-
-    'admin-reports' => (new AdminReportController())->index(),
-    'report-detail' => (new AdminReportController())->detail(),
-
-
-
-    /* ---------- 404 ---------- */
+    'save-diem-danh' => (new GuidesController())->saveDiemDanh(),
     default => require_once './views/404.php',
 };
