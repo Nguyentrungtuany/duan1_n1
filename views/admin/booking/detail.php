@@ -494,10 +494,11 @@ if (!empty($booking)) {
                                 <thead>
                                     <tr>
                                         <th width="5%">STT</th>
-                                        <th width="30%">Họ và tên</th>
+                                        <th width="20%">Họ và tên</th>
                                         <th width="20%">Ngày sinh</th>
                                         <th width="20%">Số điện thoại</th>
-                                        <th width="25%">CCCD</th>
+                                        <th width="15%">CCCD</th>
+                                        <th width="30%">Ghi chú</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -519,6 +520,10 @@ if (!empty($booking)) {
                                             <td>
                                                 <i class="fa fa-id-card"></i>
                                                 <?= htmlspecialchars($person['cccd'] ?? 'N/A') ?>
+                                            </td>
+                                            <td>
+                                                <i class="fa fa-info-circle"></i>
+                                                <?= htmlspecialchars($person['note'] ?? 'Không có ghi chú') ?>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

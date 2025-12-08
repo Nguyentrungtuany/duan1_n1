@@ -441,7 +441,15 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                                                     placeholder="123456789">
                                             </div>
                                         </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Ghi chú</label>
+                                                <input type="text" class="form-control person-note" name="peoples[0][note]"
+                                                    placeholder="Ghi chú">
+                                            </div>
+                                        </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>

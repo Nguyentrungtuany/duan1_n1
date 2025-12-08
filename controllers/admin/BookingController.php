@@ -186,7 +186,8 @@ class BookingController
                                 'fullname' => $person['fullname'] ?? '',
                                 'phone' => $person['phone'] ?? '',
                                 'date' => $person['date'] ?? date('Y-m-d'),
-                                'cccd' => $person['cccd'] ?? ''
+                                'cccd' => $person['cccd'] ?? '',
+                                'note' => $person['note'] ?? ''
                             ];
 
                             $this->BookingModel->createPeople($booking_id, $data);
@@ -389,7 +390,8 @@ class BookingController
                         'fullname' => $person['fullname'] ?? '',
                         'phone' => $person['phone'] ?? '',
                         'date' => $person['date'] ?? date('Y-m-d'),
-                        'cccd' => $person['cccd'] ?? ''
+                        'cccd' => $person['cccd'] ?? '',
+                        'note' => $person['note'] ?? ''
                     ];
 
                     $keepIds[] = $person['id'];

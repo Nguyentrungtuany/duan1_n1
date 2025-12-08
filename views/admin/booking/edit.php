@@ -636,6 +636,15 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                                         placeholder="001234567890">
                                                 </div>
                                             </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>Ghi chú<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control person-note"
+                                                        name="peoples[<?= $index ?>][note]"
+                                                        value="<?= isset($people['note']) ? htmlspecialchars($people['note']) : '' ?>"
+                                                        placeholder="Ghi chú">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -140,7 +140,8 @@ class BookingModel
                 'fullname', bp.fullname,
                 'phone', bp.phone,
                 'date', bp.date,
-                'cccd', bp.cccd
+                'cccd', bp.cccd,
+                'note', bp.note
             )
         )
         FROM bookings_people bp 
@@ -307,7 +308,8 @@ LEFT JOIN users u ON u.id = g.user_id;";
                 'fullname', bp.fullname,
                 'phone', bp.phone,
                 'date', bp.date,
-                'cccd', bp.cccd
+                'cccd', bp.cccd,
+                'note', bp.note
             )
         )
         FROM bookings_people bp 
@@ -683,6 +685,7 @@ WHERE b.id = :id;
                     bp.phone,
                     bp.date,
                     bp.cccd,
+                    bp.note,
                     COUNT(DISTINCT bp.booking_id) as total_bookings
                 FROM bookings_people bp
                 WHERE bp.id NOT IN (
@@ -739,6 +742,7 @@ WHERE b.id = :id;
         $date = $data['date'] ?? date('Y-m-d');
         $cccd = trim($data['cccd'] ?? '');
         $phone = trim($data['phone'] ?? '');
+        $note = trim($data['note'] ?? '');
 
         if (empty($fullname)) {
             throw new Exception("❌ Vui lòng nhập họ tên!");
@@ -751,8 +755,8 @@ WHERE b.id = :id;
         }
 
         // 4. Thêm vào database
-        $sql = "INSERT INTO bookings_people (booking_id, fullname, phone, date, cccd) 
-                VALUES (:booking_id, :fullname, :phone, :date, :cccd)";
+        $sql = "INSERT INTO bookings_people (booking_id, fullname, phone, date, cccd, note) 
+                VALUES (:booking_id, :fullname, :phone, :date, :cccd, :note)";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([
@@ -760,7 +764,8 @@ WHERE b.id = :id;
             'fullname' => $fullname,
             'phone' => $phone,
             'date' => $date,
-            'cccd' => $cccd
+            'cccd' => $cccd,
+            'note' => $note
         ]);
 
         return $this->conn->lastInsertId();
@@ -817,7 +822,8 @@ WHERE b.id = :id;
                 fullname = :fullname,
                 phone = :phone,
                 date = :date,   
-                cccd = :cccd
+                cccd = :cccd,
+                note = :note
                 WHERE id = :id AND booking_id = :booking_id";
 
         $stmt = $this->conn->prepare($sql);
@@ -826,6 +832,7 @@ WHERE b.id = :id;
             'phone' => trim($data['phone']),
             'date' => $data['date'],
             'cccd' => trim($data['cccd']),
+            'note' => trim($data['note']),
             'id' => $personId,
             'booking_id' => $bookingId
         ]);
