@@ -25,6 +25,11 @@ class BookingController
         $id = $_GET['id'];
         $booking = $this->BookingModel->getBookingById($id);
         $seatInfo = $this->BookingModel->checkAvailableSeats($id);
+
+        // ✅ THÊM 2 DÒNG NÀY
+        $attendances = $this->BookingModel->getBookingAttendances($id);
+        $attendanceSummary = $this->BookingModel->getAttendanceSummaryByDate($id);
+
         require_once './views/admin/booking/detail.php';
     }
 

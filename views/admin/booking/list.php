@@ -86,9 +86,19 @@ foreach ($bookings as &$item) {
                                         </td>
 
                                         <td>
-                                            <span class="label <?= $data['status'] == 'open' ? 'label-success' : 'label-default' ?>">
-                                                <?= htmlspecialchars($data['status']) ?>
-                                            </span>
+                                            <?php
+                                            $status = $data['status'];
+
+                                            if ($status == 'pending') {
+                                                echo '<span class="label label-warning">Chờ khởi hành</span>';
+                                            } elseif ($status == 'confirmed') {
+                                                echo '<span class="label label-success">Đang khởi hành</span>';
+                                            } elseif ($status == 'cancelled') {
+                                                echo '<span class="label label-danger">Đã hủy</span>';
+                                            } elseif ($status == 'completed') {
+                                                echo '<span class="label label-info">Hoàn thành</span>';
+                                            }
+                                            ?>
                                         </td>
 
                                         <!-- ĐIỂM ĐẾN -->

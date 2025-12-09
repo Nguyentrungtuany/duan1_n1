@@ -998,4 +998,48 @@ WHERE b.id = :id;
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    /**
+     * ✅ LẤY LỊCH ĐIỂM DANH CỦA BOOKING
+     */
+    public function getBookingAttendances($bookingId)
+    {
+        $sql = "SELECT 
+            a.*,
+            bp.fullname,
+            bp.phone,
+            bp.date,
+            bp.cccd,
+            DATE_FORMAT(a.attendance_date, '%d/%m/%Y') as formatted_date,
+            TIME_FORMAT(a.checkin_time, '%H:%i') as formatted_time
+        FROM attendances a
+        INNER JOIN bookings_people bp ON a.booking_people_id = bp.id
+        WHERE bp.booking_id = :booking_id
+        ORDER BY a.attendance_date ASC, bp.fullname ASC";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['booking_id' => $bookingId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * ✅ LẤY TỔNG HỢP ĐIỂM DANH THEO NGÀY
+     */
+    public function getAttendanceSummaryByDate($bookingId)
+    {
+        $sql = "SELECT 
+            a.attendance_date,
+            DATE_FORMAT(a.attendance_date, '%d/%m/%Y') as formatted_date,
+            COUNT(*) as total_records,
+            SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END) as present_count,
+            SUM(CASE WHEN a.status = 'absent' THEN 1 ELSE 0 END) as absent_count
+        FROM attendances a
+        INNER JOIN bookings_people bp ON a.booking_people_id = bp.id
+        WHERE bp.booking_id = :booking_id
+        GROUP BY a.attendance_date
+        ORDER BY a.attendance_date ASC";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['booking_id' => $bookingId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
