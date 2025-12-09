@@ -149,12 +149,12 @@ match ($act) {
     'admin-update-user' => (new UserController($db))->update(),      // Xử lý cập nhật
     'admin-delete-user' => (new UserController($db))->delete(),     // Xóa
     'myaccount' => (new UserController($db))->myAccount(),
-    'admin-list-user' => (new UserController($db))->index(),
-    'user-create' => (new UserController($db))->create(),
-    'user-store' => (new UserController($db))->store(),
-    'admin-edit-user' => (new UserController($db))->edit(),
-    'admin-update-user' => (new UserController($db))->update(),
-    'admin-delete-user' => (new UserController($db))->delete(),
+    // 'admin-list-user' => (new UserController($db))->index(),
+    // 'user-create' => (new UserController($db))->create(),
+    // 'user-store' => (new UserController($db))->store(),
+    // 'admin-edit-user' => (new UserController($db))->edit(),
+    // 'admin-update-user' => (new UserController($db))->update(),
+    // 'admin-delete-user' => (new UserController($db))->delete(),
 
 
     // Tour
@@ -201,6 +201,7 @@ match ($act) {
     'get-available-guides-api' => (new BookingController())->getAvailableGuidesApi(),
     'get-available-people-api' => (new BookingController())->getAvailablePeopleApi(),
 
+    'admin-reports' => (new AdminReportController())->index(),
     /* ---------- HƯỚNG DẪN VIÊN ---------- */
     'guide' => (new GuidesController())->index(),
     'job-guide' => (new GuidesController())->detail(),
