@@ -60,12 +60,12 @@ class DashboardModel
     // Tổng doanh thu (booking đã thanh toán)
     public function getTotalRevenue()
     {
-        $sql = "SELECT SUM(tours.price * bookings.number_of_people) AS revenue
+        $sql = "SELECT SUM(tours.price * max_people) AS revenue
         FROM bookings
         JOIN tours ON bookings.tour_id = tours.id
-        WHERE bookings.payment_status = 'paid'
-AND bookings.end_date < CURDATE()
-AND bookings.status = 'confirmed'
+        
+        AND bookings.end_date < CURDATE()
+        AND bookings.status = 'completed'
 ";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
