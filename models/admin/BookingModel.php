@@ -76,18 +76,7 @@ class BookingModel
         'description', d.description
     ) AS destination,
 
-    /* ============================
-            CUSTOMER
-    ============================ */
-    JSON_OBJECT(
-        'id', cu.id,
-        'full_name', cu.full_name,
-        'phone', cu.phone,
-        'email', cu.email,
-        'address', cu.address,
-        'type', cu.type,
-        'note', cu.note
-    ) AS customer,
+  
 
     /* ============================
             GUIDE
@@ -151,7 +140,8 @@ class BookingModel
                 'fullname', bp.fullname,
                 'phone', bp.phone,
                 'date', bp.date,
-                'cccd', bp.cccd
+                'cccd', bp.cccd,
+                'note', bp.note
             )
         )
         FROM bookings_people bp 
@@ -166,7 +156,6 @@ class BookingModel
             JSON_OBJECT(
                 'id', s.id,
                 'day_number', s.day_number,
-                'date', s.date,
                 'location', s.location,
                 'activities', s.activities,
                 'guide_id', s.guide_id,
@@ -178,23 +167,7 @@ class BookingModel
         WHERE s.tour_id = b.tour_id
     ) AS schedules,
 
-    /* ============================
-            CUSTOMER SUPPORT
-    ============================ */
-    (
-        SELECT JSON_ARRAYAGG(
-            JSON_OBJECT(
-                'id', cs.id,
-                'customer_id', cs.customer_id,
-                'guide_id', cs.guide_id,
-                'message', cs.message,
-                'status', cs.status,
-                'created_at', cs.created_at
-            )
-        )
-        FROM customer_support cs 
-        WHERE cs.booking_id = b.id
-    ) AS customer_support,
+    
 
     /* ============================
             ACCOMMODATIONS
@@ -229,7 +202,6 @@ FROM bookings b
 LEFT JOIN tours t ON t.id = b.tour_id
 LEFT JOIN tour_categories c ON c.id = t.category_id
 LEFT JOIN destinations d ON d.id = t.destination_id
-LEFT JOIN customers cu ON cu.id = b.customer_id
 LEFT JOIN guides g ON g.id = b.guide_id
 LEFT JOIN users u ON u.id = g.user_id;";
         $stmt = $this->conn->prepare($sql);
@@ -272,19 +244,8 @@ LEFT JOIN users u ON u.id = g.user_id;";
         'description', d.description
     ) AS destination,
 
-    /* ============================
-            CUSTOMER
-    ============================ */
-    JSON_OBJECT(
-        'id', cu.id,
-        'full_name', cu.full_name,
-        'phone', cu.phone,
-        'email', cu.email,
-        'address', cu.address,
-        'type', cu.type,
-        'note', cu.note
-    ) AS customer,
-
+   
+   
     /* ============================
             GUIDE
     ============================ */
@@ -347,7 +308,8 @@ LEFT JOIN users u ON u.id = g.user_id;";
                 'fullname', bp.fullname,
                 'phone', bp.phone,
                 'date', bp.date,
-                'cccd', bp.cccd
+                'cccd', bp.cccd,
+                'note', bp.note
             )
         )
         FROM bookings_people bp 
@@ -362,7 +324,6 @@ LEFT JOIN users u ON u.id = g.user_id;";
             JSON_OBJECT(
                 'id', s.id,
                 'day_number', s.day_number,
-                'date', s.date,
                 'location', s.location,
                 'activities', s.activities,
                 'guide_id', s.guide_id,
@@ -374,24 +335,10 @@ LEFT JOIN users u ON u.id = g.user_id;";
         WHERE s.tour_id = b.tour_id
     ) AS schedules,
 
-    /* ============================
-            CUSTOMER SUPPORT
-    ============================ */
-    (
-        SELECT JSON_ARRAYAGG(
-            JSON_OBJECT(
-                'id', cs.id,
-                'customer_id', cs.customer_id,
-                'guide_id', cs.guide_id,
-                'message', cs.message,
-                'status', cs.status,
-                'created_at', cs.created_at
-            )
-        )
-        FROM customer_support cs 
-        WHERE cs.booking_id = b.id
-    ) AS customer_support,
 
+
+    
+    
     /* ============================
             ACCOMMODATIONS
     ============================ */
@@ -425,7 +372,6 @@ FROM bookings b
 LEFT JOIN tours t ON t.id = b.tour_id
 LEFT JOIN tour_categories c ON c.id = t.category_id
 LEFT JOIN destinations d ON d.id = t.destination_id
-LEFT JOIN customers cu ON cu.id = b.customer_id
 LEFT JOIN guides g ON g.id = b.guide_id
 LEFT JOIN users u ON u.id = g.user_id
 WHERE b.id = :id;
@@ -739,6 +685,7 @@ WHERE b.id = :id;
                     bp.phone,
                     bp.date,
                     bp.cccd,
+                    bp.note,
                     COUNT(DISTINCT bp.booking_id) as total_bookings
                 FROM bookings_people bp
                 WHERE bp.id NOT IN (
@@ -795,6 +742,7 @@ WHERE b.id = :id;
         $date = $data['date'] ?? date('Y-m-d');
         $cccd = trim($data['cccd'] ?? '');
         $phone = trim($data['phone'] ?? '');
+        $note = trim($data['note'] ?? '');
 
         if (empty($fullname)) {
             throw new Exception("❌ Vui lòng nhập họ tên!");
@@ -807,8 +755,8 @@ WHERE b.id = :id;
         }
 
         // 4. Thêm vào database
-        $sql = "INSERT INTO bookings_people (booking_id, fullname, phone, date, cccd) 
-                VALUES (:booking_id, :fullname, :phone, :date, :cccd)";
+        $sql = "INSERT INTO bookings_people (booking_id, fullname, phone, date, cccd, note) 
+                VALUES (:booking_id, :fullname, :phone, :date, :cccd, :note)";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([
@@ -816,7 +764,8 @@ WHERE b.id = :id;
             'fullname' => $fullname,
             'phone' => $phone,
             'date' => $date,
-            'cccd' => $cccd
+            'cccd' => $cccd,
+            'note' => $note
         ]);
 
         return $this->conn->lastInsertId();
@@ -873,7 +822,8 @@ WHERE b.id = :id;
                 fullname = :fullname,
                 phone = :phone,
                 date = :date,   
-                cccd = :cccd
+                cccd = :cccd,
+                note = :note
                 WHERE id = :id AND booking_id = :booking_id";
 
         $stmt = $this->conn->prepare($sql);
@@ -882,6 +832,7 @@ WHERE b.id = :id;
             'phone' => trim($data['phone']),
             'date' => $data['date'],
             'cccd' => trim($data['cccd']),
+            'note' => trim($data['note']),
             'id' => $personId,
             'booking_id' => $bookingId
         ]);
@@ -933,7 +884,7 @@ WHERE b.id = :id;
                 c.name AS category_name, 
                 d.name AS destination_name,
                 (SELECT JSON_ARRAYAGG(
-                    JSON_OBJECT('id', s.id, 'day_number', s.day_number, 'date', s.date, 
+                    JSON_OBJECT('id', s.id, 'day_number', s.day_number, 
                     'location', s.location, 'activities', s.activities, 'notes', s.notes, 
                     'status', s.status, 'guide_id', s.guide_id)
                 ) FROM schedules s WHERE s.tour_id = t.id ORDER BY s.day_number) AS schedules
@@ -1045,6 +996,50 @@ WHERE b.id = :id;
         }
 
         $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    /**
+     * ✅ LẤY LỊCH ĐIỂM DANH CỦA BOOKING
+     */
+    public function getBookingAttendances($bookingId)
+    {
+        $sql = "SELECT 
+            a.*,
+            bp.fullname,
+            bp.phone,
+            bp.date,
+            bp.cccd,
+            DATE_FORMAT(a.attendance_date, '%d/%m/%Y') as formatted_date,
+            TIME_FORMAT(a.checkin_time, '%H:%i') as formatted_time
+        FROM attendances a
+        INNER JOIN bookings_people bp ON a.booking_people_id = bp.id
+        WHERE bp.booking_id = :booking_id
+        ORDER BY a.attendance_date ASC, bp.fullname ASC";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['booking_id' => $bookingId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * ✅ LẤY TỔNG HỢP ĐIỂM DANH THEO NGÀY
+     */
+    public function getAttendanceSummaryByDate($bookingId)
+    {
+        $sql = "SELECT 
+            a.attendance_date,
+            DATE_FORMAT(a.attendance_date, '%d/%m/%Y') as formatted_date,
+            COUNT(*) as total_records,
+            SUM(CASE WHEN a.status = 'present' THEN 1 ELSE 0 END) as present_count,
+            SUM(CASE WHEN a.status = 'absent' THEN 1 ELSE 0 END) as absent_count
+        FROM attendances a
+        INNER JOIN bookings_people bp ON a.booking_people_id = bp.id
+        WHERE bp.booking_id = :booking_id
+        GROUP BY a.attendance_date
+        ORDER BY a.attendance_date ASC";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['booking_id' => $bookingId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

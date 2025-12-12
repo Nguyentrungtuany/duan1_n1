@@ -25,6 +25,11 @@ class BookingController
         $id = $_GET['id'];
         $booking = $this->BookingModel->getBookingById($id);
         $seatInfo = $this->BookingModel->checkAvailableSeats($id);
+
+        // ✅ THÊM 2 DÒNG NÀY
+        $attendances = $this->BookingModel->getBookingAttendances($id);
+        $attendanceSummary = $this->BookingModel->getAttendanceSummaryByDate($id);
+
         require_once './views/admin/booking/detail.php';
     }
 
@@ -186,7 +191,8 @@ class BookingController
                                 'fullname' => $person['fullname'] ?? '',
                                 'phone' => $person['phone'] ?? '',
                                 'date' => $person['date'] ?? date('Y-m-d'),
-                                'cccd' => $person['cccd'] ?? ''
+                                'cccd' => $person['cccd'] ?? '',
+                                'note' => $person['note'] ?? ''
                             ];
 
                             $this->BookingModel->createPeople($booking_id, $data);
@@ -277,6 +283,9 @@ class BookingController
 
     private function handleTransports($bookingId)
     {
+        // Debug
+        error_log("POST transports: " . print_r($_POST['transports'] ?? 'EMPTY', true));
+
         if (!isset($_POST['transports'])) {
             return;
         }
@@ -306,6 +315,7 @@ class BookingController
             if (isset($transport['id']) && !empty($transport['id'])) {
                 $keepIds[] = $transport['id'];
                 $this->BookingModel->updateTransports($transport['id'], $bookingId, $data);
+                error_log("✅ Updated transport ID: {$transport['id']}");
             } else {
                 $newId = $this->BookingModel->createTransports($bookingId, $data);
                 $keepIds[] = $newId;
@@ -313,6 +323,7 @@ class BookingController
         }
 
         $this->BookingModel->deleteTransports($bookingId, $keepIds);
+        error_log("✅ Kept transport IDs: " . implode(', ', $keepIds));
     }
 
     // ==========================================
@@ -384,7 +395,8 @@ class BookingController
                         'fullname' => $person['fullname'] ?? '',
                         'phone' => $person['phone'] ?? '',
                         'date' => $person['date'] ?? date('Y-m-d'),
-                        'cccd' => $person['cccd'] ?? ''
+                        'cccd' => $person['cccd'] ?? '',
+                        'note' => $person['note'] ?? ''
                     ];
 
                     $keepIds[] = $person['id'];

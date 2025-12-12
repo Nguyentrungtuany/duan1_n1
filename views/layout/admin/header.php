@@ -60,13 +60,13 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     <!-- index page sales reviews visitors pie chart -->
     <script src="commons/js/pie-chart.js" type="text/javascript"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#demo-pie-1').pieChart({
                 barColor: '#2dde98',
                 trackColor: '#eee',
                 lineCap: 'round',
                 lineWidth: 8,
-                onStep: function (from, to, percent) {
+                onStep: function(from, to, percent) {
                     $(this.element)
                         .find('.pie-value')
                         .text(Math.round(percent) + '%');
@@ -78,7 +78,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                 trackColor: '#eee',
                 lineCap: 'butt',
                 lineWidth: 8,
-                onStep: function (from, to, percent) {
+                onStep: function(from, to, percent) {
                     $(this.element)
                         .find('.pie-value')
                         .text(Math.round(percent) + '%');
@@ -90,7 +90,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                 trackColor: '#eee',
                 lineCap: 'square',
                 lineWidth: 8,
-                onStep: function (from, to, percent) {
+                onStep: function(from, to, percent) {
                     $(this.element)
                         .find('.pie-value')
                         .text(Math.round(percent) + '%');
@@ -104,7 +104,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     <link href="commons/css/owl.carousel.css" rel="stylesheet" />
     <script src="commons/js/owl.carousel.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#owl-demo').owlCarousel({
                 items: 3,
                 lazyLoad: true,
@@ -132,7 +132,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                             <span class="icon-bar"></span>
                         </button>
                         <h1>
-                            <a class="navbar-brand" href="index.html"><span class="fa fa-area-chart"></span> Glance<span
+                            <a class="navbar-brand" href="?act=admin"><span class="fa fa-area-chart"></span> Glance<span
                                     class="dashboard_text">Design dashboard</span></a>
                         </h1>
                     </div>
@@ -276,6 +276,17 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     </li>
                                 </ul>
 
+                            </li>
+                            <li class="treeview">
+                                <a href="?act=admin-reports">
+                                    <i class="fa fa-table"></i> <span>Quản lý báo cáo</span>
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li>
+                                        <a href="?act=admin-reports"><i class="fa fa-angle-right"></i> Quản Lý báo cáo </a>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                     </div>
@@ -525,7 +536,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                                     <a href="#"><i class="fa fa-cog"></i> Settings</a>
                                 </li>
                                 <li>
-                                    <a href="#"><i class="fa fa-user"></i> My Account</a>
+                                    <a href="?act=myaccount"><i class="fa fa-user"></i> My Account</a>
                                 </li>
                                 <li>
                                     <a href="#"><i class="fa fa-suitcase"></i> Profile</a>

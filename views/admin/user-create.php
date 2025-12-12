@@ -1,5 +1,5 @@
 <?php
-// require_once __DIR__ . '/../layout/admin/header.php';
+require_once __DIR__ . '/../layout/admin/header.php';
 // print_r($DataQltour);
 // Hiển thị thông báo lỗi
 if (isset($_SESSION['errors'])) {

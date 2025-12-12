@@ -194,17 +194,25 @@ class UserController
         exit();
     }
 
-    // Tìm kiếm tài khoản
-    public function search()
-    {
-        $keyword = $_GET['keyword'] ?? '';
 
-        if (empty($keyword)) {
-            header("Location:" . BASE_URL . "?act=admin-list-user");
-            exit();
+    // MỚI (đúng)
+    public function myAccount()
+    {
+        // Lấy lại thông tin mới nhất từ database thay vì dùng session cũ
+        $userId = $_SESSION['user']['id'] ?? null;
+
+        if ($userId) {
+            // Load lại dữ liệu mới từ database
+            $user = $this->userModel->getUserById($userId);
+
+            // Cập nhật lại session với dữ liệu mới
+            if ($user) {
+                $_SESSION['user'] = $user;
+            }
+        } else {
+            $user = null;
         }
 
-        $users = $this->userModel->searchUsers($keyword);
-        require_once 'views/admin/users.php';
+        require_once 'views/admin/myaccount.php';
     }
 }

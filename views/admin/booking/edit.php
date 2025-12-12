@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../layout/admin/header.php';
 
-echo json_encode($booking, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+// echo json_encode($booking, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 // Decode JSON data nếu cần
 if (isset($booking['tour']) && is_string($booking['tour'])) {
     $booking['tour'] = json_decode($booking['tour'], true);
@@ -226,14 +226,14 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                 <div class="form-group">
                                     <label for="status">Trạng thái</label>
                                     <select class="form-control" id="status" name="status">
-                                        <option value="pending" <?php echo (isset($booking['status']) && $booking['status'] == 'pending') ? 'selected' : ''; ?>>Đang chờ</option>
-                                        <option value="confirmed" <?php echo (isset($booking['status']) && $booking['status'] == 'confirmed') ? 'selected' : ''; ?>>Đã xác nhận</option>
+                                        <option value="pending" <?php echo (isset($booking['status']) && $booking['status'] == 'pending') ? 'selected' : ''; ?>>Chờ khởi hành</option>
+                                        <option value="confirmed" <?php echo (isset($booking['status']) && $booking['status'] == 'confirmed') ? 'selected' : ''; ?>>Đang khởi hành</option>
                                         <option value="cancelled" <?php echo (isset($booking['status']) && $booking['status'] == 'cancelled') ? 'selected' : ''; ?>>Đã hủy</option>
                                         <option value="completed" <?php echo (isset($booking['status']) && $booking['status'] == 'completed') ? 'selected' : ''; ?>>Hoàn thành</option>
                                     </select>
                                 </div>
                             </div>
-                            <!-- <div class="col-md-6">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="payment_status">Thanh toán</label>
                                     <select class="form-control" id="payment_status" name="payment_status">
@@ -241,7 +241,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                         <option value="paid" <?php echo (isset($booking['payment_status']) && $booking['payment_status'] == 'paid') ? 'selected' : ''; ?>>Đã thanh toán</option>
                                     </select>
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
 
                         <!-- Số chỗ tối đa -->
@@ -507,13 +507,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                     <h5>Ngày <?= isset($schedule['day_number']) ? $schedule['day_number'] : ($index + 1) ?></h5>
                                     <input type="hidden" name="schedules[<?= $index ?>][day_number]" value="<?= $index + 1 ?>">
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label>Ngày</label>
-                                                <input type="date" class="form-control" name="schedules[<?= $index ?>][date]"
-                                                    value="<?= isset($schedule['date']) ? $schedule['date'] : '' ?>" disabled>
-                                            </div>
-                                        </div>
+
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Địa điểm</label>
@@ -642,6 +636,15 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                                         placeholder="001234567890">
                                                 </div>
                                             </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>Ghi chú<span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control person-note"
+                                                        name="peoples[<?= $index ?>][note]"
+                                                        value="<?= isset($people['note']) ? htmlspecialchars($people['note']) : '' ?>"
+                                                        placeholder="Ghi chú">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -737,13 +740,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                 <h5>Ngày ${index + 1}</h5>
                 <input type="hidden" name="schedules[${index}][day_number]" value="${index + 1}">
                 <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label>Ngày</label>
-                            <input type="date" class="form-control" name="schedules[${index}][date]" 
-                                value="${schedule.date || ''}" disabled>
-                        </div>
-                    </div>
+                    
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Địa điểm</label>

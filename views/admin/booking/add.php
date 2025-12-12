@@ -37,7 +37,47 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                                 <?php endforeach; ?>
                             </select>
                         </div>
+                        <!-- Ngày bắt đầu và Ngày kết thúc -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="start_date">Ngày bắt đầu <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" id="start_date" name="start_date">
+                                </div>
+                            </div>
 
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="end_date">Ngày kết thúc <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" id="end_date" name="end_date">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Điểm đến (Tour) -->
+                        <div class="form-group">
+                            <label for="tour_id">Điểm đến <span class="text-danger">*</span></label>
+                            <select class="form-control" id="tour_id" name="tour_id" required>
+                                <option value="">-- Chọn điểm đến --</option>
+                                <?php foreach ($allTour as $tour):
+                                    // Lấy schedules của tour
+                                    $tourSchedules = [];
+                                    if (isset($tour['schedules'])) {
+                                        $tourSchedules = is_string($tour['schedules'])
+                                            ? json_decode($tour['schedules'], true)
+                                            : $tour['schedules'];
+                                    }
+                                ?>
+                                    <option value="<?= $tour['id'] ?>"
+                                        data-name="<?= htmlspecialchars($tour['name']) ?>"
+                                        data-price="<?= $tour['price'] ?>"
+                                        data-description="<?= htmlspecialchars($tour['description'] ?? '') ?>"
+                                        data-category="<?= $tour['category_id'] ?>"
+                                        data-schedules='<?= htmlspecialchars(json_encode($tourSchedules ?: []), ENT_QUOTES, 'UTF-8') ?>'>
+                                        <?= htmlspecialchars($tour['name']) ?> - <?= number_format($tour['price']) ?> VNĐ
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                         <!-- Hướng Dẫn Viên -->
                         <div class="form-group">
                             <label for="guide_id">
@@ -71,36 +111,18 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                             </small>
                         </div>
 
-                        <!-- Điểm đến (Tour) -->
+
+                        <!-- booking số người -->
                         <div class="form-group">
-                            <label for="tour_id">Điểm đến <span class="text-danger">*</span></label>
-                            <select class="form-control" id="tour_id" name="tour_id" required>
-                                <option value="">-- Chọn điểm đến --</option>
-                                <?php foreach ($allTour as $tour):
-                                    // Lấy schedules của tour
-                                    $tourSchedules = [];
-                                    if (isset($tour['schedules'])) {
-                                        $tourSchedules = is_string($tour['schedules'])
-                                            ? json_decode($tour['schedules'], true)
-                                            : $tour['schedules'];
-                                    }
-                                ?>
-                                    <option value="<?= $tour['id'] ?>"
-                                        data-name="<?= htmlspecialchars($tour['name']) ?>"
-                                        data-price="<?= $tour['price'] ?>"
-                                        data-description="<?= htmlspecialchars($tour['description'] ?? '') ?>"
-                                        data-category="<?= $tour['category_id'] ?>"
-                                        data-schedules='<?= htmlspecialchars(json_encode($tourSchedules ?: []), ENT_QUOTES, 'UTF-8') ?>'>
-                                        <?= htmlspecialchars($tour['name']) ?> - <?= number_format($tour['price']) ?> VNĐ
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
+                            <label for="go_people">Số người <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="go_people" name="go_people"
+                                placeholder="Nhập số người" required>
                         </div>
                         <!-- Mô tả -->
                         <div class="form-group">
                             <label for="description">Mô tả <span class="text-danger">*</span></label>
                             <textarea class="form-control" id="description" name="description" rows="4"
-                                placeholder="Nhập mô tả tour"></textarea>
+                                placeholder="Nhập mô tả tour" disabled></textarea>
                         </div>
 
                         <!-- Yêu cầu đặc biệt -->
@@ -110,21 +132,7 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                                 placeholder="Nhập yêu cầu đặc biệt"></textarea>
                         </div>
 
-                        <!-- Ngày bắt đầu và Ngày kết thúc -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="start_date">Ngày bắt đầu <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="start_date" name="start_date">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="end_date">Ngày kết thúc <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="end_date" name="end_date">
-                                </div>
-                            </div>
-                        </div>
+
 
                         <!-- Giá -->
                         <div class="form-group">
@@ -137,8 +145,8 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                         <div class="form-group">
                             <label for="status">Trạng thái</label>
                             <select class="form-control" id="status" name="status">
-                                <option value="pending" selected>Đang chờ xử lý</option>
-                                <option value="confirmed">Đã xác nhận</option>
+                                <option value="pending" selected>Chờ khởi hành</option>
+                                <option value="confirmed">Đang khởi hành</option>
                                 <option value="cancelled">Đã hủy</option>
                                 <option value="completed">Hoàn thành</option>
                             </select>
@@ -330,12 +338,7 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                                 <h5 style="margin-top: 0;">Ngày 1</h5>
                                 <input type="hidden" name="schedules[0][day_number]" value="1">
                                 <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>Ngày</label>
-                                            <input type="date" class="form-control" name="schedules[0][date]" disabled>
-                                        </div>
-                                    </div>
+
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Địa điểm</label>
@@ -440,7 +443,15 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                                                     placeholder="123456789">
                                             </div>
                                         </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Ghi chú</label>
+                                                <input type="text" class="form-control person-note" name="peoples[0][note]"
+                                                    placeholder="Ghi chú">
+                                            </div>
+                                        </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -465,7 +476,10 @@ require_once __DIR__ . '/../../layout/admin/header.php';
 <script>
     (function() {
         'use strict';
-
+        document.addEventListener("DOMContentLoaded", function() {
+            const today = new Date().toISOString().split("T")[0];
+            document.getElementById("start_date").setAttribute("min", today);
+        });
         // Khởi tạo biến đếm
         let transportCount = document.querySelectorAll('.transport-item').length;
         let accommodationCount = document.querySelectorAll('.accommodation-item').length;
