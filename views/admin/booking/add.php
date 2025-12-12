@@ -112,12 +112,7 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                         </div>
 
 
-                        <!-- booking số người -->
-                        <div class="form-group">
-                            <label for="go_people">Số người <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="go_people" name="go_people"
-                                placeholder="Nhập số người" required>
-                        </div>
+
                         <!-- Mô tả -->
                         <div class="form-group">
                             <label for="description">Mô tả <span class="text-danger">*</span></label>
@@ -413,48 +408,60 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                                     </div>
                                 </div>
 
+
                                 <!-- FORM NHẬP -->
                                 <div class="person-form-fields">
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Tên</label>
-                                                <input type="text" class="form-control person-fullname" name="peoples[0][fullname]"
-                                                    placeholder="Họ tên">
+                                                <input type="text" class="form-control person-fullname"
+                                                    name="peoples[0][fullname]"
+                                                    placeholder="Họ tên"
+                                                    required> <!-- ✅ THÊM DÒNG NÀY -->
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Ngày sinh</label>
-                                                <input type="date" class="form-control person-date" name="peoples[0][date]">
+                                                <input type="date" class="form-control person-date"
+                                                    name="peoples[0][date]"
+                                                    required> <!-- ✅ THÊM DÒNG NÀY -->
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>Số điện thoại</label>
-                                                <input type="text" class="form-control person-phone" name="peoples[0][phone]"
-                                                    placeholder="0987654321">
+                                                <input type="text" class="form-control person-phone"
+                                                    name="peoples[0][phone]"
+                                                    placeholder="0987654321"
+                                                    required> <!-- ✅ THÊM DÒNG NÀY -->
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label>CCCD</label>
-                                                <input type="text" class="form-control person-cccd" name="peoples[0][cccd]"
-                                                    placeholder="123456789">
+                                                <input type="text" class="form-control person-cccd"
+                                                    name="peoples[0][cccd]"
+                                                    placeholder="123456789"
+                                                    required> <!-- ✅ THÊM DÒNG NÀY -->
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-12">
                                             <div class="form-group">
-                                                <label>Ghi chú</label>
-                                                <input type="text" class="form-control person-note" name="peoples[0][note]"
+                                                <label>Ghi chú<span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control person-note"
+                                                    name="peoples[0][note]"
                                                     placeholder="Ghi chú">
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
+                        <button type="button" class="btn btn-info btn-sm" id="add-people">
+                            <i class="fa fa-plus"></i> Thêm khách hàng
+                        </button>
 
                         <!-- Buttons -->
                         <div class="form-group" style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd;">
@@ -899,7 +906,7 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                 .catch(err => {
                     console.error('❌ Lỗi kiểm tra HDV:', err);
                     if (guideStatus) {
-                        guideStatus.innerHTML = '<span style="color: red;"><i class="fa fa-exclamation-circle"></i> Lỗi kiểm tra</span>';
+                        guideStatus.innerHTML = '';
                     }
                 });
         }
@@ -1203,6 +1210,12 @@ require_once __DIR__ . '/../../layout/admin/header.php';
                     <div class="form-group">
                         <label>CCCD <span class="text-danger">*</span></label>
                         <input type="text" class="form-control person-cccd" name="peoples[${peopleCount}][cccd]" placeholder="001234567890" required>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>ghi chú <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control person-note" name="peoples[${peopleCount}][note]" placeholder="Ghi chú" required>
                     </div>
                 </div>
             </div>

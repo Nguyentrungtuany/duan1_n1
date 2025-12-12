@@ -174,19 +174,25 @@ class BookingController
                 $errors = [];
 
                 foreach ($_POST['peoples'] as $index => $person) {
+                    // ✅ THÊM DEBUG CHI TIẾT
+                    error_log("Processing person #{$index}: " . json_encode($person));
+
                     // Bỏ qua nếu không có dữ liệu
                     if (empty($person['fullname']) && empty($person['existing_id'])) {
+                        error_log("⚠️ Skipped person #{$index} - empty fullname and existing_id");
                         continue;
                     }
 
                     try {
                         // TRƯỜNG HỢP 1: Chọn người có sẵn
                         if (!empty($person['existing_id']) && $person['existing_id'] !== 'new') {
+                            error_log("✅ Adding existing person ID: {$person['existing_id']}");
                             $this->BookingModel->addExistingPersonToBooking($booking_id, $person['existing_id']);
                             $addedCount++;
                         }
                         // TRƯỜNG HỢP 2: Thêm người mới
                         else if (!empty($person['fullname'])) {
+                            error_log("✅ Creating new person: {$person['fullname']}");
                             $data = [
                                 'fullname' => $person['fullname'] ?? '',
                                 'phone' => $person['phone'] ?? '',
@@ -195,10 +201,12 @@ class BookingController
                                 'note' => $person['note'] ?? ''
                             ];
 
-                            $this->BookingModel->createPeople($booking_id, $data);
+                            $newId = $this->BookingModel->createPeople($booking_id, $data);
+                            error_log("✅ Created person ID: $newId");
                             $addedCount++;
                         }
                     } catch (Exception $e) {
+                        error_log("❌ Error adding person #{$index}: " . $e->getMessage());
                         $errors[] = "Khách hàng #" . ($index + 1) . ": " . $e->getMessage();
 
                         // Dừng nếu đầy
