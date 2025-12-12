@@ -353,9 +353,9 @@ WHERE g.user_id = :user_id";
     }
 
     // Thay thế hàm getAttendanceHistory cũ
-public function getAttendanceHistory($booking_id, $date, $session = null)
-{
-    $sql = "SELECT 
+    public function getAttendanceHistory($booking_id, $date, $session = null)
+    {
+        $sql = "SELECT 
                 bp.id,
                 bp.fullname,
                 bp.phone,
@@ -372,34 +372,34 @@ public function getAttendanceHistory($booking_id, $date, $session = null)
             WHERE bp.booking_id = :booking_id
             ORDER BY bp.fullname";
 
-    $stmt = $this->conn->prepare($sql);
-    $stmt->execute([
-        'booking_id' => $booking_id,
-        'date'       => $date,
-        'session'    => $session ?? 'morning'
-    ]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-// Cập nhật saveAttendance để hỗ trợ session
-public function saveAttendance($booking_id, $date, $session, $data)
-{
-    // Kiểm tra chỉ được điểm danh hôm nay
-    $today = date('Y-m-d');
-    if ($date !== $today) {
-        return ['success' => false, 'message' => 'Chỉ được điểm danh vào hôm nay!'];
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+            'booking_id' => $booking_id,
+            'date'       => $date,
+            'session'    => $session ?? 'morning'
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Kiểm tra ngày có trong attendance_dates
-    $check = $this->conn->prepare("SELECT 1 FROM attendance_dates WHERE booking_id = ? AND date = ?");
-    $check->execute([$booking_id, $date]);
-    if (!$check->fetch()) {
-        return ['success' => false, 'message' => 'Ngày điểm danh không hợp lệ!'];
-    }
+    // Cập nhật saveAttendance để hỗ trợ session
+    public function saveAttendance($booking_id, $date, $session, $data)
+    {
+        // Kiểm tra chỉ được điểm danh hôm nay
+        $today = date('Y-m-d');
+        if ($date !== $today) {
+            return ['success' => false, 'message' => 'Chỉ được điểm danh vào hôm nay!'];
+        }
 
-    $this->conn->beginTransaction();
-    try {
-        $sql = "INSERT INTO attendances 
+        // Kiểm tra ngày có trong attendance_dates
+        $check = $this->conn->prepare("SELECT 1 FROM attendance_dates WHERE booking_id = ? AND date = ?");
+        $check->execute([$booking_id, $date]);
+        if (!$check->fetch()) {
+            return ['success' => false, 'message' => 'Ngày điểm danh không hợp lệ!'];
+        }
+
+        $this->conn->beginTransaction();
+        try {
+            $sql = "INSERT INTO attendances 
                 (booking_people_id, attendance_date, session, status, note, checkin_time) 
                 VALUES (?, ?, ?, ?, ?, NOW())
                 ON DUPLICATE KEY UPDATE 
@@ -407,39 +407,37 @@ public function saveAttendance($booking_id, $date, $session, $data)
                 note = VALUES(note),
                 checkin_time = NOW()";
 
-        $stmt = $this->conn->prepare($sql);
+            $stmt = $this->conn->prepare($sql);
 
-        foreach ($data['people'] as $person) {
-            $status = isset($data['attendance'][$person['id']]) ? 'present' : 'absent';
-            $note   = $data['notes'][$person['id']] ?? '';
+            foreach ($data['people'] as $person) {
+                $status = isset($data['attendance'][$person['id']]) ? 'present' : 'absent';
+                $note   = $data['notes'][$person['id']] ?? '';
 
-            $stmt->execute([
-                $person['id'],
-                $date,
-                $session,
-                $status,
-                $note
-            ]);
+                $stmt->execute([
+                    $person['id'],
+                    $date,
+                    $session,
+                    $status,
+                    $note
+                ]);
+            }
+
+            $this->conn->commit();
+            return ['success' => true, 'message' => 'Điểm danh buổi ' . $this->getSessionLabel($session) . ' thành công!'];
+        } catch (Exception $e) {
+            $this->conn->rollBack();
+            return ['success' => false, 'message' => 'Lỗi: ' . $e->getMessage()];
         }
-
-        $this->conn->commit();
-        return ['success' => true, 'message' => 'Điểm danh buổi ' . $this->getSessionLabel($session) . ' thành công!'];
-    } catch (Exception $e) {
-        $this->conn->rollBack();
-        return ['success' => false, 'message' => 'Lỗi: ' . $e->getMessage()];
     }
-}
 
-// Hàm hỗ trợ hiển thị tên buổi tiếng Việt
-private function getSessionLabel($session)
-{
-    return match($session) {
-        'morning' => 'Sáng',
-        'afternoon' => 'Chiều',
-        'evening' => 'Tối',
-        default => 'Không xác định'
-    };
-}
-
-    
+    // Hàm hỗ trợ hiển thị tên buổi tiếng Việt
+    private function getSessionLabel($session)
+    {
+        return match ($session) {
+            'morning' => 'Sáng',
+            'afternoon' => 'Chiều',
+            'evening' => 'Tối',
+            default => 'Không xác định'
+        };
+    }
 }
