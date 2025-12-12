@@ -222,7 +222,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
 
                         <!-- Trạng thái -->
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-11">
                                 <div class="form-group">
                                     <label for="status">Trạng thái</label>
                                     <select class="form-control" id="status" name="status">
@@ -233,7 +233,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="payment_status">Thanh toán</label>
                                     <select class="form-control" id="payment_status" name="payment_status">
@@ -241,7 +241,7 @@ if (isset($booking['guide']) && is_string($booking['guide'])) {
                                         <option value="paid" <?php echo (isset($booking['payment_status']) && $booking['payment_status'] == 'paid') ? 'selected' : ''; ?>>Đã thanh toán</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <!-- Số chỗ tối đa -->

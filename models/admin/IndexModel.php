@@ -9,15 +9,33 @@ class IndexModel
     }
     public function QlTour()
     {
-        $sql = "SELECT t.*, c.name AS category_name, 
-        JSON_OBJECT('id', d.id, 'name', d.name, 'location', d.location)
-        AS destination, (SELECT JSON_ARRAYAGG(JSON_OBJECT('id', tr.id, 'type', tr.type, 'company', tr.company, 'seats', tr.seats)) 
-        FROM transports tr WHERE tr.tour_id = t.id) 
-        AS transports, (SELECT JSON_ARRAYAGG(JSON_OBJECT('id', ac.id, 'name', ac.name, 'address', ac.address, 'type', ac.type)) 
-        FROM accommodations ac WHERE ac.tour_id = t.id) AS accommodations, 
-        (SELECT JSON_ARRAYAGG(JSON_OBJECT('id', sc.id, 'day_number', sc.day_number, 'location', sc.location, 'activities', sc.activities, 'notes', sc.notes)) 
-        FROM schedules sc WHERE sc.tour_id = t.id) AS schedules 
-        FROM tours t LEFT JOIN tour_categories c ON t.category_id = c.id LEFT JOIN destinations d ON t.destination_id = d.id;";
+        $sql = "SELECT 
+    t.*, 
+    c.name AS category_name,
+    JSON_OBJECT(
+        'id', d.id,
+        'name', d.name,
+        'location', d.location
+    ) AS destination,
+
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'id', sc.id,
+                'day_number', sc.day_number,
+                'location', sc.location,
+                'activities', sc.activities,
+                'notes', sc.notes
+            )
+        )
+        FROM schedules sc
+        WHERE sc.tour_id = t.id
+    ) AS schedules
+
+FROM tours t
+LEFT JOIN tour_categories c ON t.category_id = c.id
+LEFT JOIN destinations d ON t.destination_id = d.id;
+";
 
         $stmt = $this->conn->query($sql);
         return $stmt->fetchAll();
@@ -26,31 +44,26 @@ class IndexModel
     {
         $sql = "SELECT 
     t.*, 
-    c.name AS category_name, 
-    JSON_OBJECT('id', d.id, 'name', d.name, 'location', d.location) AS destination,
+    c.name AS category_name,
+    JSON_OBJECT(
+        'id', d.id,
+        'name', d.name,
+        'location', d.location
+    ) AS destination,
 
-    (SELECT JSON_ARRAYAGG(JSON_OBJECT(
-        'id', tr.id, 
-        'type', tr.type, 
-        'company', tr.company, 
-        'seats', tr.seats
-    )) FROM transports tr WHERE tr.tour_id = t.id) AS transports,
-
-    (SELECT JSON_ARRAYAGG(JSON_OBJECT(
-        'id', ac.id, 
-        'name', ac.name, 
-        'address', ac.address, 
-        'type', ac.type
-    )) FROM accommodations ac WHERE ac.tour_id = t.id) AS accommodations,
-
-   (SELECT JSON_ARRAYAGG(JSON_OBJECT(
-    'id', sc.id,
-    'day_number', sc.day_number,
-    'location', sc.location,
-    'activities', sc.activities,
-    'notes', sc.notes
-)) FROM schedules sc WHERE sc.tour_id = t.id) AS schedules
-
+    (
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'id', sc.id,
+                'day_number', sc.day_number,
+                'location', sc.location,
+                'activities', sc.activities,
+                'notes', sc.notes
+            )
+        )
+        FROM schedules sc
+        WHERE sc.tour_id = t.id
+    ) AS schedules
 
 FROM tours t
 LEFT JOIN tour_categories c ON t.category_id = c.id
