@@ -603,14 +603,16 @@ if (!empty($booking)) {
                             <table class="table table-bordered table-hover attendance-table">
                                 <thead>
                                     <tr>
-                                        <th width="5%">STT</th>
-                                        <th width="18%">Họ và Tên</th>
-                                        <th width="12%">Ngày Sinh</th>
-                                        <th width="12%">Số Điện Thoại</th>
-                                        <th width="10%">CCCD</th>
-                                        <th width="12%">Ngày Điểm Danh</th>
-                                        <th width="10%">Trạng Thái</th>
-                                        <th width="16%">Ghi Chú</th>
+                                        <th width="4%">STT</th>
+                                        <th width="15%">Họ và Tên</th>
+                                        <th width="10%">Ngày Sinh</th>
+                                        <th width="10%">Số Điện Thoại</th>
+                                        <th width="9%">CCCD</th>
+                                        <th width="10%">Ngày Điểm Danh</th>
+                                        <th width="8%">Buổi</th>
+                                        <th width="9%">Giờ Điểm Danh</th>
+                                        <th width="9%">Trạng Thái</th>
+                                        <th width="14%">Ghi Chú</th>
                                     </tr>
                                 </thead>
                                 <tbody id="attendance-table-body">
@@ -644,6 +646,35 @@ if (!empty($booking)) {
                                                 <span class="date-badge">
                                                     <?= $attendance['formatted_date'] ?>
                                                 </span>
+                                            </td>
+                                            <td class="text-center">
+                                                <?php if ($attendance['session'] === 'morning'): ?>
+                                                    <span class="session-badge session-morning">
+                                                        <i class="fa fa-sun-o"></i> Sáng
+                                                    </span>
+                                                <?php elseif ($attendance['session'] === 'afternoon'): ?>
+                                                    <span class="session-badge session-afternoon">
+                                                        <i class="fa fa-cloud"></i> Chiều
+                                                    </span>
+                                                <?php elseif ($attendance['session'] === 'evening'): ?>
+                                                    <span class="session-badge session-evening">
+                                                        <i class="fa fa-moon-o"></i> Tối
+                                                    </span>
+                                                <?php else: ?>
+                                                    <span class="session-badge session-default">
+                                                        <?= htmlspecialchars($attendance['session'] ?? 'N/A') ?>
+                                                    </span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td class="text-center">
+                                                <?php if (!empty($attendance['checkin_time'])): ?>
+                                                    <span class="check-time-badge">
+                                                        <i class="fa fa-clock-o"></i>
+                                                        <?= date('H:i', strtotime($attendance['checkin_time'])) ?>
+                                                    </span>
+                                                <?php else: ?>
+                                                    <span class="text-muted">-</span>
+                                                <?php endif; ?>
                                             </td>
                                             <td class="text-center">
                                                 <?php if ($attendance['status'] === 'present'): ?>

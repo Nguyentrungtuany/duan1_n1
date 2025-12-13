@@ -987,17 +987,25 @@ ORDER BY t.id DESC;
     public function getBookingAttendances($bookingId)
     {
         $sql = "SELECT 
-            a.*,
-            bp.fullname,
-            bp.phone,
-            bp.date,
-            bp.cccd,
-            DATE_FORMAT(a.attendance_date, '%d/%m/%Y') as formatted_date,
-            TIME_FORMAT(a.checkin_time, '%H:%i') as formatted_time
-        FROM attendances a
-        INNER JOIN bookings_people bp ON a.booking_people_id = bp.id
-        WHERE bp.booking_id = :booking_id
-        ORDER BY a.attendance_date ASC, bp.fullname ASC";
+    a.*,
+    bp.fullname,
+    bp.phone,
+    bp.date,
+    bp.cccd,
+    DATE_FORMAT(a.attendance_date, '%d/%m/%Y') as formatted_date,
+    TIME_FORMAT(a.checkin_time, '%H:%i') as formatted_time
+FROM attendances a
+INNER JOIN bookings_people bp ON a.booking_people_id = bp.id
+WHERE bp.booking_id = :booking_id
+ORDER BY 
+    a.attendance_date ASC,
+    CASE a.session
+        WHEN 'morning' THEN 1
+        WHEN 'afternoon' THEN 2
+        WHEN 'evening' THEN 3
+        ELSE 4
+    END,
+    bp.fullname ASC";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute(['booking_id' => $bookingId]);
