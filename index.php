@@ -132,7 +132,7 @@ $db = connectDB();
 match ($act) {
 
     /* ---------- TRANG CHỦ ---------- */
-    '/' => (new TourController())->home(),
+    '/' => (new TourController())->Login(),
     'login' => (new TourController())->Login(),
     'handleLogin' => (new TourController())->handleLogin(),
     'logout' => (new TourController())->logout(),
@@ -202,6 +202,7 @@ match ($act) {
     'get-available-people-api' => (new BookingController())->getAvailablePeopleApi(),
 
     'admin-reports' => (new AdminReportController())->index(),
+    'report-detail' => (new AdminReportController())->detail(),
     /* ---------- HƯỚNG DẪN VIÊN ---------- */
     'guide' => (new GuidesController())->index(),
     'job-guide' => (new GuidesController())->detail(),

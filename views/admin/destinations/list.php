@@ -206,5 +206,5 @@ require_once __DIR__ . '/../../layout/admin/header.php';
 </style>
 
 <?php
- require_once __DIR__ . '../../layout/admin/footer.php';
+require_once __DIR__ . '/../../layout/admin/footer.php';
 ?>

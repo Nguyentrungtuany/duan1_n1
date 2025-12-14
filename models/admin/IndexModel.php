@@ -16,7 +16,7 @@ class IndexModel
         'id', d.id,
         'name', d.name,
         'location', d.location
-    ) AS destination,
+    ) AS destinations,
 
     (
         SELECT JSON_ARRAYAGG(
