@@ -208,7 +208,7 @@ match ($act) {
     'job-guide' => (new GuidesController())->detail(),
     'rollcall_Guide' => (new GuidesController())->rollcall(),
     'save-diem-danh' => (new GuidesController())->saveDiemDanh(),
-
+    'bao-cao-booking' => (new PostTuorReportController())->index(),
     'guide-account' => (new GuidesController())->account(),
     default => require_once './views/404.php',
 };

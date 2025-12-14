@@ -138,10 +138,10 @@
                                     <i class="fa fa-download"></i>
                                     Tải xuống
                                 </button>
-                                <button class="btn-action btn-delete" onclick="return confirm('Bạn có chắc muốn xóa báo cáo này?')">
+                                <!-- <button class="btn-action btn-delete" onclick="return confirm('Bạn có chắc muốn xóa báo cáo này?')">
                                     <i class="fa fa-trash"></i>
                                     Xóa báo cáo
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                     </div>

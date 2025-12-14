@@ -1,8 +1,9 @@
 <?php
 require_once 'views/layout/guides/header.php';
-
+// print_r($data);
 foreach ($data as &$item) {
     $item['destination']      = !empty($item['destination'])      ? json_decode($item['destination'], true)      : [];
+    $item['destinations']      = !empty($item['destinations'])      ? json_decode($item['destinations'], true)      : [];
     $item['transports']       = !empty($item['transports'])       ? json_decode($item['transports'], true)       : [];
     $item['accommodations']   = !empty($item['accommodations'])   ? json_decode($item['accommodations'], true)   : [];
     $item['schedules']        = !empty($item['schedules'])        ? json_decode($item['schedules'], true)        : [];
@@ -179,21 +180,21 @@ foreach ($data as &$item) {
             <div class="col-md-3">
                 <div class="stats-box">
                     <i class="fa fa-clock-o fa-3x text-warning pull-right"></i>
-                    <h3 class="text-warning"><?php echo $job_status['total_unpaid']; ?></h3>
-                    <p>Chưa thanh toán</p>
+                    <h3 class="text-warning"><?php echo $job_status['pending']; ?></h3>
+                    <p>Tuor chưa đi</p>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="stats-box">
                     <i class="fa fa-check-circle fa-3x text-info pull-right"></i>
-                    <h3 class="text-info"><?php echo $job_status['total_paid']; ?></h3>
-                    <p>Đã thanh toán</p>
+                    <h3 class="text-info"><?php echo $job_status['confirmed']; ?></h3>
+                    <p>Tuor đang đi</p>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="stats-box">
                     <i class="fa fa-check-square fa-3x text-success pull-right"></i>
-                    <h3 class="text-success"><?php echo $job_status['total_completed']; ?></h3>
+                    <h3 class="text-success"><?php echo $job_status['completed']; ?></h3>
                     <p>Hoàn thành</p>
                 </div>
             </div>
@@ -259,9 +260,9 @@ foreach ($data as &$item) {
                                 <span class="label <?= $statusClass[$booking['status']] ?? 'label-default' ?>" style="font-size: 13px; padding: 6px 12px;">
                                     <?= $statusText[$booking['status']] ?? $booking['status'] ?>
                                 </span>
-                                <span class="label <?= $booking['payment_status'] == 'paid' ? 'label-success' : 'label-danger' ?>" style="font-size: 13px; padding: 6px 12px;">
+                                <!-- <span class="label <?= $booking['payment_status'] == 'paid' ? 'label-success' : 'label-danger' ?>" style="font-size: 13px; padding: 6px 12px;">
                                     <?= $booking['payment_status'] == 'paid' ? 'Đã thanh toán' : 'Chưa thanh toán' ?>
-                                </span>
+                                </span> -->
                             </div>
                         </div>
                     </div>
@@ -316,11 +317,11 @@ foreach ($data as &$item) {
                                 </a>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-12" style="margin-bottom: 10px;">
-    <a href="index.php?act=bao-cao-booking&booking_id=<?= $booking['id'] ?>" 
-       class="btn btn-warning btn-block btn-lg">
-        <i class="fa fa-file-text-o"></i> Báo cáo
-    </a>
-</div>
+                                <a href="index.php?act=bao-cao-booking&booking_id=<?= $booking['id'] ?>"
+                                    class="btn btn-warning btn-block btn-lg">
+                                    <i class="fa fa-file-text-o"></i> Báo cáo
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -381,7 +382,7 @@ foreach ($data as &$item) {
                             <!-- KHÁCH HÀNG & HƯỚNG DẪN VIÊN -->
                             <div class="col-md-6">
                                 <div class="panel panel-warning">
-                                    <div class="panel-heading">
+                                    <!-- <div class="panel-heading">
                                         <h4><i class="fa fa-user"></i> Thông tin khách hàng</h4>
                                     </div>
                                     <div class="panel-body">
@@ -405,7 +406,7 @@ foreach ($data as &$item) {
                                         <?php else: ?>
                                             <p class="text-muted">Chưa có thông tin khách hàng</p>
                                         <?php endif; ?>
-                                    </div>
+                                    </div> -->
                                 </div>
 
                                 <div class="panel panel-info">
@@ -444,12 +445,154 @@ foreach ($data as &$item) {
                                     <div class="panel-body">
                                         <?php if (!empty($booking['transports'])): ?>
                                             <?php foreach ($booking['transports'] as $index => $transport): ?>
-                                                <div class="transport-card">
-                                                    <h5><strong>Phương tiện <?= $index + 1 ?></strong></h5>
-                                                    <p><strong>Loại:</strong> <?= htmlspecialchars($transport['type']) ?></p>
-                                                    <p><strong>Số chỗ:</strong> <?= $transport['seats'] ?> chỗ</p>
+                                                <div style="border: 1px solid #ddd; padding: 12px; margin-bottom: 12px; border-radius: 5px; background: #f9f9f9;">
+                                                    <h5 style="color: #337ab7; margin-top: 0; margin-bottom: 12px; font-size: 15px;">
+                                                        <i class="fa fa-car"></i> Phương tiện #<?= $index + 1 ?>
+                                                    </h5>
+
+                                                    <!-- Thông tin cơ bản -->
+                                                    <div class="info-group">
+                                                        <label style="font-size: 12px; color: #555; margin-bottom: 3px;">
+                                                            <i class="fa fa-tag"></i> Loại xe:
+                                                        </label>
+                                                        <p style="margin: 0 0 8px 0; font-weight: 500;">
+                                                            <?= htmlspecialchars($transport['type'] ?? 'Chưa cập nhật') ?>
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="row" style="margin-bottom: 8px;">
+                                                        <div class="col-xs-6">
+                                                            <div class="info-group">
+                                                                <label style="font-size: 12px; color: #555; margin-bottom: 3px;">
+                                                                    <i class="fa fa-users"></i> Số chỗ:
+                                                                </label>
+                                                                <p style="margin: 0; font-weight: 500;">
+                                                                    <?= htmlspecialchars($transport['seats'] ?? 'N/A') ?> chỗ
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-6">
+                                                            <div class="info-group">
+                                                                <label style="font-size: 12px; color: #555; margin-bottom: 3px;">
+                                                                    <i class="fa fa-car"></i> Biển số:
+                                                                </label>
+                                                                <p style="margin: 0; font-weight: 500;">
+                                                                    <?= htmlspecialchars($transport['license_plate'] ?? 'N/A') ?>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                     <?php if (!empty($transport['company'])): ?>
-                                                        <p><strong>Công ty:</strong> <?= htmlspecialchars($transport['company']) ?></p>
+                                                        <div class="info-group" style="margin-bottom: 8px;">
+                                                            <label style="font-size: 12px; color: #555; margin-bottom: 3px;">
+                                                                <i class="fa fa-building"></i> Công ty:
+                                                            </label>
+                                                            <p style="margin: 0;">
+                                                                <?= htmlspecialchars($transport['company']) ?>
+                                                            </p>
+                                                        </div>
+                                                    <?php endif; ?>
+
+                                                    <!-- Điểm đón khách -->
+                                                    <?php if (!empty($transport['pickup_location']) || !empty($transport['pickup_time'])): ?>
+                                                        <div style="background: #e8f5e9; padding: 10px; border-radius: 4px; margin-top: 8px;">
+                                                            <h6 style="color: #2e7d32; margin: 0 0 8px 0; font-size: 13px;">
+                                                                <i class="fa fa-map-marker"></i> Điểm đón khách
+                                                            </h6>
+
+                                                            <?php if (!empty($transport['pickup_location'])): ?>
+                                                                <div class="info-group" style="margin-bottom: 6px;">
+                                                                    <label style="font-size: 11px; color: #2e7d32; margin-bottom: 2px;">
+                                                                        Địa điểm:
+                                                                    </label>
+                                                                    <p style="margin: 0; font-size: 13px; font-weight: 500;">
+                                                                        <?= htmlspecialchars($transport['pickup_location']) ?>
+                                                                    </p>
+                                                                </div>
+                                                            <?php endif; ?>
+
+                                                            <?php if (!empty($transport['pickup_address'])): ?>
+                                                                <div class="info-group" style="margin-bottom: 6px;">
+                                                                    <label style="font-size: 11px; color: #2e7d32; margin-bottom: 2px;">
+                                                                        Địa chỉ:
+                                                                    </label>
+                                                                    <p style="margin: 0; font-size: 12px;">
+                                                                        <?= htmlspecialchars($transport['pickup_address']) ?>
+                                                                    </p>
+                                                                </div>
+                                                            <?php endif; ?>
+
+                                                            <?php if (!empty($transport['pickup_time'])): ?>
+                                                                <div class="info-group">
+                                                                    <label style="font-size: 11px; color: #2e7d32; margin-bottom: 2px;">
+                                                                        Giờ khởi hành:
+                                                                    </label>
+                                                                    <p style="margin: 0; font-size: 15px; font-weight: bold; color: #d9534f;">
+                                                                        <i class="fa fa-clock-o"></i>
+                                                                        <?= htmlspecialchars(substr($transport['pickup_time'], 0, 5)) ?>
+                                                                    </p>
+                                                                </div>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    <?php endif; ?>
+
+                                                    <!-- Tài xế -->
+                                                    <?php if (!empty($transport['driver_name'])): ?>
+                                                        <div style="border-top: 1px dashed #ddd; margin-top: 10px; padding-top: 10px;">
+                                                            <h6 style="color: #337ab7; margin: 0 0 8px 0; font-size: 13px;">
+                                                                <i class="fa fa-id-card"></i> Tài xế
+                                                            </h6>
+
+                                                            <div class="info-group" style="margin-bottom: 6px;">
+                                                                <label style="font-size: 11px; color: #555; margin-bottom: 2px;">
+                                                                    Tên:
+                                                                </label>
+                                                                <p style="margin: 0; font-weight: 500;">
+                                                                    <?= htmlspecialchars($transport['driver_name']) ?>
+                                                                </p>
+                                                            </div>
+
+                                                            <?php if (!empty($transport['driver_phone'])): ?>
+                                                                <div class="info-group" style="margin-bottom: 6px;">
+                                                                    <label style="font-size: 11px; color: #555; margin-bottom: 2px;">
+                                                                        SĐT:
+                                                                    </label>
+                                                                    <p style="margin: 0;">
+                                                                        <i class="fa fa-phone"></i>
+                                                                        <?= htmlspecialchars($transport['driver_phone']) ?>
+                                                                    </p>
+                                                                </div>
+                                                            <?php endif; ?>
+
+                                                            <div class="row">
+                                                                <?php if (!empty($transport['driver_cccd'])): ?>
+                                                                    <div class="col-xs-6">
+                                                                        <div class="info-group">
+                                                                            <label style="font-size: 11px; color: #555; margin-bottom: 2px;">
+                                                                                CCCD:
+                                                                            </label>
+                                                                            <p style="margin: 0; font-size: 12px;">
+                                                                                <?= htmlspecialchars($transport['driver_cccd']) ?>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                <?php endif; ?>
+
+                                                                <?php if (!empty($transport['driver_birthdate'])): ?>
+                                                                    <div class="col-xs-6">
+                                                                        <div class="info-group">
+                                                                            <label style="font-size: 11px; color: #555; margin-bottom: 2px;">
+                                                                                Ngày sinh:
+                                                                            </label>
+                                                                            <p style="margin: 0; font-size: 12px;">
+                                                                                <?= date('d/m/Y', strtotime($transport['driver_birthdate'])) ?>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        </div>
                                                     <?php endif; ?>
                                                 </div>
                                             <?php endforeach; ?>
@@ -468,11 +611,50 @@ foreach ($data as &$item) {
                                     <div class="panel-body">
                                         <?php if (!empty($booking['accommodations'])): ?>
                                             <?php foreach ($booking['accommodations'] as $index => $accommodation): ?>
-                                                <div class="accommodation-card">
-                                                    <h5><strong>Khách sạn <?= $index + 1 ?></strong></h5>
-                                                    <p><strong><?= htmlspecialchars($accommodation['name']) ?></strong></p>
-                                                    <p><?= htmlspecialchars($accommodation['type']) ?></p>
-                                                    <p><?= htmlspecialchars($accommodation['address']) ?></p>
+                                                <div style="background: #f9f9f9; padding: 12px; margin-bottom: 12px; border-radius: 5px; border-left: 3px solid #d9534f;">
+                                                    <h5 style="color: #d9534f; margin-top: 0; margin-bottom: 10px; font-size: 15px;">
+                                                        <i class="fa fa-hotel"></i> Khách sạn <?= $index + 1 ?>
+                                                    </h5>
+
+                                                    <div class="info-group" style="margin-bottom: 8px;">
+                                                        <label style="font-size: 12px; color: #666; margin-bottom: 3px;">
+                                                            <i class="fa fa-building-o"></i> Tên:
+                                                        </label>
+                                                        <p style="margin: 0; font-weight: 600;">
+                                                            <?= htmlspecialchars($accommodation['name'] ?? 'N/A') ?>
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="info-group" style="margin-bottom: 8px;">
+                                                        <label style="font-size: 12px; color: #666; margin-bottom: 3px;">
+                                                            <i class="fa fa-bed"></i> Loại phòng:
+                                                        </label>
+                                                        <p style="margin: 0;">
+                                                            <span style="background: #d9534f; color: white; padding: 3px 8px; border-radius: 10px; font-size: 11px;">
+                                                                <?= htmlspecialchars($accommodation['type'] ?? 'Standard') ?>
+                                                            </span>
+                                                        </p>
+                                                    </div>
+
+                                                    <?php if (!empty($accommodation['sdt'])): ?>
+                                                        <div class="info-group" style="margin-bottom: 8px;">
+                                                            <label style="font-size: 12px; color: #666; margin-bottom: 3px;">
+                                                                <i class="fa fa-phone"></i> Số điện thoại:
+                                                            </label>
+                                                            <p style="margin: 0;">
+                                                                <?= htmlspecialchars($accommodation['sdt']) ?>
+                                                            </p>
+                                                        </div>
+                                                    <?php endif; ?>
+
+                                                    <div class="info-group">
+                                                        <label style="font-size: 12px; color: #666; margin-bottom: 3px;">
+                                                            <i class="fa fa-map-marker"></i> Địa chỉ:
+                                                        </label>
+                                                        <p style="margin: 0; color: #555;">
+                                                            <?= htmlspecialchars($accommodation['address'] ?? 'N/A') ?>
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             <?php endforeach; ?>
                                         <?php else: ?>
@@ -495,7 +677,7 @@ foreach ($data as &$item) {
                                             <div class="schedule-header">
                                                 <h4>
                                                     <span class="label label-success">Ngày <?= $schedule['day_number'] ?></span>
-                                                    <span style="margin-left: 15px; color: #666;"><?= date('d/m/Y', strtotime($schedule['date'])) ?></span>
+                                                    <!-- <span style="margin-left: 15px; color: #666;"><?= date('d/m/Y', strtotime($schedule['date'])) ?></span> -->
                                                 </h4>
                                             </div>
                                             <p><strong>Địa điểm:</strong> <?= htmlspecialchars($schedule['location']) ?></p>
@@ -545,6 +727,172 @@ foreach ($data as &$item) {
                                 <?php endif; ?>
                             </div>
                         </div>
+                        <!-- LỊCH ĐIỂM DANH -->
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h4><i class="fa fa-calendar-check-o"></i> Lịch điểm danh</h4>
+                            </div>
+                            <div class="panel-body">
+                                <?php
+                                // Lấy dữ liệu điểm danh cho booking này
+                                $attendances = !empty($booking['attendances']) ? $booking['attendances'] : [];
+                                $attendanceSummary = !empty($booking['attendance_summary']) ? $booking['attendance_summary'] : [];
+                                ?>
+
+                                <?php if (!empty($attendanceSummary)): ?>
+
+                                    <!-- FILTER CHỌN NGÀY -->
+                                    <div class="attendance-date-filter">
+                                        <div class="filter-header">
+                                            <i class="fa fa-filter"></i>
+                                            <span>Chọn ngày xem chi tiết:</span>
+                                        </div>
+                                        <div class="date-buttons-wrapper">
+                                            <button class="date-filter-btn active" data-date="all" onclick="filterAttendanceByDate(<?= $booking['id'] ?>, 'all')">
+                                                <i class="fa fa-calendar"></i>
+                                                Tất cả ngày
+                                            </button>
+                                            <?php foreach ($attendanceSummary as $summary): ?>
+                                                <button class="date-filter-btn" data-date="<?= $summary['attendance_date'] ?>"
+                                                    onclick="filterAttendanceByDate(<?= $booking['id'] ?>, '<?= $summary['attendance_date'] ?>')">
+                                                    <i class="fa fa-calendar-day"></i>
+                                                    <?= $summary['formatted_date'] ?>
+                                                    <span class="date-count">(<?= $summary['present_count'] + $summary['absent_count'] ?>)</span>
+                                                </button>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+
+                                    <!-- TỔNG QUAN THEO NGÀY -->
+                                    <div class="attendance-summary-cards">
+                                        <?php foreach ($attendanceSummary as $summary): ?>
+                                            <div class="attendance-summary-card">
+                                                <div class="summary-date">
+                                                    <i class="fa fa-calendar"></i>
+                                                    <?= $summary['formatted_date'] ?>
+                                                </div>
+                                                <div class="summary-stats">
+                                                    <div class="stat-item stat-present">
+                                                        <i class="fa fa-check-circle"></i>
+                                                        <span><?= $summary['present_count'] ?> Có mặt</span>
+                                                    </div>
+                                                    <div class="stat-item stat-absent">
+                                                        <i class="fa fa-times-circle"></i>
+                                                        <span><?= $summary['absent_count'] ?> Vắng mặt</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+
+                                    <!-- CHI TIẾT ĐIỂM DANH -->
+                                    <h6 style="margin-top: 30px; margin-bottom: 20px; color: #34495e; font-weight: 600;">
+                                        <i class="fa fa-list"></i> Chi tiết điểm danh
+                                    </h6>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover attendance-table">
+                                            <thead>
+                                                <tr>
+                                                    <th width="5%">STT</th>
+                                                    <th width="20%">Họ và Tên</th>
+                                                    <th width="12%">Ngày Sinh</th>
+                                                    <th width="12%">SĐT</th>
+                                                    <th width="12%">Ngày</th>
+                                                    <th width="10%">Buổi</th>
+                                                    <th width="10%">Giờ</th>
+                                                    <th width="10%">Trạng Thái</th>
+                                                    <th width="9%">Ghi Chú</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="attendance-table-body-<?= $booking['id'] ?>">
+                                                <?php
+                                                $stt = 0;
+                                                foreach ($attendances as $attendance):
+                                                    $stt++;
+                                                ?>
+                                                    <tr class="attendance-row" data-date="<?= $attendance['attendance_date'] ?>">
+                                                        <td class="text-center"><?= $stt ?></td>
+                                                        <td>
+                                                            <i class="fa fa-user"></i>
+                                                            <strong><?= htmlspecialchars($attendance['fullname']) ?></strong>
+                                                        </td>
+                                                        <td>
+                                                            <i class="fa fa-birthday-cake"></i>
+                                                            <?= date('d/m/Y', strtotime($attendance['date'])) ?>
+                                                        </td>
+                                                        <td>
+                                                            <i class="fa fa-phone"></i>
+                                                            <?= htmlspecialchars($attendance['phone']) ?>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span class="date-badge">
+                                                                <?= $attendance['formatted_date'] ?>
+                                                            </span>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <?php if ($attendance['session'] === 'morning'): ?>
+                                                                <span class="session-badge session-morning">
+                                                                    <i class="fa fa-sun-o"></i> Sáng
+                                                                </span>
+                                                            <?php elseif ($attendance['session'] === 'afternoon'): ?>
+                                                                <span class="session-badge session-afternoon">
+                                                                    <i class="fa fa-cloud"></i> Chiều
+                                                                </span>
+                                                            <?php elseif ($attendance['session'] === 'evening'): ?>
+                                                                <span class="session-badge session-evening">
+                                                                    <i class="fa fa-moon-o"></i> Tối
+                                                                </span>
+                                                            <?php else: ?>
+                                                                <span class="session-badge session-default">
+                                                                    <?= htmlspecialchars($attendance['session'] ?? 'N/A') ?>
+                                                                </span>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <?php if (!empty($attendance['checkin_time'])): ?>
+                                                                <span class="check-time-badge">
+                                                                    <i class="fa fa-clock-o"></i>
+                                                                    <?= date('H:i', strtotime($attendance['checkin_time'])) ?>
+                                                                </span>
+                                                            <?php else: ?>
+                                                                <span class="text-muted">-</span>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <?php if ($attendance['status'] === 'present'): ?>
+                                                                <span class="status-badge status-present">
+                                                                    <i class="fa fa-check-circle"></i> Có mặt
+                                                                </span>
+                                                            <?php else: ?>
+                                                                <span class="status-badge status-absent">
+                                                                    <i class="fa fa-times-circle"></i> Vắng
+                                                                </span>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td>
+                                                            <?= htmlspecialchars($attendance['note'] ?? '-') ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- No data message -->
+                                    <div id="no-attendance-data-<?= $booking['id'] ?>" style="display: none;" class="no-data-message">
+                                        <i class="fa fa-exclamation-circle"></i>
+                                        <p>Không có dữ liệu điểm danh cho ngày đã chọn</p>
+                                    </div>
+
+                                <?php else: ?>
+                                    <div class="no-data-message">
+                                        <i class="fa fa-exclamation-circle"></i>
+                                        <p>Chưa có dữ liệu điểm danh</p>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
 
                         <!-- NÚT THU GỌN -->
                         <div class="row action-buttons">
@@ -570,8 +918,247 @@ foreach ($data as &$item) {
         <?php endif; ?>
     </div>
 </div>
+<style>
+    /* ==================== ATTENDANCE STYLES ==================== */
+    .attendance-date-filter {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        border-left: 5px solid #667eea;
+    }
 
+    .filter-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+        font-size: 16px;
+        font-weight: 700;
+        color: #2c3e50;
+    }
+
+    .filter-header i {
+        color: #667eea;
+    }
+
+    .date-buttons-wrapper {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .date-filter-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #555;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .date-filter-btn:hover {
+        background: #f8f9ff;
+        border-color: #667eea;
+        color: #667eea;
+        transform: translateY(-2px);
+    }
+
+    .date-filter-btn.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: #667eea;
+        color: white;
+    }
+
+    .date-count {
+        background: rgba(255, 255, 255, 0.3);
+        padding: 2px 6px;
+        border-radius: 10px;
+        font-size: 11px;
+    }
+
+    .attendance-summary-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .attendance-summary-card {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #3498db;
+    }
+
+    .summary-date {
+        font-size: 14px;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .summary-stats {
+        display: flex;
+        gap: 12px;
+    }
+
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .stat-present {
+        color: #27ae60;
+    }
+
+    .stat-absent {
+        color: #e74c3c;
+    }
+
+    .attendance-table thead {
+        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        color: white;
+    }
+
+    .attendance-table thead th {
+        font-weight: 600;
+        padding: 12px;
+        font-size: 12px;
+    }
+
+    .attendance-table tbody tr:hover {
+        background: #e3f2fd;
+    }
+
+    .attendance-table tbody td {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .date-badge {
+        background: #5bc0de;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .session-badge {
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .session-morning {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .session-afternoon {
+        background: #d1ecf1;
+        color: #0c5460;
+    }
+
+    .session-evening {
+        background: #d6d8db;
+        color: #383d41;
+    }
+
+    .check-time-badge {
+        background: #28a745;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .status-badge {
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .status-present {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-absent {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .no-data-message {
+        text-align: center;
+        padding: 40px 20px;
+        color: #7f8c8d;
+    }
+
+    .no-data-message i {
+        font-size: 48px;
+        margin-bottom: 15px;
+        opacity: 0.5;
+    }
+</style>
 <script>
+    function filterAttendanceByDate(bookingId, selectedDate) {
+        // Update active button
+        const buttons = document.querySelectorAll(`[data-date]`);
+        buttons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-date') === selectedDate) {
+                btn.classList.add('active');
+            }
+        });
+
+        // Filter table rows
+        const rows = document.querySelectorAll(`#attendance-table-body-${bookingId} .attendance-row`);
+        const noDataDiv = document.getElementById(`no-attendance-data-${bookingId}`);
+        const tableDiv = document.getElementById(`attendance-table-body-${bookingId}`).closest('.table-responsive');
+        let visibleCount = 0;
+        let stt = 0;
+
+        rows.forEach(row => {
+            const rowDate = row.getAttribute('data-date');
+
+            if (selectedDate === 'all' || rowDate === selectedDate) {
+                row.style.display = '';
+                stt++;
+                row.querySelector('td:first-child').textContent = stt;
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // Show/hide no data message
+        if (visibleCount === 0) {
+            noDataDiv.style.display = 'block';
+            tableDiv.style.display = 'none';
+        } else {
+            noDataDiv.style.display = 'none';
+            tableDiv.style.display = 'block';
+        }
+    }
+
     function toggleDetails(bookingId) {
         const detailsDiv = document.getElementById('details-' + bookingId);
         detailsDiv.classList.toggle('show');

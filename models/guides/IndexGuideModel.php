@@ -78,7 +78,15 @@ class GuidesModel
                 'id', tr.id,
                 'type', tr.type,
                 'company', tr.company,
-                'seats', tr.seats
+                'seats', tr.seats,
+                'driver_name', tr.driver_name,
+                'driver_cccd', tr.driver_cccd,
+                'driver_phone', tr.driver_phone,
+                'driver_birthdate', tr.driver_birthdate,
+                'license_plate', tr.license_plate,
+                'pickup_location', tr.pickup_location,
+                'pickup_address', tr.pickup_address,
+                'pickup_time', tr.pickup_time
             )
         )
         FROM transports tr
@@ -116,22 +124,22 @@ class GuidesModel
 
     
     (
-        SELECT JSON_ARRAYAGG(
-            JSON_OBJECT(
-                'id', a.id,
-                'tour_id', a.tour_id,
-                'booking_id', a.booking_id,
-                'name', a.name,
-                'address', a.address,
-                'type', a.type,
-                'created_at', a.created_at,
-                'updated_at', a.updated_at
-            )
+    SELECT JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'id', a.id,
+            'booking_id', a.booking_id,
+            'tour_id', a.tour_id,
+            'name', a.name,
+            'sdt', a.sdt,
+            'address', a.address,
+            'type', a.type,
+            'created_at', a.created_at,
+            'updated_at', a.updated_at
         )
-        FROM accommodations a
-        WHERE a.booking_id = b.id
-    ) AS accommodations,
-
+    )
+    FROM accommodations a
+    WHERE a.booking_id = b.id
+) AS accommodations,
     (
         SELECT COUNT(*)
         FROM bookings_people bp
@@ -310,17 +318,15 @@ WHERE g.user_id = :user_id";
     public function jobStatus($user_id)
     {
         $sql = "
-        SELECT 
-            COUNT(*) as total_records,
-            SUM(CASE WHEN b.payment_status = 'unpaid' THEN 1 ELSE 0 END) as total_unpaid,
-            SUM(CASE WHEN b.payment_status = 'paid' THEN 1 ELSE 0 END) as total_paid,
-            SUM(CASE WHEN b.status = 'pending' THEN 1 ELSE 0 END) as total_pending,
-            SUM(CASE WHEN b.status = 'confirmed' THEN 1 ELSE 0 END) as total_confirmed,
-            SUM(CASE WHEN b.status = 'cancelled' THEN 1 ELSE 0 END) as total_cancelled,
-            SUM(CASE WHEN b.status = 'completed' THEN 1 ELSE 0 END) as total_completed
-        FROM bookings b
-        INNER JOIN guides g ON g.id = b.guide_id
-        WHERE g.user_id = :user_id";
+    SELECT 
+        COUNT(*) as total_records,
+        SUM(CASE WHEN b.status = 'pending' THEN 1 ELSE 0 END) as pending,
+        SUM(CASE WHEN b.status = 'confirmed' THEN 1 ELSE 0 END) as confirmed,
+        SUM(CASE WHEN b.status = 'cancelled' THEN 1 ELSE 0 END) as cancelled,
+        SUM(CASE WHEN b.status = 'completed' THEN 1 ELSE 0 END) as completed
+    FROM bookings b
+    INNER JOIN guides g ON g.id = b.guide_id
+    WHERE g.user_id = :user_id";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute(['user_id' => $user_id]);
@@ -439,5 +445,45 @@ WHERE g.user_id = :user_id";
             'evening' => 'Tối',
             default => 'Không xác định'
         };
+    }
+    // Trong controller khi lấy chi tiết booking
+    public function getAttendanceForBooking($booking_id)
+    {
+        // Lấy chi tiết điểm danh
+        $sql = "SELECT 
+                a.*,
+                bp.fullname,
+                bp.phone,
+                bp.date,
+                bp.cccd,
+                DATE_FORMAT(a.attendance_date, '%d/%m/%Y') as formatted_date
+            FROM attendances a
+            INNER JOIN bookings_people bp ON bp.id = a.people_id
+            WHERE a.booking_id = :booking_id
+            ORDER BY a.attendance_date, a.session, bp.fullname";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['booking_id' => $booking_id]);
+        $attendances = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Lấy tổng quan theo ngày
+        $sql = "SELECT 
+                attendance_date,
+                DATE_FORMAT(attendance_date, '%d/%m/%Y') as formatted_date,
+                SUM(CASE WHEN status = 'present' THEN 1 ELSE 0 END) as present_count,
+                SUM(CASE WHEN status = 'absent' THEN 1 ELSE 0 END) as absent_count
+            FROM attendances
+            WHERE booking_id = :booking_id
+            GROUP BY attendance_date
+            ORDER BY attendance_date";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['booking_id' => $booking_id]);
+        $summary = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return [
+            'attendances' => $attendances,
+            'attendance_summary' => $summary
+        ];
     }
 }
