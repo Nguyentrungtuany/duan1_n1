@@ -209,7 +209,7 @@ foreach ($data as &$item) {
                 <i class="fa fa-clock-o"></i> Chờ xác nhận
             </button>
             <button class="btn btn-info filter-btn" data-filter="confirmed">
-                <i class="fa fa-check-circle"></i> Đã xác nhận
+                <i class="fa fa-check-circle"></i> Tuor đang đi
             </button>
             <button class="btn btn-success filter-btn" data-filter="completed">
                 <i class="fa fa-check-square"></i> Hoàn thành
@@ -251,8 +251,8 @@ foreach ($data as &$item) {
                                     'cancelled' => 'label-danger'
                                 ];
                                 $statusText = [
-                                    'pending' => 'Chờ xác nhận',
-                                    'confirmed' => 'Đã xác nhận',
+                                    'pending' => 'Tuor chưa đi  ',
+                                    'confirmed' => 'Tuor đang đi',
                                     'completed' => 'Hoàn thành',
                                     'cancelled' => 'Đã hủy'
                                 ];
